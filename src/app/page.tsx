@@ -4,6 +4,7 @@ import CategoryBar from "@/components/home/CategoryBar";
 import ArtisanChefSpecials from "@/components/home/ArtisanChefSpecials";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import HowItWorks from "@/components/home/HowItWorks";
+import TestimonialBanner from "@/components/home/TestimonialBanner";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <ArtisanChefSpecials />
       <WhyChooseUs />
       <HowItWorks />
+      <TestimonialBanner />
     </main>
   );
 }
