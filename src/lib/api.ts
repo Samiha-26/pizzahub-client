@@ -40,3 +40,54 @@ export async function getChefSpecials(): Promise<PizzaItem[]> {
     return [];
   }
 }
+
+export interface MenuQueryParams {
+  search?: string;
+  category?: string;
+  crust?: string;
+  sort?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface MenuResponse {
+  items: PizzaItem[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
+
+export async function getMenu(params: MenuQueryParams = {}): Promise<MenuResponse> {
+  try {
+    const query = new URLSearchParams();
+    if (params.search && params.search.trim() !== "") query.append("search", params.search.trim());
+    if (params.category && params.category !== "All") query.append("category", params.category);
+    if (params.crust && params.crust !== "All") query.append("crust", params.crust);
+    if (params.sort) query.append("sort", params.sort);
+    if (params.page) query.append("page", params.page.toString());
+    if (params.limit) query.append("limit", params.limit.toString());
+
+    const res = await fetch(`${API_BASE_URL}/api/menu?${query.toString()}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return {
+      items: Array.isArray(data.items) ? data.items.map(mapMongoPizzaToItem) : [],
+      total: data.total || 0,
+      page: data.page || 1,
+      totalPages: data.totalPages || 1,
+    };
+  } catch {
+    return {
+      items: [],
+      total: 0,
+      page: 1,
+      totalPages: 1,
+    };
+  }
+}
