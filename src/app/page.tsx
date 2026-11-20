@@ -2,6 +2,7 @@ import DeliveryBar from "@/components/home/DeliveryBar";
 import HeroSection from "@/components/home/HeroSection";
 import CategoryBar from "@/components/home/CategoryBar";
 import ArtisanChefSpecials from "@/components/home/ArtisanChefSpecials";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
 
 export default function Home() {
   return (
@@ -17,6 +18,9 @@ export default function Home() {
 
       {/* Artisan Chef Specials (Featured Pizzas Grid) */}
       <ArtisanChefSpecials />
+
+      {/* Value Propositions: Why Choose PizzaHub */}
+      <WhyChooseUs />
     </main>
   );
 }
