@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #FAF7F2;
+    --foreground: #190F0E;
+    
+    --card: #FFFFFF;
+    --card-foreground: #190F0E;
+    
+    --popover: #FFFFFF;
+    --popover-foreground: #190F0E;
+    
+    --primary: #8E1616;
+    --primary-foreground: #FFFFFF;
+    
+    --secondary: #F3EBE1;
+    --secondary-foreground: #190F0E;
+    
+    --muted: #EFE7DE;
+    --muted-foreground: #6E5F5B;
+    
+    --accent: #FFF4E5;
+    --accent-foreground: #D97706;
+    
+    --destructive: #DC2626;
+    --destructive-foreground: #FFFFFF;
+    
+    --border: #EFE7DE;
+    --input: #EFE7DE;
+    --ring: #8E1616;
+    
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: #120A09;
+    --foreground: #FAF7F2;
+    
+    --card: #1C1210;
+    --card-foreground: #FAF7F2;
+    
+    --popover: #1C1210;
+    --popover-foreground: #FAF7F2;
+    
+    --primary: #B91C1C;
+    --primary-foreground: #FFFFFF;
+    
+    --secondary: #2A1C19;
+    --secondary-foreground: #FAF7F2;
+    
+    --muted: #2A1C19;
+    --muted-foreground: #A89B97;
+    
+    --accent: #2D1E12;
+    --accent-foreground: #F59E0B;
+    
+    --destructive: #7F1D1D;
+    --destructive-foreground: #FAF7F2;
+    
+    --border: #2D1E1B;
+    --input: #2D1E1B;
+    --ring: #B91C1C;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
