@@ -8,20 +8,28 @@ import {
   ChevronRight,
   Flame,
   Clock,
-  Sparkles,
   ShoppingBag,
   Store,
   MapPin,
   CheckCircle2,
   Calendar,
-  AlertCircle,
   Loader2,
   X,
   Plus,
   Minus,
+  Zap,
 } from "lucide-react";
 import { getPizzaById, type PizzaDetail } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
+
+const TIME_SLOTS = [
+  "12:30 PM - 01:00 PM",
+  "01:30 PM - 02:00 PM",
+  "06:30 PM - 07:00 PM",
+  "07:30 PM - 08:00 PM",
+  "08:30 PM - 09:00 PM",
+  "09:30 PM - 10:00 PM",
+];
 
 export default function PizzaDetailPage({
   params,
@@ -40,7 +48,9 @@ export default function PizzaDetailPage({
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [deliveryAddress, setDeliveryAddress] = useState("");
-  const [deliveryDateTime, setDeliveryDateTime] = useState("");
+  const [scheduleType, setScheduleType] = useState<"asap" | "later">("asap");
+  const [selectedDay, setSelectedDay] = useState<"today" | "tomorrow">("today");
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(TIME_SLOTS[2]);
   const [bakerNote, setBakerNote] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
 
@@ -62,12 +72,29 @@ export default function PizzaDetailPage({
     };
   }, [unwrappedParams.id]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedArea = localStorage.getItem("pizzahub_delivery_area");
+      if (savedArea) {
+        setDeliveryAddress(savedArea);
+      }
+    }
+  }, []);
+
   const handleOpenOrderModal = () => {
     if (!user) {
       toast.error("Please sign in to place your artisan order", { icon: "🔒" });
       router.push(`/signin?redirect=/menu/${unwrappedParams.id}`);
       return;
     }
+
+    if (!deliveryAddress && typeof window !== "undefined") {
+      const savedArea = localStorage.getItem("pizzahub_delivery_area");
+      if (savedArea) {
+        setDeliveryAddress(savedArea);
+      }
+    }
+
     setIsOrderModalOpen(true);
   };
 
@@ -79,10 +106,10 @@ export default function PizzaDetailPage({
       return;
     }
 
-    if (!deliveryDateTime) {
-      toast.error("Please select a delivery date and time");
-      return;
-    }
+    const scheduledTime =
+      scheduleType === "asap"
+        ? "ASAP (25–35 min hearth dispatch)"
+        : `${selectedDay === "today" ? "Today" : "Tomorrow"} • ${selectedTimeSlot}`;
 
     setIsSubmittingOrder(true);
 
@@ -90,7 +117,7 @@ export default function PizzaDetailPage({
       setIsSubmittingOrder(false);
       setIsOrderModalOpen(false);
       toast.success(
-        `Order fired! ${quantity}x ${pizza?.name} is queued in the refractory hearth.`,
+        `Order fired! ${quantity}x ${pizza?.name} scheduled for ${scheduledTime}.`,
         { icon: "🍕", duration: 5000 }
       );
       router.push("/orders");
@@ -287,7 +314,7 @@ export default function PizzaDetailPage({
 
       {isOrderModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-white rounded-3xl border border-[#EFE7DE] shadow-2xl p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95">
+          <div className="w-full max-w-lg bg-white rounded-3xl border border-[#EFE7DE] shadow-2xl p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#EFE7DE]">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-[#8E1616] text-white flex items-center justify-center text-sm shadow-xs">
@@ -342,10 +369,17 @@ export default function PizzaDetailPage({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-[#190F0E] flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#8E1616]" />
-                  <span>Delivery Address *</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-[#190F0E] flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#8E1616]" />
+                    <span>Delivery Address *</span>
+                  </label>
+                  {deliveryAddress && (
+                    <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                      Auto-filled from location
+                    </span>
+                  )}
+                </div>
                 <input
                   type="text"
                   required
@@ -356,18 +390,96 @@ export default function PizzaDetailPage({
                 />
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <label className="text-xs font-bold text-[#190F0E] flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-[#8E1616]" />
-                  <span>Delivery Date &amp; Time *</span>
+                  <span>Delivery Schedule *</span>
                 </label>
-                <input
-                  type="datetime-local"
-                  required
-                  value={deliveryDateTime}
-                  onChange={(e) => setDeliveryDateTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
-                />
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setScheduleType("asap")}
+                    className={`p-3 rounded-2xl border text-left transition flex items-center gap-2.5 ${
+                      scheduleType === "asap"
+                        ? "border-[#8E1616] bg-[#8E1616]/5 ring-1 ring-[#8E1616]"
+                        : "border-[#EFE7DE] bg-white hover:border-gray-300"
+                    }`}
+                  >
+                    <Zap className={`w-4 h-4 ${scheduleType === "asap" ? "text-[#8E1616]" : "text-gray-400"}`} />
+                    <div>
+                      <div className="text-xs font-bold text-[#190F0E]">ASAP Dispatch</div>
+                      <div className="text-[10px] text-[#6E5F5B]">Within 25–35 mins</div>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setScheduleType("later")}
+                    className={`p-3 rounded-2xl border text-left transition flex items-center gap-2.5 ${
+                      scheduleType === "later"
+                        ? "border-[#8E1616] bg-[#8E1616]/5 ring-1 ring-[#8E1616]"
+                        : "border-[#EFE7DE] bg-white hover:border-gray-300"
+                    }`}
+                  >
+                    <Clock className={`w-4 h-4 ${scheduleType === "later" ? "text-[#8E1616]" : "text-gray-400"}`} />
+                    <div>
+                      <div className="text-xs font-bold text-[#190F0E]">Schedule Later</div>
+                      <div className="text-[10px] text-[#6E5F5B]">Choose day &amp; time</div>
+                    </div>
+                  </button>
+                </div>
+
+                {scheduleType === "later" && (
+                  <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#EFE7DE] space-y-3 animate-in fade-in">
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDay("today")}
+                        className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition ${
+                          selectedDay === "today"
+                            ? "bg-[#8E1616] text-white shadow-xs"
+                            : "bg-white text-[#6E5F5B] border border-[#EFE7DE]"
+                        }`}
+                      >
+                        Today
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDay("tomorrow")}
+                        className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition ${
+                          selectedDay === "tomorrow"
+                            ? "bg-[#8E1616] text-white shadow-xs"
+                            : "bg-white text-[#6E5F5B] border border-[#EFE7DE]"
+                        }`}
+                      >
+                        Tomorrow
+                      </button>
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="text-[10px] uppercase font-bold text-[#6E5F5B] tracking-wider">
+                        Select Delivery Window:
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {TIME_SLOTS.map((slot) => (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => setSelectedTimeSlot(slot)}
+                            className={`p-2 rounded-xl text-[11px] font-bold text-center border transition ${
+                              selectedTimeSlot === slot
+                                ? "bg-white border-[#8E1616] text-[#8E1616] shadow-2xs"
+                                : "bg-white/60 border-[#EFE7DE] text-[#6E5F5B] hover:bg-white"
+                            }`}
+                          >
+                            {slot}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-1">
