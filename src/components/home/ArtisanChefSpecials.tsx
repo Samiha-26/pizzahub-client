@@ -1,120 +1,131 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import PizzaCard, { type PizzaItem } from "@/components/shared/PizzaCard";
-import { SlidersHorizontal, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { getChefSpecials } from "@/lib/api";
 
-export const FEATURED_SPECIALS: PizzaItem[] = [
+export const FALLBACK_SPECIALS: PizzaItem[] = [
   {
     id: "p1",
-    itemName: "Truffle Burrata Prosciutto",
-    category: "SPECIALTY / GOURMET",
-    description: "Fresh fior di latte base, aged Prosciutto di Parma, black summer truffle cremita, baby arugula leaves.",
+    itemName: "Diavola Con 'Nduja",
+    category: "WOOD-FIRED",
+    description: "Fiery Calabrian sausage spread, fermented crushed chilies, fresh fior di latte mozzarella, raw wildflower chili honey drizzle, and charred Roman basil.",
     price: 18.50,
-    location: "Brooklyn, NY",
-    vendorName: "Napoli Hearth Masters",
-    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80",
+    location: "Gulshan-2 Culinary Circle, Dhaka",
+    vendorName: "Forno Antico Pizzeria",
+    image: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800&auto=format&fit=crop&q=80",
     badge: "IN PREMIUM WOOD-FIRE",
     badgeType: "premium",
-    timeEstimate: "25–35 min",
+    timeEstimate: "14 min",
   },
   {
     id: "p2",
-    itemName: "Fiery Diavola Pepperoni",
-    category: "MEAT LOVERS",
-    description: "Crisped spicy pepperoni cups, smoked scamorza cheese, wild Calabrian chili paste, clover honey drizzle.",
-    price: 19.90,
-    location: "Little Italy, NY",
-    vendorName: "Little Italy Ovens",
-    image: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800&auto=format&fit=crop&q=80",
-    badge: "TOP RE-ORDERED",
+    itemName: "Truffle Porcini Bianco",
+    category: "WHITE BASE",
+    description: "Velvety black summer truffle crema, pan-seared wild porcini mushrooms, creamy taleggio, smoked provolone, and fresh thyme on 48h sourdough base.",
+    price: 22.00,
+    location: "Banani 11 Gourmet Walk, Dhaka",
+    vendorName: "L'Antica Forneria",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80",
+    badge: "CHEF RECOMMENDED",
     badgeType: "top",
-    timeEstimate: "20 min",
+    timeEstimate: "16 min",
   },
   {
     id: "p3",
-    itemName: "Artisan Margherita DOC",
-    category: "CLASSIC / VEGETARIAN",
-    description: "Campania buffalo mozzarella, hand-crushed D.O.P. tomatoes, fresh sweet basil, cold-pressed olive oil.",
-    price: 14.25,
-    location: "Lower Manhattan, NY",
-    vendorName: "Napoli Hearth Masters",
-    image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=800&auto=format&fit=crop&q=80",
+    itemName: "Margherita D.O.P. di Bufala",
+    category: "CLASSIC ITALIAN",
+    description: "Certified Campanian buffalo mozzarella, volcanic San Marzano tomatoes, freshly plucked sweet Genovese basil, and cold-pressed extra virgin olive oil.",
+    price: 16.00,
+    location: "Gulshan-2 Culinary Circle, Dhaka",
+    vendorName: "Forno Antico Pizzeria",
+    image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=800&auto=format&fit=crop&q=80",
     badge: "IN PREMIUM WOOD-FIRE",
     badgeType: "premium",
-    timeEstimate: "18 min",
+    timeEstimate: "12 min",
   },
   {
     id: "p4",
-    itemName: "Smoked BBQ Brisket Pizza",
-    category: "MEAT LOVERS",
-    description: "14-hour oak-smoked low & slow pulled brisket, caramelized shallots, house BBQ glaze reduction.",
+    itemName: "Quattro Formaggi al Miele",
+    category: "WHITE BASE",
+    description: "Gorgonzola piccante, 24-month aged Parmigiano Reggiano, fontina val d'Aosta, and fresh fior di latte drizzled with raw acacia honey and crushed walnuts.",
     price: 19.50,
-    location: "Williamsburg, NY",
-    vendorName: "Smoke & Crust Wood Lab",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop&q=80",
-    badge: "TOP RE-ORDERED",
+    location: "Dhanmondi Lakefront Plaza, Dhaka",
+    vendorName: "Pizzeria Napoletana",
+    image: "https://images.unsplash.com/photo-1573821663912-569905455b1c?w=800&auto=format&fit=crop&q=80",
+    badge: "SWEET & SAVORY",
     badgeType: "top",
-    timeEstimate: "25–35 min",
+    timeEstimate: "15 min",
   },
   {
     id: "p5",
-    itemName: "Wild Faux-Mushroom Bianco",
-    category: "VEGETARIAN / BIANCO",
-    description: "Crushed garlic confit base, roasted king oyster & cremini mushrooms, fontina cheese, white truffle fonduta.",
-    price: 17.40,
-    location: "Greenpoint, NY",
-    vendorName: "Greenpoint Woodfire",
-    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&auto=format&fit=crop&q=80",
+    itemName: "Smoked Burrata & Prosciutto",
+    category: "CLASSIC ITALIAN",
+    description: "20-month aged Prosciutto di Parma laid over whole smoked Pugliese burrata, wild baby arugula, shaved pecorino romano, and balsamic glaze reduction.",
+    price: 24.00,
+    location: "Banani 11 Gourmet Walk, Dhaka",
+    vendorName: "L'Antica Forneria",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop&q=80",
     badge: "IN PREMIUM WOOD-FIRE",
     badgeType: "premium",
-    timeEstimate: "18–24 min",
+    timeEstimate: "15 min",
   },
   {
     id: "p6",
-    itemName: "Crispy Garlic Parmesan Knots",
-    category: "SIDES & APPETIZERS",
-    description: "Hand-tied dough knots baked in refractory stone, tossed in hot garlic butter, 24-month aged pecorino, marinara pot.",
-    price: 8.95,
-    location: "Brooklyn, NY",
-    vendorName: "Brooklyn Crust Co.",
-    image: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=800&auto=format&fit=crop&q=80",
-    badge: "IN PREMIUM WOOD-FIRE",
-    badgeType: "premium",
-    timeEstimate: "12–16 min",
+    itemName: "Fiery Calabrian Salami & Peppers",
+    category: "SPICY & FIERY",
+    description: "Artisan soppressata salami, flame-charred sweet red bell peppers, smoked scamorza, oregano, and chili flakes on fermented dough with garlic crust.",
+    price: 17.00,
+    location: "Dhanmondi Lakefront Plaza, Dhaka",
+    vendorName: "Pizzeria Napoletana",
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&auto=format&fit=crop&q=80",
+    badge: "TOP RE-ORDERED",
+    badgeType: "top",
+    timeEstimate: "13 min",
   },
 ];
 
 export default function ArtisanChefSpecials() {
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [specials, setSpecials] = useState<PizzaItem[]>(FALLBACK_SPECIALS);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadLiveSpecials() {
+      setIsLoading(true);
+      const data = await getChefSpecials();
+      if (isMounted && data && data.length > 0) {
+        setSpecials(data);
+      }
+      if (isMounted) {
+        setIsLoading(false);
+      }
+    }
+
+    loadLiveSpecials();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleAddToCart = (item: PizzaItem) => {
-    setToastMessage(`Added 1x ${item.itemName} to your order!`);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
+    toast.success(`Added 1x ${item.itemName} to your cart!`, {
+      icon: "🍕",
+    });
   };
 
   return (
     <section className="space-y-4 pt-2">
-      
-      {/* Toast Notification Alert */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#190F0E] text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-bold border border-[#8E1616] animate-in fade-in slide-in-from-bottom-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {/* Section Header (Matching Screenshot #1) */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
           <h2 className="text-xl sm:text-2xl font-black text-[#190F0E] tracking-tight">
             Artisan Chef Specials
           </h2>
           <p className="text-xs text-[#6E5F5B] mt-0.5">
-            Oven-blistered sourdough, fromage cheeses & fresh herbs
+            Oven-blistered sourdough, D.O.P. cheeses &amp; freshly plucked herbs
           </p>
         </div>
 
@@ -127,16 +138,22 @@ export default function ArtisanChefSpecials() {
         </Link>
       </div>
 
-      {/* 6 Responsive Pizza Cards Grid (Option B Layout) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
-        {FEATURED_SPECIALS.map((pizza) => (
-          <PizzaCard
-            key={pizza.id}
-            item={pizza}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
-      </div>
+      {isLoading && specials.length === 0 ? (
+        <div className="py-12 flex justify-center items-center text-[#8E1616] gap-2 text-sm font-semibold">
+          <Loader2 className="w-5 h-5 animate-spin" />
+          <span>Firing up the hearth...</span>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
+          {specials.map((pizza) => (
+            <PizzaCard
+              key={pizza.id}
+              item={pizza}
+              onAddToCart={handleAddToCart}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
