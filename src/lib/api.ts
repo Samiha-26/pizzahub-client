@@ -91,3 +91,62 @@ export async function getMenu(params: MenuQueryParams = {}): Promise<MenuRespons
     };
   }
 }
+
+export interface PizzaDetail {
+  id: string;
+  name: string;
+  tagline?: string;
+  description: string;
+  price: number;
+  crust: string;
+  category: string;
+  image: string;
+  images: string[];
+  badges: string[];
+  rating: number;
+  reviewCount: number;
+  ingredients: string[];
+  prepTimeMinutes: number;
+  calories: number;
+  vendorId?: string;
+  vendorName: string;
+  vendorEmail?: string;
+  vendorAddress: string;
+}
+
+export async function getPizzaById(id: string): Promise<PizzaDetail | null> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/menu/${id}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch pizza: ${res.status}`);
+    }
+
+    const doc = await res.json();
+    return {
+      id: doc._id?.toString() || doc.id || id,
+      name: doc.name || doc.itemName || "Artisan Pizza",
+      tagline: doc.tagline || "Authentic Stone-Baked Creation",
+      description: doc.description || "",
+      price: Number(doc.price) || 0,
+      crust: doc.crust || "Neapolitan 48h",
+      category: doc.category || "Wood-Fired",
+      image: doc.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
+      images: Array.isArray(doc.images) && doc.images.length > 0 ? doc.images : [doc.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80"],
+      badges: Array.isArray(doc.badges) ? doc.badges : ["IN PREMIUM WOOD-FIRE"],
+      rating: Number(doc.rating) || 4.9,
+      reviewCount: Number(doc.reviewCount) || 120,
+      ingredients: Array.isArray(doc.ingredients) ? doc.ingredients : ["San Marzano Tomatoes", "Fior di Latte Mozzarella", "Fresh Basil", "EVOO"],
+      prepTimeMinutes: Number(doc.prepTimeMinutes) || 15,
+      calories: Number(doc.calories) || 850,
+      vendorId: doc.vendorId,
+      vendorName: doc.vendorName || "Artisan Hearth Master",
+      vendorEmail: doc.vendorEmail || "orders@pizzahub.com",
+      vendorAddress: doc.vendorAddress || "Gulshan-2 Culinary Circle, Dhaka",
+    };
+  } catch {
+    return null;
+  }
+}
