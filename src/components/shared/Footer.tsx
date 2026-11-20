@@ -1,16 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import { Flame, MapPin, Phone, Mail, ShieldCheck, Heart } from "lucide-react";
+import { MapPin, Phone, Mail, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-[#EFE7DE] mt-16 pt-12 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-10 border-b border-[#EFE7DE]">
-          <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-2xl bg-[#8E1616] flex items-center justify-center text-white shadow-md shadow-[#8E1616]/20">
-                <span className="text-xl">🍕</span>
+    <footer className="bg-white border-t border-[#EFE7DE] mt-16 pt-10 sm:pt-14 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 pb-10 border-b border-[#EFE7DE]">
+          <div className="lg:col-span-5 space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-2xl bg-[#8E1616] flex items-center justify-center text-white shadow-md shadow-[#8E1616]/20 shrink-0">
+                <span className="text-xl leading-none">🍕</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-black tracking-tight text-[#190F0E]">
@@ -22,13 +22,13 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="text-xs sm:text-sm text-[#6E5F5B] max-w-sm leading-relaxed">
-              Every pie is hand-stretched and baked in authentic 450°C refractory stone hearths. Delivered piping hot in micro-vented thermal boxes.
+            <p className="text-xs sm:text-sm text-[#6E5F5B] max-w-md leading-relaxed">
+              Every pie is hand-stretched and baked in authentic 450°C refractory stone hearths. Delivered piping hot in micro-vented thermal boxes straight to your door.
             </p>
 
-            <div className="space-y-2 text-xs text-[#6E5F5B] pt-2">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#8E1616] shrink-0" />
+            <div className="space-y-2 text-xs text-[#6E5F5B] pt-1">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-[#8E1616] shrink-0 mt-0.5" />
                 <span>Gulshan-2 • Banani 11 • Dhanmondi Lakefront</span>
               </div>
               <div className="flex items-center gap-2">
@@ -42,118 +42,120 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
-              Artisan Catalog
-            </h4>
-            <ul className="space-y-2 text-xs text-[#6E5F5B]">
-              <li>
-                <Link href="/menu?category=Wood-Fired" className="hover:text-[#8E1616] transition-colors">
-                  Wood-Fired Classics
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?category=Classic+Italian" className="hover:text-[#8E1616] transition-colors">
-                  Neapolitan D.O.P.
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?category=White+Base" className="hover:text-[#8E1616] transition-colors">
-                  White Truffle Crema
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?category=Spicy+%26+Fiery" className="hover:text-[#8E1616] transition-colors">
-                  Calabrian 'Nduja & Chili
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?category=Vegetarian+%26+Plant" className="hover:text-[#8E1616] transition-colors">
-                  Plant-Forward &amp; Vegan
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
+            <div className="space-y-3">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+                Artisan Catalog
+              </h4>
+              <ul className="space-y-1.5 text-xs text-[#6E5F5B]">
+                <li>
+                  <Link href="/menu?category=Wood-Fired" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Wood-Fired
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?category=Classic+Italian" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Neapolitan D.O.P.
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?category=White+Base" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    White Truffle
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?category=Spicy+%26+Fiery" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Calabrian 'Nduja
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?category=Vegetarian+%26+Plant" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Plant &amp; Vegan
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
-              Crust &amp; Dough
-            </h4>
-            <ul className="space-y-2 text-xs text-[#6E5F5B]">
-              <li>
-                <Link href="/menu?crust=Neapolitan+48h" className="hover:text-[#8E1616] transition-colors">
-                  48-Hour Cold Ferment
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?crust=Roman+Thin+Crust" className="hover:text-[#8E1616] transition-colors">
-                  Crispy Roman Scrocchiarella
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?crust=Detroit+Pan" className="hover:text-[#8E1616] transition-colors">
-                  Detroit Frico Cheddar Edge
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?crust=Gluten-Free+Cauliflower" className="hover:text-[#8E1616] transition-colors">
-                  Gluten-Free Hearth Crust
-                </Link>
-              </li>
-              <li>
-                <Link href="/menu?crust=Sourdough+Stuffed" className="hover:text-[#8E1616] transition-colors">
-                  Ricotta Stuffed Crust
-                </Link>
-              </li>
-            </ul>
-          </div>
+            <div className="space-y-3">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+                Crust &amp; Dough
+              </h4>
+              <ul className="space-y-1.5 text-xs text-[#6E5F5B]">
+                <li>
+                  <Link href="/menu?crust=Neapolitan+48h" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    48h Cold Ferment
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?crust=Roman+Thin+Crust" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Roman Thin Base
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?crust=Detroit+Pan" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Detroit Pan Frico
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?crust=Gluten-Free+Cauliflower" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Gluten-Free Base
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/menu?crust=Sourdough+Stuffed" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Stuffed Sourdough
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          <div className="space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
-              Partners &amp; Portals
-            </h4>
-            <ul className="space-y-2 text-xs text-[#6E5F5B]">
-              <li>
-                <Link href="/vendor/dashboard" className="hover:text-[#8E1616] transition-colors">
-                  Vendor Kitchen Portal
-                </Link>
-              </li>
-              <li>
-                <Link href="/vendor/upgrade" className="hover:text-[#8E1616] transition-colors">
-                  Upgrade to Premium ($29/mo)
-                </Link>
-              </li>
-              <li>
-                <Link href="/orders" className="hover:text-[#8E1616] transition-colors">
-                  Track Live Orders
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin/dashboard" className="hover:text-[#8E1616] transition-colors">
-                  Platform Admin Portal
-                </Link>
-              </li>
-              <li>
-                <Link href="/signup" className="hover:text-[#8E1616] transition-colors">
-                  Join as Artisan Pizzeria
-                </Link>
-              </li>
-            </ul>
+            <div className="col-span-2 sm:col-span-1 space-y-3">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+                Portals &amp; Orders
+              </h4>
+              <ul className="space-y-1.5 text-xs text-[#6E5F5B]">
+                <li>
+                  <Link href="/vendor/dashboard" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Vendor Kitchen
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/vendor/upgrade" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Vendor Premium
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/orders" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Track Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/admin/dashboard" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Admin Portal
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/signup" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                    Join as Vendor
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6E5F5B]">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>100% Stone-Fired Authenticity Guaranteed</span>
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#6E5F5B]">
+          <div className="inline-flex items-center gap-2 bg-[#FAF7F2] border border-[#EFE7DE] px-3 py-1.5 rounded-full">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="font-semibold text-[#190F0E]">100% Stone-Fired Authenticity Guarantee</span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a
               href="https://x.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
+              className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
               aria-label="X (formerly Twitter)"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -164,7 +166,7 @@ export default function Footer() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
+              className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
               aria-label="Instagram"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -175,7 +177,7 @@ export default function Footer() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
+              className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
               aria-label="GitHub"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -184,7 +186,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <div>
+          <div className="text-center md:text-right">
             &copy; {new Date().getFullYear()} PizzaHub Inc. All rights reserved.
           </div>
         </div>
