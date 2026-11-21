@@ -327,7 +327,7 @@ export default function AddPizzaPage() {
               <span>Artisan Pizza Creation</span>
             </div>
             <h1 className="text-2xl font-black text-[#190F0E] tracking-tight">
-              Craft New Wood-Fired Recipe
+              Create New Menu Item
             </h1>
             <p className="text-xs text-[#6E5F5B] mt-1">
               List your cold-fermented dough style, artisan toppings, and high-res ImgBB photography.

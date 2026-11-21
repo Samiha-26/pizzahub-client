@@ -295,7 +295,36 @@ export async function getVendorMenu(email: string): Promise<VendorMenuResponse> 
       cache: "no-store",
     });
     if (!res.ok) throw new Error("Failed to fetch vendor menu");
-    return await res.json();
+    const data = await res.json();
+    return {
+      items: Array.isArray(data.items)
+        ? data.items.map((doc: any) => ({
+            id: doc._id?.toString() || doc.id || "",
+            name: doc.name || doc.itemName || "Artisan Pizza",
+            tagline: doc.tagline || "",
+            description: doc.description || "",
+            price: Number(doc.price) || 0,
+            crust: doc.crust || "Neapolitan 48h",
+            category: doc.category || "Wood-Fired",
+            image: doc.image || "",
+            images: Array.isArray(doc.images) ? doc.images : [doc.image || ""],
+            badges: Array.isArray(doc.badges) ? doc.badges : [],
+            rating: Number(doc.rating) || 5.0,
+            reviewCount: Number(doc.reviewCount) || 0,
+            ingredients: Array.isArray(doc.ingredients) ? doc.ingredients : [],
+            prepTimeMinutes: Number(doc.prepTimeMinutes) || 15,
+            calories: Number(doc.calories) || 850,
+            vendorId: doc.vendorId,
+            vendorName: doc.vendorName || "Artisan Pizzeria",
+            vendorEmail: doc.vendorEmail,
+            vendorAddress: doc.vendorAddress || "Little Italy, Manhattan, NY",
+          }))
+        : [],
+      subscriptionTier: data.subscriptionTier || "free",
+      itemCount: data.itemCount || 0,
+      itemLimit: data.itemLimit ?? (data.subscriptionTier === "premium" ? null : 3),
+      canAddMore: data.canAddMore ?? (data.subscriptionTier === "premium" || (data.items?.length || 0) < 3),
+    };
   } catch {
     return {
       items: [],

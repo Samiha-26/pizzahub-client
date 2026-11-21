@@ -278,7 +278,7 @@ export default function VendorDashboardPage() {
                 </p>
               </div>
               <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616] mt-2">
-                <span>Create Recipe</span>
+                <span>Add Menu Item</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
             </Link>
