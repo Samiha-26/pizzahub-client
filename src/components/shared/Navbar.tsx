@@ -19,6 +19,7 @@ import {
   LayoutDashboard,
   UtensilsCrossed,
   Crown,
+  User,
 } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { getVendorStats } from "@/lib/api";
@@ -310,10 +311,18 @@ export default function Navbar() {
                   </div>
 
                   <div className="pt-1 border-t border-[#EFE7DE]">
+                    <Link
+                      href="/profile"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#190F0E] hover:bg-[#FAF7F2] font-semibold"
+                    >
+                      <User className="w-4 h-4 text-[#8E1616]" />
+                      <span>Profile &amp; Settings</span>
+                    </Link>
                     <button
                       type="button"
                       onClick={handleSignOut}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 font-bold transition text-left"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 font-bold transition text-left cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Sign Out</span>
