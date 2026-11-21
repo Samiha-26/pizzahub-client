@@ -424,3 +424,125 @@ export async function verifyVendorUpgradeSession(sessionId: string, vendorEmail:
   return data;
 }
 
+export interface AdminStats {
+  totalUsers: number;
+  totalVendors: number;
+  totalCustomers: number;
+  totalPizzas: number;
+  totalOrders: number;
+  ordersRevenue: number;
+  subscriptionRevenue: number;
+  totalRevenue: number;
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: "customer" | "vendor" | "admin";
+  status: "active" | "blocked";
+  subscriptionTier: "free" | "premium";
+  createdAt: string;
+  image?: string | null;
+}
+
+export interface AdminMenuItem {
+  id: string;
+  itemName: string;
+  category: string;
+  price: number;
+  vendorName: string;
+  vendorEmail: string;
+  location: string;
+  image: string;
+  badge?: string | null;
+  moderationStatus: "approved" | "flagged" | "hidden";
+  createdAt: string;
+}
+
+export interface AdminTransaction {
+  id?: string;
+  _id?: string;
+  transactionId?: string;
+  vendorEmail: string;
+  amount: number;
+  currency: string;
+  plan: string;
+  status: string;
+  createdAt: string;
+}
+
+export async function getAdminStats(): Promise<AdminStats> {
+  const res = await fetch(`${API_BASE_URL}/api/admin/stats`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch admin statistics");
+  return await res.json();
+}
+
+export async function getAdminUsers(params?: { search?: string; role?: string; status?: string }): Promise<AdminUser[]> {
+  const query = new URLSearchParams();
+  if (params?.search) query.set("search", params.search);
+  if (params?.role && params.role !== "all") query.set("role", params.role);
+  if (params?.status && params.status !== "all") query.set("status", params.status);
+
+  const res = await fetch(`${API_BASE_URL}/api/admin/users?${query.toString()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch platform users");
+  return await res.json();
+}
+
+export async function updateUserStatus(id: string, status: "active" | "blocked") {
+  const res = await fetch(`${API_BASE_URL}/api/admin/users/${id}/status`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Failed to update user status");
+  return data;
+}
+
+export async function updateUserRole(id: string, role: "customer" | "vendor" | "admin") {
+  const res = await fetch(`${API_BASE_URL}/api/admin/users/${id}/role`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ role }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Failed to update user role");
+  return data;
+}
+
+export async function getAdminMenu(params?: { search?: string; category?: string }): Promise<AdminMenuItem[]> {
+  const query = new URLSearchParams();
+  if (params?.search) query.set("search", params.search);
+  if (params?.category && params.category !== "all") query.set("category", params.category);
+
+  const res = await fetch(`${API_BASE_URL}/api/admin/menu?${query.toString()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch admin menu");
+  return await res.json();
+}
+
+export async function updateMenuModeration(id: string, moderationStatus: "approved" | "flagged" | "hidden") {
+  const res = await fetch(`${API_BASE_URL}/api/admin/menu/${id}/moderation`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ moderationStatus }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Failed to update recipe moderation");
+  return data;
+}
+
+export async function deleteAdminMenuItem(id: string) {
+  const res = await fetch(`${API_BASE_URL}/api/admin/menu/${id}`, {
+    method: "DELETE",
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Failed to delete recipe");
+  return data;
+}
+
+export async function getAdminTransactions(): Promise<AdminTransaction[]> {
+  const res = await fetch(`${API_BASE_URL}/api/admin/transactions`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch transaction ledger");
+  return await res.json();
+}
