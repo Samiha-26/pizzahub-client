@@ -12,10 +12,12 @@ import {
   Loader2,
   ChevronRight,
   Pizza,
+  Sparkles,
 } from "lucide-react";
 import PizzaCard, { type PizzaItem } from "@/components/shared/PizzaCard";
 import { getMenu } from "@/lib/api";
 import { FALLBACK_SPECIALS } from "@/components/home/ArtisanChefSpecials";
+import CrustGuideModal from "@/components/menu/CrustGuideModal";
 
 const CATEGORIES = [
   "All",
@@ -47,6 +49,7 @@ function MenuContent() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedCrust, setSelectedCrust] = useState(initialCrust);
   const [sortBy, setSortBy] = useState("newest");
+  const [isCrustGuideOpen, setIsCrustGuideOpen] = useState(false);
 
   const [items, setItems] = useState<PizzaItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -195,6 +198,14 @@ function MenuContent() {
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none pt-1">
+          <button
+            type="button"
+            onClick={() => setIsCrustGuideOpen(true)}
+            className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 flex items-center gap-1.5 shadow-2xs cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>Crust &amp; Hydration Guide</span>
+          </button>
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -253,6 +264,12 @@ function MenuContent() {
           ))}
         </div>
       )}
+
+      <CrustGuideModal
+        isOpen={isCrustGuideOpen}
+        onClose={() => setIsCrustGuideOpen(false)}
+        onSelectCrust={(crustFilter) => setSelectedCrust(crustFilter)}
+      />
     </div>
   );
 }
