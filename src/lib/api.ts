@@ -150,3 +150,95 @@ export async function getPizzaById(id: string): Promise<PizzaDetail | null> {
     return null;
   }
 }
+
+export interface OrderItemPayload {
+  customerEmail: string;
+  customerName: string;
+  pizzaId: string;
+  pizzaName: string;
+  pizzaImage: string;
+  price: number;
+  quantity: number;
+  totalPrice: number;
+  crust: string;
+  category: string;
+  vendorId?: string;
+  vendorName: string;
+  deliveryAddress: string;
+  deliverySchedule: string;
+  bakerNote?: string;
+}
+
+export interface OrderRecord {
+  _id: string;
+  customerEmail: string;
+  customerName: string;
+  pizzaId?: string;
+  pizzaName: string;
+  pizzaImage: string;
+  price: number;
+  quantity: number;
+  totalPrice: number;
+  crust: string;
+  category: string;
+  vendorId?: string;
+  vendorName: string;
+  deliveryAddress: string;
+  deliverySchedule: string;
+  bakerNote?: string;
+  status: "pending" | "preparing" | "on_the_way" | "delivered" | "cancelled";
+  timeline?: {
+    step: string;
+    time: string | null;
+    completed: boolean;
+  }[];
+  createdAt: string;
+  updatedAt?: string;
+  cancelledAt?: string;
+}
+
+export async function createOrder(payload: OrderItemPayload) {
+  const res = await fetch(`${API_BASE_URL}/api/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to place pizza order");
+  }
+
+  return await res.json();
+}
+
+export async function getMyOrders(email: string): Promise<OrderRecord[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/orders/my-orders/${encodeURIComponent(email)}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch orders: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
+export async function cancelOrder(id: string) {
+  const res = await fetch(`${API_BASE_URL}/api/orders/${id}/cancel`, {
+    method: "PATCH",
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Failed to cancel order");
+  }
+
+  return await res.json();
+}

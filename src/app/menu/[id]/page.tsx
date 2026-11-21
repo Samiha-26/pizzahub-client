@@ -19,7 +19,7 @@ import {
   Minus,
   Zap,
 } from "lucide-react";
-import { getPizzaById, type PizzaDetail } from "@/lib/api";
+import { getPizzaById, createOrder, type PizzaDetail } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
 
 const TIME_SLOTS = [
@@ -106,6 +106,14 @@ export default function PizzaDetailPage({
       return;
     }
 
+    if (!user?.email) {
+      toast.error("Please sign in to confirm your order", { icon: "🔒" });
+      router.push(`/signin?redirect=/menu/${unwrappedParams.id}`);
+      return;
+    }
+
+    if (!pizza) return;
+
     const scheduledTime =
       scheduleType === "asap"
         ? "ASAP (25–35 min hearth dispatch)"
@@ -113,15 +121,37 @@ export default function PizzaDetailPage({
 
     setIsSubmittingOrder(true);
 
-    setTimeout(() => {
-      setIsSubmittingOrder(false);
-      setIsOrderModalOpen(false);
+    try {
+      await createOrder({
+        customerEmail: user.email,
+        customerName: user.name || "Pizza Enthusiast",
+        pizzaId: pizza.id,
+        pizzaName: pizza.name,
+        pizzaImage: pizza.image,
+        price: pizza.price,
+        quantity,
+        totalPrice: Number((pizza.price * quantity).toFixed(2)),
+        crust: pizza.crust,
+        category: pizza.category,
+        vendorId: pizza.vendorId || "vendor_artisan_01",
+        vendorName: pizza.vendorName || "Forno Antico Pizzeria",
+        deliveryAddress: deliveryAddress.trim(),
+        deliverySchedule: scheduledTime,
+        bakerNote: bakerNote.trim() || undefined,
+      });
+
       toast.success(
-        `Order fired! ${quantity}x ${pizza?.name} scheduled for ${scheduledTime}.`,
+        `Order fired! ${quantity}x ${pizza.name} scheduled for ${scheduledTime}.`,
         { icon: "🍕", duration: 5000 }
       );
+      setIsOrderModalOpen(false);
       router.push("/orders");
-    }, 1000);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to place order";
+      toast.error(msg);
+    } finally {
+      setIsSubmittingOrder(false);
+    }
   };
 
   if (isLoading) {
