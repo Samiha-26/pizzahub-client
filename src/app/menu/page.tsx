@@ -18,6 +18,7 @@ import PizzaCard, { type PizzaItem } from "@/components/shared/PizzaCard";
 import { getMenu } from "@/lib/api";
 import { FALLBACK_SPECIALS } from "@/components/home/ArtisanChefSpecials";
 import CrustGuideModal from "@/components/menu/CrustGuideModal";
+import { useCart } from "@/context/CartContext";
 
 const CATEGORIES = [
   "All",
@@ -40,6 +41,7 @@ const CRUST_TYPES = [
 function MenuContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { addItem } = useCart();
 
   const initialSearch = searchParams.get("search") || "";
   const initialCategory = searchParams.get("category") || "All";
@@ -109,8 +111,13 @@ function MenuContent() {
     sortBy !== "newest";
 
   const handleAddToCart = (item: PizzaItem) => {
-    toast.success(`Added 1x ${item.itemName} to your cart!`, {
-      icon: "🍕",
+    addItem({
+      id: item.id,
+      name: item.itemName,
+      price: item.price,
+      image: item.image,
+      category: item.category,
+      vendorName: item.vendorName,
     });
   };
 

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import PizzaCard, { type PizzaItem } from "@/components/shared/PizzaCard";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { getChefSpecials } from "@/lib/api";
+import { useCart } from "@/context/CartContext";
 
 export const FALLBACK_SPECIALS: PizzaItem[] = [
   {
@@ -89,6 +90,7 @@ export const FALLBACK_SPECIALS: PizzaItem[] = [
 ];
 
 export default function ArtisanChefSpecials() {
+  const { addItem } = useCart();
   const [specials, setSpecials] = useState<PizzaItem[]>(FALLBACK_SPECIALS);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -112,8 +114,13 @@ export default function ArtisanChefSpecials() {
   }, []);
 
   const handleAddToCart = (item: PizzaItem) => {
-    toast.success(`Added 1x ${item.itemName} to your cart!`, {
-      icon: "🍕",
+    addItem({
+      id: item.id,
+      name: item.itemName,
+      price: item.price,
+      image: item.image,
+      category: item.category,
+      vendorName: item.vendorName,
     });
   };
 

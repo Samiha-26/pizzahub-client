@@ -24,12 +24,14 @@ import {
 import { useSession, signOut } from "@/lib/auth-client";
 import { getVendorStats } from "@/lib/api";
 import NotificationBell from "@/components/shared/NotificationBell";
+import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user as any;
+  const { totalCount, setIsCartOpen } = useCart();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -134,16 +136,20 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <NotificationBell />
-          <Link
-            href="/menu"
-            className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition"
-            title="Cart"
+          <button
+            type="button"
+            onClick={() => setIsCartOpen(true)}
+            className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition cursor-pointer"
+            title="Artisan Cart"
+            aria-label="Artisan Cart"
           >
             <ShoppingBag className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8E1616] text-white text-[10px] font-bold flex items-center justify-center">
-              0
-            </span>
-          </Link>
+            {totalCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8E1616] text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
+                {totalCount}
+              </span>
+            )}
+          </button>
 
           {!user ? (
             <div className="hidden sm:flex items-center gap-2">

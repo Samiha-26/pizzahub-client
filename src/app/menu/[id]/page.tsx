@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { getPizzaById, createOrder, type PizzaDetail } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
+import { useCart } from "@/context/CartContext";
 import PizzaReviews from "@/components/menu/PizzaReviews";
 
 const TIME_SLOTS = [
@@ -42,6 +43,7 @@ export default function PizzaDetailPage({
   const router = useRouter();
   const { data: session, isPending: isAuthPending } = useSession();
   const user = session?.user;
+  const { addItem, setIsCartOpen } = useCart();
 
   useEffect(() => {
     if (!isAuthPending && !user) {
@@ -396,14 +398,33 @@ export default function PizzaDetailPage({
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           </div>
 
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                addItem({
+                  id: pizza.id,
+                  name: pizza.name,
+                  price: pizza.price,
+                  image: pizza.images?.[0] || "",
+                  category: pizza.category,
+                  vendorName: pizza.vendorName,
+                  crust: pizza.crust,
+                });
+                setIsCartOpen(true);
+              }}
+              className="flex-1 py-4 rounded-2xl bg-white border-2 border-[#8E1616] text-[#8E1616] hover:bg-[#FAF7F2] font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Add to Cart</span>
+            </button>
             <button
               type="button"
               onClick={handleOpenOrderModal}
-              className="w-full py-4 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-extrabold text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/25 flex items-center justify-center gap-2 hover:-translate-y-0.5"
+              className="flex-1 py-4 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-extrabold text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/25 flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Fire This Pie (${pizza.price.toFixed(2)})</span>
+              <Zap className="w-4 h-4" />
+              <span>Order Now (${pizza.price.toFixed(2)})</span>
             </button>
           </div>
         </div>
