@@ -464,6 +464,7 @@ export interface AdminTransaction {
   id?: string;
   _id?: string;
   transactionId?: string;
+  sessionId?: string;
   vendorEmail: string;
   amount: number;
   currency: string;
