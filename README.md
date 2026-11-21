@@ -51,12 +51,38 @@ Frontend web application for **PizzaHub** — a production-grade artisanal pizza
 
 ## 🏆 Challenge Implementations
 
-1. **Advanced Search & Sorting**:
-   - Filter by search keyword (`?search=`), category (`?category=`), crust style (`?crust=`), and sort by price ascending (`?sort=price-asc`), price descending (`?sort=price-desc`), or rating (`?sort=rating-desc`).
-2. **Role-Based Route Protection**:
-   - Dedicated dashboard layouts with role verification on both client and server. Manual URL switching between Customer, Vendor, and Admin portals is strictly prevented.
-3. **Verified Webhook Payment Flow**:
-   - Vendor upgrades transition to Premium only upon verified Stripe webhook event confirmation, triggering gold crown status and unlimited slots.
+### 1. Advanced Search & Sorting
+- **API Query Parameters**:
+  - `search`: Keyword query searching pizza names, descriptions, and ingredients (`/api/menu?search=margherita`).
+  - `category`: Category filtering (`/api/menu?category=Wood-Fired`).
+  - `crust`: Crust fermentation filtering (`/api/menu?crust=Neapolitan%2048h`).
+  - `sort`: Dynamic sort parameter supporting `price-asc` (Price: Low to High), `price-desc` (Price: High to Low), `rating-desc` (Top Rated), and `newest` (Newest Creations).
+- **Client Implementation**: Real-time URL synchronization, debounce timer, active filter count badge, and zero-state reset action.
+
+### 2. JWT Verification Middleware Flow
+- **Middleware Flow (`middlewares/auth.js`)**:
+  - Validates `Authorization: Bearer <token>` on protected routes.
+  - Verifies token cryptographically using `jose` against Better Auth JWKS and symmetric secret fallback.
+  - Automatically rejects invalid, tampered, or expired tokens with `401 Unauthorized`.
+  - Verifies account status is not `blocked` and role matches allowed permission tier with `403 Forbidden`.
+
+### 3. Professional Visuals & Design System
+- **Artisan Color System**: `#8E1616` (wood-fire crimson), `#FAF7F2` (warm dough cream), `#190F0E` (charred crust dark).
+- **Typography**: Modern geometric typography using *Plus Jakarta Sans*.
+- **Interactive Feedback**: Framer Motion animations, slide-over cart drawer with quantity steppers, receipt modals, and toast alerts.
+
+---
+
+## 🌟 Optional Requirements Implemented
+
+1. **Reviews and Ratings for Menu Items**:
+   - Interactive star rating selection (1–5 stars) on each pizza detail page.
+   - Live breakdown of average score, star distribution percentages, and verified buyer reviews.
+2. **Order Status Timeline on Order Details**:
+   - 4-stage tracking timeline on `/orders` ("Order Placed", "Hearth Wood-Firing", "Thermal Transit", "Delivered Hot").
+   - Color-coded progress indicators, active step highlighting, and cancel actions for pending orders.
+3. **Interactive Cart System & Slide-Over Drawer**:
+   - Persistent `localStorage` cart with live badge count, stepper controls, sales tax, and automated free delivery threshold over $35.
 
 ---
 

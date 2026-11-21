@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
-import DashboardNav from "@/components/dashboard/DashboardNav";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import Footer from "@/components/shared/Footer";
 import ToastProvider from "@/components/shared/ToastProvider";
 import { CartProvider } from "@/context/CartContext";
@@ -32,8 +32,7 @@ export default function RootLayout({
           <CartDrawer />
           <div>
             <Navbar />
-            <DashboardNav />
-            {children}
+            <DashboardLayout>{children}</DashboardLayout>
           </div>
           <Footer />
         </CartProvider>
