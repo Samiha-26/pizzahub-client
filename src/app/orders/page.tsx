@@ -215,7 +215,7 @@ export default function MyOrdersPage() {
                               order.status === "delivered"
                                 ? "bg-emerald-100 text-emerald-800"
                                 : order.status === "on_the_way"
-                                ? "bg-blue-100 text-blue-800"
+                                ? "bg-[#190F0E]/10 text-[#190F0E] border border-[#190F0E]/20"
                                 : order.status === "preparing"
                                 ? "bg-amber-100 text-amber-800"
                                 : order.status === "cancelled"

@@ -222,7 +222,7 @@ export default function VendorDashboardPage() {
           <div className="bg-white p-5 rounded-3xl border border-[#EBE4D8] shadow-2xs space-y-2">
             <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B]">
               <span>Total Orders Fired</span>
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-[#190F0E]/10 text-[#190F0E] flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4" />
               </div>
             </div>
