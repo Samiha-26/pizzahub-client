@@ -18,8 +18,10 @@ import {
   ChevronDown,
   LayoutDashboard,
   UtensilsCrossed,
+  Crown,
 } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
+import { getVendorStats } from "@/lib/api";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -29,7 +31,18 @@ export default function Navbar() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isVendorPremium, setIsVendorPremium] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (user?.role === "vendor" && user?.email) {
+      getVendorStats(user.email)
+        .then((data) => {
+          setIsVendorPremium(data.subscriptionTier === "premium");
+        })
+        .catch(() => {});
+    }
+  }, [user?.role, user?.email, pathname]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -173,8 +186,15 @@ export default function Navbar() {
                   </span>
                 )}
                 {user.role === "vendor" && (
-                  <span className="px-1.5 py-0.5 bg-amber-100 text-amber-800 text-[9px] font-black rounded-md uppercase">
-                    Vendor
+                  <span
+                    className={`px-1.5 py-0.5 text-[9px] font-black rounded-md uppercase flex items-center gap-1 ${
+                      isVendorPremium
+                        ? "bg-amber-500 text-white shadow-2xs"
+                        : "bg-amber-100 text-amber-800"
+                    }`}
+                  >
+                    {isVendorPremium && <Crown className="w-2.5 h-2.5 fill-current" />}
+                    <span>{isVendorPremium ? "Premium" : "Vendor"}</span>
                   </span>
                 )}
                 <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
@@ -193,14 +213,15 @@ export default function Navbar() {
                           </span>
                         )}
                         {user.role === "vendor" && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800 uppercase">
-                            Pizzeria Partner
-                          </span>
-                        )}
-                        {user.subscriptionTier === "premium" && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/10 text-amber-700 flex items-center gap-1">
-                            <Sparkles className="w-3 h-3 text-amber-500" />
-                            <span>PREMIUM</span>
+                          <span
+                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase flex items-center gap-1 ${
+                              isVendorPremium
+                                ? "bg-amber-500 text-white shadow-2xs"
+                                : "bg-amber-100 text-amber-800"
+                            }`}
+                          >
+                            {isVendorPremium && <Crown className="w-3 h-3 fill-current" />}
+                            <span>{isVendorPremium ? "Premium Master Baker" : "Pizzeria Partner"}</span>
                           </span>
                         )}
                       </div>
