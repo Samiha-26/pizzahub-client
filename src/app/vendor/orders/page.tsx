@@ -346,7 +346,6 @@ export default function VendorOrdersPage() {
                           <span className="font-semibold text-[#190F0E]">
                             Customer: {order.customerName}
                           </span>
-                          <span>({order.customerEmail})</span>
                         </div>
                       </div>
                     </div>

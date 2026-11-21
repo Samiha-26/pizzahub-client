@@ -568,7 +568,7 @@ export default function VendorMenuPage() {
 
                   <div className="space-y-1">
                     <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
-                      Price ($ USD) *
+                      Price ($) *
                     </label>
                     <input
                       type="number"
@@ -632,7 +632,7 @@ export default function VendorMenuPage() {
 
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
-                    Ingredients (comma separated)
+                    Ingredients
                   </label>
                   <textarea
                     rows={2}
@@ -657,7 +657,7 @@ export default function VendorMenuPage() {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
-                      Prep Time (min)
+                      Prep Time
                     </label>
                     <input
                       type="number"
@@ -671,7 +671,7 @@ export default function VendorMenuPage() {
 
                   <div className="space-y-1">
                     <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
-                      Calories (kcal)
+                      Calories
                     </label>
                     <input
                       type="number"

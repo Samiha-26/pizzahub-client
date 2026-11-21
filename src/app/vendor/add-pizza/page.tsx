@@ -337,7 +337,7 @@ export default function AddPizzaPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-3">
               <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
-                Pizza Photo (ImgBB CDN Upload) *
+                Pizza Photo *
               </label>
 
               <div className="flex items-center gap-2 border-b border-[#EBE4D8] pb-2">
@@ -386,7 +386,7 @@ export default function AddPizzaPage() {
                       <>
                         <Loader2 className="w-8 h-8 animate-spin text-[#8E1616]" />
                         <span className="text-xs font-bold text-[#8E1616]">
-                          Uploading photo to ImgBB CDN...
+                          Uploading photo...
                         </span>
                       </>
                     ) : (
@@ -398,7 +398,7 @@ export default function AddPizzaPage() {
                           Click to select pizza image from your device
                         </span>
                         <span className="text-[11px] text-[#6E5F5B]">
-                          PNG, JPG, or WEBP up to 5MB (automatically hosted on ImgBB)
+                          PNG, JPG, or WEBP up to 5MB
                         </span>
                       </>
                     )}
@@ -414,11 +414,11 @@ export default function AddPizzaPage() {
                       setImageUrl(e.target.value);
                       setImagePreview(e.target.value);
                     }}
-                    placeholder="https://images.unsplash.com/photo-... or hosted link"
+                    placeholder="https://images.unsplash.com/photo-..."
                     className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
                   />
                   <p className="text-[11px] text-[#6E5F5B]">
-                    Paste an HTTPS image link from Unsplash, ImgBB, or your CDN.
+                    Paste a direct image link.
                   </p>
                 </div>
               )}
@@ -485,7 +485,7 @@ export default function AddPizzaPage() {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
-                  Price ($ USD) *
+                  Price ($) *
                 </label>
                 <input
                   type="number"
@@ -551,7 +551,7 @@ export default function AddPizzaPage() {
 
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
-                Ingredients (comma separated) *
+                Ingredients *
               </label>
               <textarea
                 rows={2}
@@ -578,7 +578,7 @@ export default function AddPizzaPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
-                  Bake Prep Time (min)
+                  Bake Prep Time
                 </label>
                 <input
                   type="number"
@@ -592,7 +592,7 @@ export default function AddPizzaPage() {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
-                  Calories (kcal)
+                  Calories
                 </label>
                 <input
                   type="number"
