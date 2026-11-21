@@ -21,9 +21,11 @@ import {
   ChevronRight,
   ArrowRight,
   Store,
+  FileText,
 } from "lucide-react";
 import { getMyOrders, cancelOrder, type OrderRecord } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
+import OrderInvoiceModal from "@/components/orders/OrderInvoiceModal";
 
 const TIMELINE_STEPS = [
   { key: "Order Placed", label: "Order Placed", desc: "Received & logged", icon: CheckCircle2 },
@@ -40,6 +42,7 @@ export default function MyOrdersPage() {
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState<OrderRecord | null>(null);
 
   const fetchOrders = useCallback(async () => {
     if (!user?.email) return;
@@ -238,7 +241,15 @@ export default function MyOrdersPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <button
+                        onClick={() => setSelectedInvoiceOrder(order)}
+                        className="px-3 py-1.5 rounded-xl border border-[#EBE4D8] bg-white hover:bg-[#FAF7F2] text-[#190F0E] text-[11px] font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                      >
+                        <FileText className="w-3.5 h-3.5 text-[#8E1616]" />
+                        <span>Receipt</span>
+                      </button>
+
                       {isPending && (
                         <button
                           disabled={cancellingId === order._id}
@@ -390,6 +401,11 @@ export default function MyOrdersPage() {
           </div>
         )}
       </div>
+
+      <OrderInvoiceModal
+        order={selectedInvoiceOrder}
+        onClose={() => setSelectedInvoiceOrder(null)}
+      />
     </main>
   );
 }

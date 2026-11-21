@@ -172,6 +172,7 @@ export interface OrderItemPayload {
   category: string;
   vendorId?: string;
   vendorName: string;
+  location?: string;
   deliveryAddress: string;
   deliverySchedule: string;
   bakerNote?: string;
@@ -191,6 +192,7 @@ export interface OrderRecord {
   category: string;
   vendorId?: string;
   vendorName: string;
+  location?: string;
   deliveryAddress: string;
   deliverySchedule: string;
   bakerNote?: string;
