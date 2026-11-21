@@ -8,17 +8,6 @@ Client repository: https://github.com/Samiha-26/pizzahub-client
 
 Server repository: https://github.com/Samiha-26/pizzahub-server
 
-### Demo accounts
-
-| Role | Email | Password | Access scope |
-| :--- | :--- | :--- | :--- |
-| **Admin** | `admin@pizzahub.com` | `AdminPassword123!` | Full admin console, user moderation, recipe approvals, financial ledger |
-| **Vendor (Premium)** | `ahnaf@gmail.com` | `VendorPassword123!` | Kitchen portal, unlimited recipe slots, featured placement, live orders |
-| **Vendor (Free)** | `adiba@gmail.com` | `VendorPassword123!` | Standard kitchen portal (capped at 3 active recipes until upgrade) |
-| **Customer** | `sam@gmail.com` | `CustomerPassword123!` | Full ordering, persistent cart, hearth scheduling, ticket tracking |
-
----
-
 ## Features
 
 - **Artisan Catalog & Advanced Filtering**: Browse approved wood-fired pizzas with full-text keyword search across names, ingredients, and descriptions. Filter by culinary category (Wood-Fired, Classic Italian, White Base, Spicy & Fiery, Vegetarian & Plant) and crust fermentation style (Neapolitan 48h, Roman Thin Crust, Detroit Pan, Gluten-Free Cauliflower, Sourdough Stuffed).

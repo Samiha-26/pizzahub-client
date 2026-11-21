@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Bike, Clock, MapPin, ChevronDown, Check } from "lucide-react";
+import { Bike, ChevronDown, Clock, MapPin, Check } from "lucide-react";
 
-const DELIVERY_ZONES = [
-  { area: "Brooklyn Heights, NY", eta: "25–35 mins", zone: "Brooklyn" },
-  { area: "Downtown Manhattan, NY", eta: "20–30 mins", zone: "Downtown" },
-  { area: "Williamsburg, Brooklyn, NY", eta: "25–35 mins", zone: "Brooklyn" },
-  { area: "Little Italy, Manhattan, NY", eta: "18–28 mins", zone: "Little Italy" },
-  { area: "Midtown Queens, NY", eta: "30–40 mins", zone: "Queens" },
+export const DELIVERY_ZONES = [
+  { area: "Little Italy, Manhattan, NY", eta: "15–25 mins", zone: "Downtown" },
+  { area: "Williamsburg, Brooklyn, NY", eta: "20–30 mins", zone: "Brooklyn" },
+  { area: "North Beach, San Francisco, CA", eta: "20–30 mins", zone: "North Beach" },
+  { area: "Greenwich Village, Manhattan, NY", eta: "15–25 mins", zone: "Village" },
+  { area: "DUMBO, Brooklyn, NY", eta: "25–35 mins", zone: "Waterfront" },
 ];
 
 export default function DeliveryBar() {
@@ -16,7 +16,6 @@ export default function DeliveryBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [customAddress, setCustomAddress] = useState("");
 
-  // Load saved location on mount
   useEffect(() => {
     const savedArea = localStorage.getItem("pizzahub_delivery_area");
     const savedEta = localStorage.getItem("pizzahub_delivery_eta");
@@ -54,10 +53,7 @@ export default function DeliveryBar() {
 
   return (
     <div className="relative">
-      {/* Interactive Delivery Bar */}
       <div className="bg-[#FFF4E5] border border-[#FDE2C4] px-4 py-2.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs text-[#7A4100] shadow-xs transition hover:border-[#D97706]/50">
-        
-        {/* Clickable Location Selector */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -78,17 +74,14 @@ export default function DeliveryBar() {
           </div>
         </button>
 
-        {/* Dynamic Estimated Delivery Time Pill */}
         <div className="flex items-center gap-1.5 font-bold bg-white px-3 py-1 rounded-full text-[11px] shadow-xs border border-[#FDE2C4] text-[#190F0E]">
-          <Clock className="w-3 h-3 text-[#D97706]" />
+          <Clock className="w-3.5 h-3.5 text-[#D97706]" />
           <span>{selectedZone.eta}</span>
         </div>
       </div>
 
-      {/* Dropdown Popover to Change Delivery Location */}
       {isOpen && (
         <>
-          {/* Backdrop overlay */}
           <div
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
@@ -108,7 +101,6 @@ export default function DeliveryBar() {
               </button>
             </div>
 
-            {/* Popular Area Options */}
             <div className="space-y-1.5">
               <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
                 Popular Verified Kitchen Zones
@@ -135,7 +127,6 @@ export default function DeliveryBar() {
               ))}
             </div>
 
-            {/* Custom Street Address Input */}
             <form onSubmit={handleCustomSubmit} className="pt-2 border-t border-[#EFE7DE] space-y-2">
               <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider block">
                 Or Type Custom Street Address
@@ -150,7 +141,7 @@ export default function DeliveryBar() {
                 />
                 <button
                   type="submit"
-                  className="px-3.5 py-1.5 bg-[#8E1616] text-white rounded-xl font-bold text-xs hover:bg-[#751111] transition shadow-xs"
+                  className="px-3.5 py-1.5 bg-[#8E1616] text-white text-xs font-bold rounded-xl hover:bg-[#721111] transition shadow-xs"
                 >
                   Save
                 </button>

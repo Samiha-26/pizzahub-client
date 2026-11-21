@@ -29,7 +29,6 @@ export default function CategoryBar() {
 
   return (
     <section className="space-y-3">
-      {/* Header: Crust & Styles with 6 Curated Lines link (Exact SS Layout) */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-base">🍕</span>
@@ -46,7 +45,6 @@ export default function CategoryBar() {
         </Link>
       </div>
 
-      {/* Horizontal Scrollable Pill Strip (Matching Screenshot #1) */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs scrollbar-none">
         {CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;

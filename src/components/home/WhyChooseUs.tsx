@@ -1,32 +1,31 @@
-import React from "react";
-import { Flame, Bike, ShieldCheck } from "lucide-react";
+"use client";
 
-export const VALUE_PROPOSITIONS = [
+import React from "react";
+import { Flame, Clock, Award, CheckCircle2 } from "lucide-react";
+
+const VALUE_PROPOSITIONS = [
   {
-    id: "stone-baked",
-    title: "450°C Stone-Baked Authenticity",
-    description:
-      "Every approved pizzeria deploys authentic refractory stone ovens reaching 450°C for signature crispy-airy blister spots in under 90 seconds.",
+    id: "wood-fired",
+    title: "100% Wood-Fired",
+    subtitle: "Stone hearth ovens fired with cured oak and hickory logs for authentic blistered crusts.",
     icon: Flame,
-    bgClass: "bg-[#FFF4E5]",
-    iconColor: "text-[#D97706]",
-  },
-  {
-    id: "fast-track",
-    title: "30-Min Fast-Track Dispatch",
-    description:
-      "Dedicated thermal-insulated heated transport bags ensure your pizza arrives piping hot, preserving molecular crumb elasticity without sogginess.",
-    icon: Bike,
-    bgClass: "bg-[#FEE2E2]",
+    bgClass: "bg-[#8E1616]/10",
     iconColor: "text-[#8E1616]",
   },
   {
-    id: "satisfaction",
-    title: "Guaranteed Fresh Ingredients",
-    description:
-      "Zero synthetic additives, 100% true buffalo mozzarella, seasonal D.O.P. tomatoes, and a full satisfaction replacement pledge on orders.",
-    icon: ShieldCheck,
-    bgClass: "bg-emerald-100",
+    id: "dough-age",
+    title: "48-Hour Cold Fermentation",
+    subtitle: "Natural sourdough starter slow-fermented for maximum flavor, light airy structure, and easy digestion.",
+    icon: Clock,
+    bgClass: "bg-amber-500/10",
+    iconColor: "text-amber-700",
+  },
+  {
+    id: "artisans",
+    title: "Local Certified Pizzaiolos",
+    subtitle: "Handcrafted exclusively by independently verified master bakers across your neighborhood.",
+    icon: Award,
+    bgClass: "bg-emerald-500/10",
     iconColor: "text-emerald-700",
   },
 ];
@@ -34,7 +33,6 @@ export const VALUE_PROPOSITIONS = [
 export default function WhyChooseUs() {
   return (
     <section id="why-us" className="space-y-6 pt-4">
-      {/* Section Eyebrow & Headers */}
       <div>
         <span className="text-[10px] font-black uppercase tracking-widest text-[#8E1616]">
           TASTE & INTEGRITY GUARANTEE
@@ -47,7 +45,6 @@ export default function WhyChooseUs() {
         </p>
       </div>
 
-      {/* 3 Pillars Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {VALUE_PROPOSITIONS.map((prop) => {
           const IconComponent = prop.icon;
@@ -61,11 +58,11 @@ export default function WhyChooseUs() {
               >
                 <IconComponent className={`w-5 h-5 ${prop.iconColor}`} />
               </div>
-              <h3 className="font-extrabold text-sm sm:text-base text-[#190F0E] leading-snug">
+              <h3 className="font-extrabold text-sm text-[#190F0E]">
                 {prop.title}
               </h3>
               <p className="text-xs text-[#6E5F5B] leading-relaxed">
-                {prop.description}
+                {prop.subtitle}
               </p>
             </div>
           );
