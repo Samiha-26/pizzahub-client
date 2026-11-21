@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { getVendorStats } from "@/lib/api";
+import NotificationBell from "@/components/shared/NotificationBell";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -132,6 +133,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <NotificationBell />
           <Link
             href="/menu"
             className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition"
