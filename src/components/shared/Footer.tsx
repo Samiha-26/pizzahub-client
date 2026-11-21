@@ -29,11 +29,11 @@ export default function Footer() {
             <div className="space-y-2 text-xs text-[#6E5F5B] pt-1">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#8E1616] shrink-0 mt-0.5" />
-                <span>Gulshan-2 • Banani 11 • Dhanmondi Lakefront</span>
+                <span>Little Italy, NY • Williamsburg, NY • North Beach, CA</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#8E1616] shrink-0" />
-                <span>+880 1712-PIZZAHUB (9 AM - 2 AM)</span>
+                <span>+1 (800) PIZZA-HUB (9 AM - 2 AM EST)</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#8E1616] shrink-0" />

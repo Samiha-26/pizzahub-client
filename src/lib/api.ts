@@ -2,6 +2,14 @@ import { PizzaItem } from "@/components/shared/PizzaCard";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+function formatArtisanLocation(addr?: string): string {
+  if (!addr) return "Little Italy, Manhattan, NY";
+  if (/Banani/i.test(addr)) return "Williamsburg, Brooklyn, NY";
+  if (/Dhanmondi/i.test(addr)) return "North Beach, San Francisco, CA";
+  if (/Gulshan|Dhaka/i.test(addr)) return "Little Italy, Manhattan, NY";
+  return addr;
+}
+
 export function mapMongoPizzaToItem(doc: any): PizzaItem {
   const primaryBadge = Array.isArray(doc.badges) && doc.badges.length > 0 ? doc.badges[0] : doc.badge;
   const isTop = typeof primaryBadge === "string" && primaryBadge.includes("TOP");
@@ -12,7 +20,7 @@ export function mapMongoPizzaToItem(doc: any): PizzaItem {
     category: doc.category || "WOOD-FIRED",
     description: doc.description || "",
     price: Number(doc.price) || 0,
-    location: doc.vendorAddress || doc.location || "Artisan Hearth, Dhaka",
+    location: formatArtisanLocation(doc.vendorAddress || doc.location),
     vendorName: doc.vendorName || "Master Pizzaiolo",
     image: doc.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80",
     badge: primaryBadge || "IN PREMIUM WOOD-FIRE",
@@ -144,7 +152,7 @@ export async function getPizzaById(id: string): Promise<PizzaDetail | null> {
       vendorId: doc.vendorId,
       vendorName: doc.vendorName || "Artisan Hearth Master",
       vendorEmail: doc.vendorEmail || "orders@pizzahub.com",
-      vendorAddress: doc.vendorAddress || "Gulshan-2 Culinary Circle, Dhaka",
+      vendorAddress: formatArtisanLocation(doc.vendorAddress),
     };
   } catch {
     return null;

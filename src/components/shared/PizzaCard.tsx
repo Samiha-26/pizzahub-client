@@ -85,11 +85,13 @@ export default function PizzaCard({ item, onAddToCart }: PizzaCardProps) {
             {item.description}
           </p>
 
-          {/* Vendor Line */}
-          <div className="flex items-center gap-1.5 text-[11px] text-[#6E5F5B] pt-1">
-            <Store className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-            <span className="font-semibold text-[#190F0E]">{item.vendorName}</span>
-            <span>• {item.location}</span>
+          {/* Vendor / Restaurant Shop Line (Foodpanda style) */}
+          <div className="flex items-center gap-1.5 text-xs pt-0.5">
+            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[#FAF7F2] border border-[#EFE7DE] text-[11px] font-bold text-[#190F0E] truncate max-w-[65%]">
+              <Store className="w-3 h-3 text-[#8E1616] shrink-0" />
+              <span className="truncate">{item.vendorName}</span>
+            </div>
+            <span className="text-[11px] text-[#6E5F5B] truncate max-w-[35%]">• {item.location}</span>
           </div>
         </div>
 
