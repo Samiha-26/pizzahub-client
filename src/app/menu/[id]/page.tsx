@@ -18,6 +18,7 @@ import {
   Plus,
   Minus,
   Zap,
+  Tag,
 } from "lucide-react";
 import { getPizzaById, createOrder, type PizzaDetail } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
@@ -54,6 +55,10 @@ export default function PizzaDetailPage({
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(TIME_SLOTS[2]);
   const [bakerNote, setBakerNote] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -99,6 +104,44 @@ export default function PizzaDetailPage({
     setIsOrderModalOpen(true);
   };
 
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    if (!pizza) return;
+    setIsValidatingCoupon(true);
+    const subtotal = pizza.price * quantity;
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    try {
+      const res = await fetch(`${apiBase}/api/coupons/validate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: couponCode.trim(),
+          orderTotal: subtotal,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.valid) {
+        toast.error(data.error || "Invalid coupon code");
+        return;
+      }
+      setAppliedCoupon(data.code);
+      setDiscountAmount(data.discountAmount);
+      toast.success(`Coupon ${data.code} applied! Saved $${data.discountAmount.toFixed(2)}`, {
+        icon: "🎟️",
+      });
+    } catch {
+      toast.error("Failed to validate coupon");
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setDiscountAmount(0);
+    setCouponCode("");
+  };
+
   const handleConfirmOrder = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -131,7 +174,7 @@ export default function PizzaDetailPage({
         pizzaImage: pizza.image,
         price: pizza.price,
         quantity,
-        totalPrice: Number((pizza.price * quantity).toFixed(2)),
+        totalPrice: Number(Math.max(0, pizza.price * quantity - discountAmount).toFixed(2)),
         crust: pizza.crust,
         category: pizza.category,
         vendorId: pizza.vendorId || "vendor_artisan_01",
@@ -186,7 +229,9 @@ export default function PizzaDetailPage({
 
   const galleryImages =
     pizza.images && pizza.images.length > 0 ? pizza.images : [pizza.image];
-  const totalPrice = (pizza.price * quantity).toFixed(2);
+  const subtotal = pizza.price * quantity;
+  const finalPrice = Math.max(0, subtotal - discountAmount);
+  const totalPrice = finalPrice.toFixed(2);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-8">
@@ -526,6 +571,53 @@ export default function PizzaDetailPage({
                   placeholder="e.g. Extra blistered crust, please call on arrival, don't ring bell"
                   className="w-full px-3.5 py-2 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white resize-none"
                 />
+              </div>
+
+              <div className="space-y-1.5 pt-1">
+                <label className="text-xs font-bold text-[#190F0E] flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Tag className="w-3.5 h-3.5 text-[#8E1616]" />
+                    <span>Promotional Voucher</span>
+                  </span>
+                  {appliedCoupon && (
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                      Saved ${discountAmount.toFixed(2)} with {appliedCoupon}
+                    </span>
+                  )}
+                </label>
+
+                {!appliedCoupon ? (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      placeholder="e.g. WOODFIRED10, ARTISAN5"
+                      className="flex-1 px-3.5 py-2 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] uppercase focus:outline-none focus:border-[#8E1616] transition bg-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      disabled={isValidatingCoupon || !couponCode.trim()}
+                      className="px-4 py-2 rounded-xl bg-[#190F0E] hover:bg-black text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer"
+                    >
+                      {isValidatingCoupon ? "Checking..." : "Apply"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs">
+                    <span className="font-bold text-emerald-800">
+                      Voucher Applied: {appliedCoupon}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-[11px] text-red-600 hover:underline font-bold cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="pt-2 border-t border-[#EFE7DE] flex items-center justify-between">
