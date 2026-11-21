@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { getPizzaById, createOrder, type PizzaDetail } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
+import PizzaReviews from "@/components/menu/PizzaReviews";
 
 const TIME_SLOTS = [
   "12:30 PM - 01:00 PM",
@@ -341,6 +342,8 @@ export default function PizzaDetailPage({
           </div>
         </div>
       </div>
+
+      <PizzaReviews pizzaId={unwrappedParams.id} />
 
       {isOrderModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
