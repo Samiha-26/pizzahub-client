@@ -242,3 +242,121 @@ export async function cancelOrder(id: string) {
 
   return await res.json();
 }
+
+export interface VendorStats {
+  subscriptionTier: "free" | "premium";
+  itemCount: number;
+  itemLimit: number | null;
+  canAddMore: boolean;
+  totalOrders: number;
+  pendingOrders: number;
+  totalRevenue: number;
+}
+
+export interface VendorMenuResponse {
+  items: PizzaDetail[];
+  subscriptionTier: "free" | "premium";
+  itemCount: number;
+  itemLimit: number | null;
+  canAddMore: boolean;
+}
+
+export async function getVendorStats(email: string): Promise<VendorStats> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/vendor/stats/${encodeURIComponent(email)}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch vendor statistics");
+    return await res.json();
+  } catch {
+    return {
+      subscriptionTier: "free",
+      itemCount: 0,
+      itemLimit: 3,
+      canAddMore: true,
+      totalOrders: 0,
+      pendingOrders: 0,
+      totalRevenue: 0,
+    };
+  }
+}
+
+export async function getVendorMenu(email: string): Promise<VendorMenuResponse> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/vendor/menu/${encodeURIComponent(email)}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch vendor menu");
+    return await res.json();
+  } catch {
+    return {
+      items: [],
+      subscriptionTier: "free",
+      itemCount: 0,
+      itemLimit: 3,
+      canAddMore: true,
+    };
+  }
+}
+
+export async function createVendorPizza(payload: Record<string, unknown>) {
+  const res = await fetch(`${API_BASE_URL}/api/vendor/menu`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to create pizza item");
+  }
+  return data;
+}
+
+export async function updateVendorPizza(id: string, payload: Record<string, unknown>) {
+  const res = await fetch(`${API_BASE_URL}/api/vendor/menu/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to update pizza item");
+  }
+  return data;
+}
+
+export async function deleteVendorPizza(id: string) {
+  const res = await fetch(`${API_BASE_URL}/api/vendor/menu/${id}`, {
+    method: "DELETE",
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to delete pizza item");
+  }
+  return data;
+}
+
+export async function getVendorOrders(email: string): Promise<OrderRecord[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/vendor/orders/${encodeURIComponent(email)}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch kitchen orders");
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
+export async function updateOrderStatus(id: string, status: string) {
+  const res = await fetch(`${API_BASE_URL}/api/vendor/orders/${id}/status`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to update order status");
+  }
+  return data;
+}
