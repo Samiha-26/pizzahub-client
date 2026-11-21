@@ -72,7 +72,7 @@ export default function AdminDashboardPage() {
             The platform operations console is restricted to administrators. Please sign in with an administrator account to continue.
           </p>
           <Link
-            href="/sign-in"
+            href="/signin"
             className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full bg-[#190F0E] text-white font-bold text-sm hover:bg-black transition-colors"
           >
             Sign In with Admin Account

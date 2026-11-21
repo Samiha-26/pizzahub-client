@@ -126,7 +126,7 @@ function UpgradeContent() {
     );
   }
 
-  if (!user) {
+  if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
       <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4 my-16">
         <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-2xl font-black">
@@ -137,7 +137,7 @@ function UpgradeContent() {
           Please sign in with your vendor account to view your kitchen tier and upgrade plans.
         </p>
         <Link
-          href="/sign-in"
+          href="/signin"
           className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full bg-[#8E1616] text-white font-bold text-sm hover:bg-[#721212] transition-colors"
         >
           Sign In as Vendor

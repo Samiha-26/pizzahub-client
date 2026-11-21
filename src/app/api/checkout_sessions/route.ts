@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes("placeholder")) {
       const simulatedSessionId = `cs_simulated_${Date.now()}`
-      const returnUrl = `${origin}/vendor/upgrade?success=true&session_id=${simulatedSessionId}`
+      const returnUrl = `${origin}/payment/success?session_id=${simulatedSessionId}`
       
       const acceptHeader = headersList.get("accept") || ""
       if (acceptHeader.includes("text/html")) {
@@ -51,8 +51,8 @@ export async function POST(req: Request) {
         vendorEmail,
         tier: "premium",
       },
-      success_url: `${origin}/vendor/upgrade?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/vendor/upgrade?cancelled=true`,
+      success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/payment/cancel`,
     })
 
     const acceptHeader = headersList.get("accept") || ""

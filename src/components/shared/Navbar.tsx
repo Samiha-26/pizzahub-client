@@ -79,7 +79,7 @@ export default function Navbar() {
     if (!user) return "/signin";
     if (user.role === "admin") return "/admin/dashboard";
     if (user.role === "vendor") return "/vendor/dashboard";
-    return "/orders";
+    return "/dashboard";
   };
 
   return (

@@ -53,7 +53,20 @@ export default function SignInPage() {
         icon: "🍕",
       });
 
-      router.push("/");
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectParam = searchParams.get("redirect");
+
+      const sessionRes = await authClient.getSession();
+      const userRole = (sessionRes?.data?.user as any)?.role;
+
+      let destination = redirectParam;
+      if (!destination) {
+        if (userRole === "admin") destination = "/admin/dashboard";
+        else if (userRole === "vendor") destination = "/vendor/dashboard";
+        else destination = "/dashboard";
+      }
+
+      router.push(destination || "/");
       router.refresh();
     } catch (err: any) {
       setErrorMessage(err.message || "An unexpected error occurred during sign-in.");

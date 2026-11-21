@@ -73,7 +73,7 @@ export default function VendorDashboardPage() {
     );
   }
 
-  if (!user) {
+  if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
       <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
         <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4">
@@ -82,13 +82,13 @@ export default function VendorDashboardPage() {
           </div>
           <h1 className="text-xl font-black text-[#190F0E]">Vendor Kitchen Portal</h1>
           <p className="text-xs text-[#6E5F5B] leading-relaxed">
-            Please sign in with your vendor account to manage your stone-hearth menu, track kitchen queue dispatches, and upgrade subscription limits.
+            This dashboard is restricted to restaurant vendors and pizzerias. Please sign in with a verified vendor account.
           </p>
           <button
             onClick={() => router.push("/signin?redirect=/vendor/dashboard")}
-            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm"
+            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm cursor-pointer"
           >
-            Sign In to Kitchen Portal
+            Sign In with Vendor Account
           </button>
         </div>
       </main>

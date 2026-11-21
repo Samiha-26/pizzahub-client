@@ -120,7 +120,7 @@ export default function AdminUsersPage() {
             User governance is restricted to platform administrators. Please sign in with an admin account.
           </p>
           <Link
-            href="/sign-in"
+            href="/signin"
             className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full bg-[#190F0E] text-white font-bold text-sm hover:bg-black transition-colors"
           >
             Sign In with Admin Account
@@ -211,7 +211,7 @@ export default function AdminUsersPage() {
           </div>
 
           <div className="overflow-x-auto rounded-2xl border border-[#EBE4D8]">
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full text-left border-collapse text-xs min-w-[700px]">
               <thead>
                 <tr className="bg-[#FAF7F2] border-b border-[#EBE4D8] text-[#6E5F5B] uppercase tracking-wider text-[10px] font-black">
                   <th className="py-3.5 px-4">User</th>

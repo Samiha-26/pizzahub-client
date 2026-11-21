@@ -40,8 +40,14 @@ export default function PizzaDetailPage({
 }) {
   const unwrappedParams = use(params);
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, isPending: isAuthPending } = useSession();
   const user = session?.user;
+
+  useEffect(() => {
+    if (!isAuthPending && !user) {
+      router.push(`/signin?redirect=/menu/${unwrappedParams.id}`);
+    }
+  }, [isAuthPending, user, unwrappedParams.id, router]);
 
   const [pizza, setPizza] = useState<PizzaDetail | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -92,6 +98,21 @@ export default function PizzaDetailPage({
       toast.error("Please sign in to place your artisan order", { icon: "🔒" });
       router.push(`/signin?redirect=/menu/${unwrappedParams.id}`);
       return;
+    }
+
+    if ((user as any).role === "admin") {
+      toast.error("Administrators cannot place customer orders", { icon: "🛡️" });
+      return;
+    }
+
+    if (pizza && (user as any).role === "vendor") {
+      if (
+        (pizza.vendorEmail && user.email?.toLowerCase() === pizza.vendorEmail.toLowerCase()) ||
+        (pizza.vendorId && (user as any).id === pizza.vendorId)
+      ) {
+        toast.error("Vendors cannot order their own menu items", { icon: "👨‍🍳" });
+        return;
+      }
     }
 
     if (!deliveryAddress && typeof window !== "undefined") {

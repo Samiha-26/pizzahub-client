@@ -216,7 +216,7 @@ export default function VendorMenuPage() {
     );
   }
 
-  if (!user) {
+  if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
       <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
         <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4">
@@ -411,7 +411,7 @@ export default function VendorMenuPage() {
         ) : (
           <div className="bg-white rounded-3xl border border-[#EBE4D8] overflow-hidden shadow-2xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
+              <table className="w-full text-left text-xs border-collapse min-w-[700px]">
                 <thead>
                   <tr className="border-b border-[#EBE4D8] bg-[#FAF7F2]/80 text-[#6E5F5B] uppercase tracking-wider font-extrabold text-[10px]">
                     <th className="py-4 px-4 sm:px-6">Artisan Creation</th>

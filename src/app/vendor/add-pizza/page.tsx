@@ -252,7 +252,7 @@ export default function AddPizzaPage() {
     );
   }
 
-  if (!user) {
+  if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
       <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
         <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4">
