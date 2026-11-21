@@ -397,3 +397,30 @@ export async function updateOrderStatus(id: string, status: string) {
   }
   return data;
 }
+
+export async function createCheckoutSession(vendorEmail: string): Promise<{ url: string; sessionId?: string }> {
+  const res = await fetch("/api/checkout_sessions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vendorEmail }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to initialize checkout session");
+  }
+  return data;
+}
+
+export async function verifyVendorUpgradeSession(sessionId: string, vendorEmail: string) {
+  const res = await fetch(`${API_BASE_URL}/api/vendor/verify-session`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sessionId, vendorEmail }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to verify upgrade session");
+  }
+  return data;
+}
+
