@@ -7,6 +7,7 @@ import PizzaCard, { type PizzaItem } from "@/components/shared/PizzaCard";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { getChefSpecials } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
+import { ALL_PIZZAS_CATALOG } from "@/data/catalogPizzas";
 
 export const FALLBACK_SPECIALS: PizzaItem[] = [
   {
@@ -91,7 +92,7 @@ export const FALLBACK_SPECIALS: PizzaItem[] = [
 
 export default function ArtisanChefSpecials() {
   const { addItem } = useCart();
-  const [specials, setSpecials] = useState<PizzaItem[]>(FALLBACK_SPECIALS);
+  const [specials, setSpecials] = useState<PizzaItem[]>(() => ALL_PIZZAS_CATALOG.slice(0, 6));
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

@@ -147,23 +147,23 @@ export default function CustomerDashboardPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           <Link
             href="/orders"
-            className="bg-white p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-40 cursor-pointer"
+            className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
           >
             <div>
-              <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mb-3 group-hover:bg-[#8E1616] group-hover:text-white transition">
+              <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mb-3 group-hover:bg-[#8E1616] group-hover:text-white transition shrink-0">
                 <Truck className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition">
+              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
                 My Orders &amp; Live Timeline
               </h3>
-              <p className="text-xs text-[#6E5F5B] mt-1">
+              <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
                 Track status across hearth wood-firing, delivery courier, and print invoices.
               </p>
             </div>
-            <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616]">
+            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
               <span>Open Orders</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -171,20 +171,20 @@ export default function CustomerDashboardPage() {
 
           <Link
             href="/profile"
-            className="bg-white p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-40 cursor-pointer"
+            className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
           >
             <div>
-              <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition shrink-0">
                 <User className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition">
+              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
                 Profile &amp; Delivery Settings
               </h3>
-              <p className="text-xs text-[#6E5F5B] mt-1">
+              <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
                 Manage your saved delivery address, telephone contact, and delivery notes.
               </p>
             </div>
-            <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616]">
+            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
               <span>Edit Profile</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -192,20 +192,20 @@ export default function CustomerDashboardPage() {
 
           <Link
             href="/menu"
-            className="bg-white p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-40 cursor-pointer"
+            className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer sm:col-span-2 xl:col-span-1"
           >
             <div>
-              <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition shrink-0">
                 <Flame className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition">
+              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
                 Order Another Artisan Pie
               </h3>
-              <p className="text-xs text-[#6E5F5B] mt-1">
+              <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
                 Browse 72h cold fermented sourdough recipes and wood-fired chef specials.
               </p>
             </div>
-            <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616]">
+            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
               <span>Browse Catalog</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>

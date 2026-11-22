@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   User,
   Mail,
@@ -20,9 +21,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { useSession } from "@/lib/auth-client";
+import { useSession, authClient } from "@/lib/auth-client";
+import { resolveApiBaseUrl } from "@/lib/api";
 
 export default function ProfilePage() {
+  const router = useRouter();
   const { data: session, isPending } = useSession();
   const user = session?.user as any;
 
@@ -36,14 +39,16 @@ export default function ProfilePage() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     if (user) {
-      setName(user.name || "");
-      setAvatarUrl(user.image || "");
+      if (user.name) setName(user.name);
+      if (user.image) setAvatarUrl(user.image);
 
       const savedData = localStorage.getItem(`pizzahub_profile_${user.email}`);
       if (savedData) {
         try {
           const parsed = JSON.parse(savedData);
+          if (parsed.name && !user.name) setName(parsed.name);
           if (parsed.phone) setPhone(parsed.phone);
           if (parsed.street) setStreet(parsed.street);
           if (parsed.cityArea) setCityArea(parsed.cityArea);
@@ -56,22 +61,41 @@ export default function ProfilePage() {
           setCityArea(savedArea);
         }
       }
+
+      fetch("/api/profile")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (!isMounted || !data) return;
+          if (data.name) setName(data.name);
+          if (data.image) setAvatarUrl(data.image);
+          if (data.phone) setPhone(data.phone);
+          if (data.street) setStreet(data.street);
+          if (data.cityArea) setCityArea(data.cityArea);
+          if (data.postalCode) setPostalCode(data.postalCode);
+          if (data.instructions) setInstructions(data.instructions);
+        })
+        .catch(() => {});
     }
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
 
     setIsSaving(true);
+    const trimmedName = name.trim();
     const profilePayload = {
-      name,
-      phone,
-      avatarUrl,
-      street,
-      cityArea,
-      postalCode,
-      instructions,
+      name: trimmedName,
+      phone: phone.trim(),
+      avatarUrl: avatarUrl.trim(),
+      street: street.trim(),
+      cityArea: cityArea.trim(),
+      postalCode: postalCode.trim(),
+      instructions: instructions.trim(),
+      email: user.email,
     };
 
     localStorage.setItem(`pizzahub_profile_${user.email}`, JSON.stringify(profilePayload));
@@ -81,12 +105,43 @@ export default function ProfilePage() {
       : cityArea.trim();
     localStorage.setItem("pizzahub_delivery_area", fullAddress);
 
-    setTimeout(() => {
-      setIsSaving(false);
-      toast.success("Profile preferences and delivery location saved successfully", {
-        icon: "🍕",
+    try {
+      await fetch("/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profilePayload),
       });
-    }, 400);
+    } catch {}
+
+    try {
+      await authClient.updateUser({
+        name: trimmedName,
+        image: avatarUrl.trim() || undefined,
+      });
+    } catch {}
+
+    try {
+      const baseUrl = resolveApiBaseUrl();
+      await fetch(`${baseUrl}/api/users/profile/${encodeURIComponent(user.email)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: trimmedName,
+          phone: phone.trim(),
+          image: avatarUrl.trim(),
+          street: street.trim(),
+          cityArea: cityArea.trim(),
+          postalCode: postalCode.trim(),
+          instructions: instructions.trim(),
+        }),
+      });
+    } catch {}
+
+    setIsSaving(false);
+    toast.success("Profile preferences and name saved successfully", {
+      icon: "🍕",
+    });
+    router.refresh();
   };
 
   if (isPending) {

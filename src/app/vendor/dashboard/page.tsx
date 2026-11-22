@@ -261,23 +261,23 @@ export default function VendorDashboardPage() {
 
         <div className="space-y-4">
           <h2 className="text-lg font-black text-[#190F0E]">Kitchen Action Hub</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             <Link
               href="/vendor/add-pizza"
-              className="bg-white p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-44"
+              className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
             >
               <div>
-                <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mb-3 group-hover:bg-[#8E1616] group-hover:text-white transition">
+                <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mb-3 group-hover:bg-[#8E1616] group-hover:text-white transition shrink-0">
                   <Plus className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition">
+                <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
                   Add Menu Item
                 </h3>
-                <p className="text-xs text-[#6E5F5B] mt-1 leading-relaxed">
+                <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
                   Upload high-res photos via ImgBB, configure crust fermentations, and set pricing.
                 </p>
               </div>
-              <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616] mt-2">
+              <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
                 <span>Add Menu Item</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
@@ -285,20 +285,20 @@ export default function VendorDashboardPage() {
 
             <Link
               href="/vendor/menu"
-              className="bg-white p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-44"
+              className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
             >
               <div>
-                <div className="w-10 h-10 rounded-2xl bg-stone-100 text-[#190F0E] flex items-center justify-center mb-3 group-hover:bg-[#190F0E] group-hover:text-white transition">
+                <div className="w-10 h-10 rounded-2xl bg-stone-100 text-[#190F0E] flex items-center justify-center mb-3 group-hover:bg-[#190F0E] group-hover:text-white transition shrink-0">
                   <UtensilsCrossed className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition">
+                <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
                   Manage Menu Catalog
                 </h3>
-                <p className="text-xs text-[#6E5F5B] mt-1 leading-relaxed">
+                <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
                   View, edit ingredients, adjust pricing, and delete your authored pizzas.
                 </p>
               </div>
-              <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616] mt-2">
+              <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
                 <span>Open Catalog</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
@@ -306,20 +306,20 @@ export default function VendorDashboardPage() {
 
             <Link
               href="/vendor/orders"
-              className="bg-white p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-44"
+              className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer sm:col-span-2 xl:col-span-1"
             >
               <div>
-                <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
+                <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition shrink-0">
                   <Flame className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition">
+                <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
                   Live Kitchen Queue
                 </h3>
-                <p className="text-xs text-[#6E5F5B] mt-1 leading-relaxed">
+                <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
                   Advance active customer tickets through Wood-Firing, Thermal Transit, and Delivery.
                 </p>
               </div>
-              <div className="flex items-center gap-1 text-xs font-bold text-[#8E1616] mt-2">
+              <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
                 <span>View Kitchen Orders</span>
                 <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>

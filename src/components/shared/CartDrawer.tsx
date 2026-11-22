@@ -40,6 +40,7 @@ export default function CartDrawer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isCartOpen) return null;
+  if ((user as any)?.role === "vendor" || (user as any)?.role === "admin") return null;
 
   const deliveryFee = subtotal >= 35 || subtotal === 0 ? 0.0 : 3.99;
   const tax = Number((subtotal * 0.08875).toFixed(2));
@@ -50,6 +51,12 @@ export default function CartDrawer() {
       toast.error("Please sign in to place your artisan order", { icon: "🔒" });
       setIsCartOpen(false);
       router.push("/signin?redirect=/menu");
+      return;
+    }
+
+    if ((user as any)?.role === "vendor" || (user as any)?.role === "admin") {
+      toast.error("Ordering is reserved for customer accounts", { icon: "🛡️" });
+      setIsCartOpen(false);
       return;
     }
 

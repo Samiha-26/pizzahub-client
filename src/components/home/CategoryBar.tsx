@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Flame } from "lucide-react";
 
 export const CATEGORIES = [
-  { id: "all", name: "Woodfire Pizza", filterParam: "all", icon: "🍕" },
-  { id: "veg", name: "Vegetarian", filterParam: "Vegetarian Pizzas", icon: "🥦" },
-  { id: "meat", name: "Meat Lovers", filterParam: "Meat Lovers", icon: "🥓" },
-  { id: "gourmet", name: "Specialty / Gourmet", filterParam: "Specialty / Gourmet Pizzas", icon: "👑" },
-  { id: "sides", name: "Sides & Appetizers", filterParam: "Sides & Appetizers", icon: "🥖" },
-  { id: "desserts", name: "Desserts & Drinks", filterParam: "Beverages & Desserts", icon: "🥤" },
+  { id: "all", name: "All Pizzas", filterParam: "All", icon: "🍕" },
+  { id: "woodfired", name: "Wood-Fired", filterParam: "Wood-Fired", icon: "🔥" },
+  { id: "classic", name: "Classic Italian", filterParam: "Classic Italian", icon: "🇮🇹" },
+  { id: "white", name: "White Base", filterParam: "White Base", icon: "🧀" },
+  { id: "spicy", name: "Spicy & Fiery", filterParam: "Spicy & Fiery", icon: "🌶️" },
+  { id: "veg", name: "Vegetarian & Plant", filterParam: "Vegetarian & Plant", icon: "🥦" },
 ];
 
 export default function CategoryBar() {
@@ -20,7 +20,7 @@ export default function CategoryBar() {
 
   const handleSelect = (cat: typeof CATEGORIES[0]) => {
     setActiveCategory(cat.id);
-    if (cat.filterParam === "all") {
+    if (cat.filterParam === "All") {
       router.push("/menu");
     } else {
       router.push(`/menu?category=${encodeURIComponent(cat.filterParam)}`);
@@ -40,7 +40,7 @@ export default function CategoryBar() {
           href="/menu"
           className="text-xs font-bold text-[#8E1616] hover:text-[#751111] flex items-center gap-1 group transition"
         >
-          <span>6 CURATED LINES</span>
+          <span>Explore All Pizzas</span>
           <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>

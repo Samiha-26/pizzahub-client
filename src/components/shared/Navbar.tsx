@@ -36,7 +36,12 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isVendorPremium, setIsVendorPremium] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (user?.role === "vendor" && user?.email) {
@@ -136,22 +141,26 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <NotificationBell />
-          <button
-            type="button"
-            onClick={() => setIsCartOpen(true)}
-            className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition cursor-pointer"
-            title="Artisan Cart"
-            aria-label="Artisan Cart"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            {totalCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8E1616] text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
-                {totalCount}
-              </span>
-            )}
-          </button>
+          {mounted && user?.role !== "vendor" && user?.role !== "admin" && (
+            <button
+              type="button"
+              onClick={() => setIsCartOpen(true)}
+              className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition cursor-pointer"
+              title="Artisan Cart"
+              aria-label="Artisan Cart"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              {totalCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8E1616] text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
+                  {totalCount}
+                </span>
+              )}
+            </button>
+          )}
 
-          {!user ? (
+          {!mounted ? (
+            <div className="w-20 h-8" />
+          ) : !user ? (
             <div className="hidden sm:flex items-center gap-2">
               <Link
                 href="/signin"
@@ -368,7 +377,7 @@ export default function Navbar() {
           >
             Browse Menu
           </Link>
-          {!user ? (
+          {!mounted ? null : !user ? (
             <div className="pt-2 border-t border-[#EFE7DE] flex gap-2">
               <Link
                 href="/signin"

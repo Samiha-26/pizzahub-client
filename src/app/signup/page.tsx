@@ -81,7 +81,6 @@ export default function SignUpPage() {
         password,
         image: imageUrl.trim() || undefined,
         role,
-        callbackURL: "/signin",
       });
 
       if (res.error) {
@@ -94,7 +93,7 @@ export default function SignUpPage() {
         icon: "🍕",
       });
 
-      router.push("/signin");
+      window.location.href = "/";
     } catch (err: any) {
       setErrorMessage(err.message || "An unexpected error occurred during registration.");
       setIsLoading(false);

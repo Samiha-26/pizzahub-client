@@ -1,9 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Star, CheckCircle2, MessageSquare, Send } from "lucide-react";
+import { Star, CheckCircle2, MessageSquare, Send, ChefHat, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSession } from "@/lib/auth-client";
+import { resolveApiBaseUrl } from "@/lib/api";
+
+interface ReviewReply {
+  vendorName: string;
+  vendorEmail?: string;
+  message: string;
+  createdAt: string;
+}
 
 interface Review {
   _id?: string;
@@ -13,6 +21,7 @@ interface Review {
   comment: string;
   isVerifiedBuyer: boolean;
   createdAt: string;
+  reply?: ReviewReply;
 }
 
 interface ReviewsData {
@@ -23,9 +32,20 @@ interface ReviewsData {
   reviews: Review[];
 }
 
-export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
+interface PizzaReviewsProps {
+  pizzaId: string;
+  vendorName?: string;
+  vendorEmail?: string;
+}
+
+export default function PizzaReviews({ pizzaId, vendorName, vendorEmail }: PizzaReviewsProps) {
   const { data: session } = useSession();
-  const user = session?.user;
+  const user = session?.user as any;
+  const role = user?.role || "customer";
+  const isVendor = role === "vendor";
+  const isAdmin = role === "admin";
+  const isCustomer = !isVendor && !isAdmin;
+  const canReply = isAdmin || (isVendor && (!vendorEmail || user?.email?.toLowerCase() === vendorEmail?.toLowerCase()));
 
   const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,22 +54,25 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [isSubmittingReply, setIsSubmittingReply] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
 
     async function fetchReviews() {
       try {
-        const res = await fetch(`${apiBase}/api/reviews/${pizzaId}`);
+        const baseUrl = resolveApiBaseUrl();
+        const res = await fetch(`${baseUrl}/api/reviews/${pizzaId}`);
         if (res.ok) {
           const data = await res.json();
           if (isMounted) {
             setReviewsData(data);
           }
         }
-      } catch (err) {
-        console.error(err);
+      } catch {
+        return;
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -62,12 +85,17 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
     return () => {
       isMounted = false;
     };
-  }, [pizzaId, apiBase]);
+  }, [pizzaId]);
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
       toast.error("Please sign in to leave a review", { icon: "🔒" });
+      return;
+    }
+
+    if (!isCustomer) {
+      toast.error("Reviews can only be submitted by verified customer accounts.", { icon: "🛡️" });
       return;
     }
 
@@ -78,7 +106,8 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${apiBase}/api/reviews`, {
+      const baseUrl = resolveApiBaseUrl();
+      const res = await fetch(`${baseUrl}/api/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -121,11 +150,65 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
       toast.success("Review posted successfully! Thank you for supporting artisan bakers.", {
         icon: "🍕",
       });
-    } catch (err) {
+    } catch {
       toast.error("Could not submit your review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSendReply = async (reviewId: string) => {
+    if (!replyText.trim()) {
+      toast.error("Please enter your kitchen response before submitting");
+      return;
+    }
+
+    setIsSubmittingReply(true);
+    const replyPayload = {
+      vendorName: user?.name || vendorName || "Kitchen Team",
+      vendorEmail: user?.email || "",
+      message: replyText.trim(),
+    };
+
+    try {
+      await fetch(`/api/reviews/${reviewId}/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(replyPayload),
+      });
+    } catch {}
+
+    try {
+      const baseUrl = resolveApiBaseUrl();
+      await fetch(`${baseUrl}/api/reviews/${reviewId}/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(replyPayload),
+      });
+    } catch {}
+
+    setReviewsData((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        reviews: prev.reviews.map((r) =>
+          r._id === reviewId
+            ? {
+                ...r,
+                reply: {
+                  ...replyPayload,
+                  createdAt: new Date().toISOString(),
+                },
+              }
+            : r
+        ),
+      };
+    });
+
+    setReplyText("");
+    setReplyingToId(null);
+    setIsSubmittingReply(false);
+    toast.success("Kitchen response posted successfully!", { icon: "👨‍🍳" });
   };
 
   if (loading) {
@@ -168,17 +251,33 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
             <div className="text-[10px] text-[#6E5F5B]">Authentic Score</div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsFormOpen(!isFormOpen)}
-            className="px-4 py-2 rounded-xl bg-[#8E1616] hover:bg-[#731212] text-white text-xs font-black transition cursor-pointer"
-          >
-            {isFormOpen ? "Close Form" : "Write a Review"}
-          </button>
+          {isCustomer && (
+            <button
+              type="button"
+              onClick={() => setIsFormOpen(!isFormOpen)}
+              className="px-4 py-2 rounded-xl bg-[#8E1616] hover:bg-[#731212] text-white text-xs font-black transition cursor-pointer"
+            >
+              {isFormOpen ? "Close Form" : "Write a Review"}
+            </button>
+          )}
+
+          {isVendor && (
+            <span className="text-[11px] font-bold text-amber-900 bg-amber-50 border border-amber-200/80 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+              <ChefHat className="w-3.5 h-3.5 text-amber-700" />
+              <span>Kitchen Team View</span>
+            </span>
+          )}
+
+          {isAdmin && (
+            <span className="text-[11px] font-bold text-purple-900 bg-purple-50 border border-purple-200/80 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-purple-700" />
+              <span>Admin Moderation View</span>
+            </span>
+          )}
         </div>
       </div>
 
-      {isFormOpen && (
+      {isFormOpen && isCustomer && (
         <form onSubmit={handleSubmitReview} className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#EBE4D8] space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#190F0E]">Your Rating</span>
@@ -229,10 +328,10 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
           </div>
         ) : (
           reviews.map((rev, idx) => (
-            <div key={rev._id || idx} className="p-4 rounded-2xl border border-[#EBE4D8] bg-[#FAF7F2]/50 space-y-2">
+            <div key={rev._id || idx} className="p-4 sm:p-5 rounded-2xl border border-[#EBE4D8] bg-[#FAF7F2]/50 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center text-xs font-black">
+                  <div className="w-8 h-8 rounded-full bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center text-xs font-black">
                     {rev.customerName.charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -244,6 +343,9 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
                           <span>Verified</span>
                         </span>
                       )}
+                    </div>
+                    <div className="text-[10px] text-[#6E5F5B]">
+                      {new Date(rev.createdAt).toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" })}
                     </div>
                   </div>
                 </div>
@@ -260,9 +362,82 @@ export default function PizzaReviews({ pizzaId }: { pizzaId: string }) {
                 </div>
               </div>
 
-              <p className="text-xs text-[#423735] leading-relaxed pl-9">
+              <p className="text-xs text-[#423735] leading-relaxed pl-1 sm:pl-10">
                 {rev.comment}
               </p>
+
+              {rev.reply && (
+                <div className="ml-2 sm:ml-10 p-3.5 rounded-2xl bg-white border border-amber-200 shadow-2xs space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-950">
+                      <ChefHat className="w-3.5 h-3.5 text-amber-700" />
+                      <span>Response from {rev.reply.vendorName || vendorName || "Kitchen Team"}</span>
+                      <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-amber-200/70 text-amber-900 uppercase font-black">
+                        Kitchen Reply
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-[#6E5F5B]">
+                      {new Date(rev.reply.createdAt).toLocaleDateString([], { month: "short", day: "numeric" })}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#2A1E1C] leading-relaxed pl-5">
+                    {rev.reply.message}
+                  </p>
+                </div>
+              )}
+
+              {canReply && !rev.reply && rev._id && (
+                <div className="pl-1 sm:pl-10 pt-1">
+                  {replyingToId === rev._id ? (
+                    <div className="p-3.5 rounded-2xl bg-white border border-[#EBE4D8] space-y-2.5 shadow-2xs">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#190F0E]">
+                        <ChefHat className="w-3.5 h-3.5 text-[#8E1616]" />
+                        <span>Reply as {user?.name || vendorName || "Kitchen Team"}</span>
+                      </div>
+                      <textarea
+                        rows={2}
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder="Thank the customer or share details about your crust and baking method..."
+                        className="w-full p-2.5 rounded-xl border border-[#EBE4D8] bg-[#FAF7F2] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] resize-none"
+                      />
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setReplyingToId(null);
+                            setReplyText("");
+                          }}
+                          className="px-3 py-1.5 text-xs font-bold text-[#6E5F5B] hover:text-[#190F0E] cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          disabled={isSubmittingReply}
+                          onClick={() => handleSendReply(rev._id!)}
+                          className="px-3.5 py-1.5 rounded-xl bg-[#8E1616] text-white text-xs font-bold hover:bg-[#731212] transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Send className="w-3 h-3" />
+                          <span>{isSubmittingReply ? "Sending..." : "Post Kitchen Reply"}</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setReplyingToId(rev._id || null);
+                        setReplyText("");
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8E1616] hover:text-[#731212] transition cursor-pointer"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Reply to this review</span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           ))
         )}

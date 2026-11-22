@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Bell, Check, CheckCheck, Clock, Flame, ShieldAlert, X } from "lucide-react";
+import { Bell, CheckCheck, Flame } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+import { resolveApiBaseUrl } from "@/lib/api";
 
 interface NotificationItem {
   _id: string;
@@ -13,6 +14,25 @@ interface NotificationItem {
   createdAt: string;
 }
 
+const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
+  {
+    _id: "system-welcome",
+    title: "Welcome to PizzaHub Artisanal Hearth",
+    message: "Your wood-fired artisanal journey has begun. Discover authentic 72-hour sourdough pies crafted by master pizzaiolos.",
+    type: "system",
+    read: false,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    _id: "system-status",
+    title: "Wood-Fired Hearth Active",
+    message: "Master pizzaiolos are currently firing order dispatches across authentic stone deck hearths.",
+    type: "order",
+    read: true,
+    createdAt: new Date(Date.now() - 3600000).toISOString(),
+  },
+];
+
 export default function NotificationBell() {
   const { data: session } = useSession();
   const user = session?.user;
@@ -22,24 +42,37 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
   useEffect(() => {
     let isMounted = true;
 
     async function loadNotifications() {
       if (!user?.email) return;
       try {
-        const res = await fetch(`${apiBase}/api/notifications/${encodeURIComponent(user.email)}`);
+        const baseUrl = resolveApiBaseUrl();
+        const res = await fetch(`${baseUrl}/api/notifications/${encodeURIComponent(user.email)}`, {
+          cache: "no-store",
+        });
         if (res.ok) {
           const data = await res.json();
           if (isMounted) {
-            setNotifications(data.notifications || []);
-            setUnreadCount(data.unreadCount || 0);
+            const list = Array.isArray(data.notifications) && data.notifications.length > 0
+              ? data.notifications
+              : DEFAULT_NOTIFICATIONS;
+            setNotifications(list);
+            const unread = list.filter((n: NotificationItem) => !n.read).length;
+            setUnreadCount(typeof data.unreadCount === "number" ? data.unreadCount : unread);
+          }
+        } else {
+          if (isMounted) {
+            setNotifications((prev) => (prev.length > 0 ? prev : DEFAULT_NOTIFICATIONS));
+            setUnreadCount((c) => (c > 0 ? c : 1));
           }
         }
-      } catch (e) {
-        console.error(e);
+      } catch {
+        if (isMounted) {
+          setNotifications((prev) => (prev.length > 0 ? prev : DEFAULT_NOTIFICATIONS));
+          setUnreadCount((c) => (c > 0 ? c : 1));
+        }
       }
     }
 
@@ -50,7 +83,7 @@ export default function NotificationBell() {
       isMounted = false;
       clearInterval(interval);
     };
-  }, [user?.email, apiBase]);
+  }, [user?.email]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -63,27 +96,29 @@ export default function NotificationBell() {
   }, []);
 
   const handleMarkAsRead = async (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n._id === id ? { ...n, read: true } : n))
+    );
+    setUnreadCount((c) => Math.max(0, c - 1));
     try {
-      await fetch(`${apiBase}/api/notifications/${id}/read`, { method: "PATCH" });
-      setNotifications((prev) =>
-        prev.map((n) => (n._id === id ? { ...n, read: true } : n))
-      );
-      setUnreadCount((c) => Math.max(0, c - 1));
-    } catch (e) {
-      console.error(e);
+      const baseUrl = resolveApiBaseUrl();
+      await fetch(`${baseUrl}/api/notifications/${id}/read`, { method: "PATCH" });
+    } catch {
+      return;
     }
   };
 
   const handleMarkAllAsRead = async () => {
     if (!user?.email) return;
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setUnreadCount(0);
     try {
-      await fetch(`${apiBase}/api/notifications/read-all/${encodeURIComponent(user.email)}`, {
+      const baseUrl = resolveApiBaseUrl();
+      await fetch(`${baseUrl}/api/notifications/read-all/${encodeURIComponent(user.email)}`, {
         method: "PATCH",
       });
-      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      setUnreadCount(0);
-    } catch (e) {
-      console.error(e);
+    } catch {
+      return;
     }
   };
 

@@ -43,6 +43,7 @@ export default function PizzaDetailPage({
   const router = useRouter();
   const { data: session, isPending: isAuthPending } = useSession();
   const user = session?.user;
+  const isVendorOrAdmin = (user as any)?.role === "vendor" || (user as any)?.role === "admin";
   const { addItem, setIsCartOpen } = useCart();
 
   useEffect(() => {
@@ -398,39 +399,54 @@ export default function PizzaDetailPage({
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           </div>
 
-          <div className="pt-2 flex flex-col sm:flex-row gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                addItem({
-                  id: pizza.id,
-                  name: pizza.name,
-                  price: pizza.price,
-                  image: pizza.images?.[0] || "",
-                  category: pizza.category,
-                  vendorName: pizza.vendorName,
-                  crust: pizza.crust,
-                });
-                setIsCartOpen(true);
-              }}
-              className="flex-1 py-4 rounded-2xl bg-white border-2 border-[#8E1616] text-[#8E1616] hover:bg-[#FAF7F2] font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Add to Cart</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleOpenOrderModal}
-              className="flex-1 py-4 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-extrabold text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/25 flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
-            >
-              <Zap className="w-4 h-4" />
-              <span>Order Now (${pizza.price.toFixed(2)})</span>
-            </button>
-          </div>
+          {isVendorOrAdmin ? (
+            <div className="pt-2 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 flex items-center gap-2.5 text-xs text-amber-950 font-bold">
+              <Store className="w-4 h-4 text-amber-700 shrink-0" />
+              <span>
+                {(user as any)?.role === "vendor"
+                  ? "Ordering and cart actions are reserved for customer accounts. Manage your recipes in the Kitchen Portal."
+                  : "Ordering and cart actions are reserved for customer accounts. Moderate recipes in the Admin Console."}
+              </span>
+            </div>
+          ) : (
+            <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  addItem({
+                    id: pizza.id,
+                    name: pizza.name,
+                    price: pizza.price,
+                    image: pizza.images?.[0] || "",
+                    category: pizza.category,
+                    vendorName: pizza.vendorName,
+                    crust: pizza.crust,
+                  });
+                  setIsCartOpen(true);
+                }}
+                className="flex-1 py-4 rounded-2xl bg-white border-2 border-[#8E1616] text-[#8E1616] hover:bg-[#FAF7F2] font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Add to Cart</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleOpenOrderModal}
+                className="flex-1 py-4 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-extrabold text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/25 flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
+              >
+                <Zap className="w-4 h-4" />
+                <span>Order Now (${pizza.price.toFixed(2)})</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      <PizzaReviews pizzaId={unwrappedParams.id} />
+      <PizzaReviews
+        pizzaId={unwrappedParams.id}
+        vendorName={pizza?.vendorName}
+        vendorEmail={pizza?.vendorEmail}
+      />
 
       {isOrderModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">

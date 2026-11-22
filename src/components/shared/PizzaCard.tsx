@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Clock, Store, ShoppingBag, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { useSession } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export interface PizzaItem {
   id: string;
@@ -27,6 +29,9 @@ interface PizzaCardProps {
 
 export default function PizzaCard({ item, onAddToCart }: PizzaCardProps) {
   const { addItem } = useCart();
+  const { data: session } = useSession();
+  const user = session?.user as any;
+  const isVendorOrAdmin = user?.role === "vendor" || user?.role === "admin";
 
   const handleAddToCart = () => {
     if (onAddToCart) {
@@ -112,16 +117,18 @@ export default function PizzaCard({ item, onAddToCart }: PizzaCardProps) {
             View Details
           </Link>
 
-          <Button
-            type="button"
-            variant="crimson"
-            size="icon"
-            className="shrink-0 rounded-xl cursor-pointer"
-            title="Quick add to order"
-            onClick={handleAddToCart}
-          >
-            <ShoppingBag className="w-4 h-4" />
-          </Button>
+          {!isVendorOrAdmin && (
+            <Button
+              type="button"
+              variant="crimson"
+              size="icon"
+              className="shrink-0 rounded-xl cursor-pointer"
+              title="Quick add to order"
+              onClick={handleAddToCart}
+            >
+              <ShoppingBag className="w-4 h-4" />
+            </Button>
+          )}
         </div>
       </div>
     </div>

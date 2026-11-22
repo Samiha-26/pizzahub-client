@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import PizzaCard, { type PizzaItem } from "@/components/shared/PizzaCard";
 import { getMenu } from "@/lib/api";
-import { FALLBACK_SPECIALS } from "@/components/home/ArtisanChefSpecials";
+import { ALL_PIZZAS_CATALOG } from "@/data/catalogPizzas";
 import CrustGuideModal from "@/components/menu/CrustGuideModal";
 import { useCart } from "@/context/CartContext";
 
@@ -58,6 +58,25 @@ function MenuContent() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat) {
+      setSelectedCategory(cat);
+    } else {
+      setSelectedCategory("All");
+    }
+    const cr = searchParams.get("crust");
+    if (cr) {
+      setSelectedCrust(cr);
+    } else {
+      setSelectedCrust("All");
+    }
+    const q = searchParams.get("search");
+    if (q !== null) {
+      setSearchTerm(q);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     let isMounted = true;
 
     async function loadMenu() {
@@ -68,6 +87,7 @@ function MenuContent() {
         category: selectedCategory,
         crust: selectedCrust,
         sort: sortBy,
+        limit: 60,
       });
 
       if (!isMounted) return;
@@ -75,12 +95,40 @@ function MenuContent() {
       if (res.items.length > 0) {
         setItems(res.items);
         setTotal(res.total);
-      } else if (!searchTerm && selectedCategory === "All" && selectedCrust === "All") {
-        setItems(FALLBACK_SPECIALS);
-        setTotal(FALLBACK_SPECIALS.length);
       } else {
-        setItems([]);
-        setTotal(0);
+        let filtered = [...ALL_PIZZAS_CATALOG];
+        if (searchTerm.trim()) {
+          const lower = searchTerm.toLowerCase();
+          filtered = filtered.filter(
+            (p) =>
+              p.itemName.toLowerCase().includes(lower) ||
+              p.description.toLowerCase().includes(lower) ||
+              p.vendorName.toLowerCase().includes(lower)
+          );
+        }
+        if (selectedCategory && selectedCategory !== "All") {
+          const lowerCat = selectedCategory.toLowerCase();
+          filtered = filtered.filter((p) =>
+            p.category.toLowerCase().includes(lowerCat) ||
+            lowerCat.includes(p.category.toLowerCase())
+          );
+        }
+        if (selectedCrust && selectedCrust !== "All") {
+          const lowerCrust = selectedCrust.toLowerCase();
+          filtered = filtered.filter((p) =>
+            p.crust.toLowerCase().includes(lowerCrust) ||
+            lowerCrust.includes(p.crust.toLowerCase())
+          );
+        }
+        if (sortBy === "price-asc") {
+          filtered.sort((a, b) => a.price - b.price);
+        } else if (sortBy === "price-desc") {
+          filtered.sort((a, b) => b.price - a.price);
+        } else if (sortBy === "rating-desc") {
+          filtered.sort((a, b) => b.rating - a.rating);
+        }
+        setItems(filtered);
+        setTotal(filtered.length);
       }
 
       setIsLoading(false);
@@ -88,7 +136,7 @@ function MenuContent() {
 
     const timer = setTimeout(() => {
       loadMenu();
-    }, 200);
+    }, 150);
 
     return () => {
       isMounted = false;

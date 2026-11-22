@@ -186,24 +186,24 @@ export default function AdminDashboardPage() {
           <h2 className="text-xl font-black text-[#190F0E] tracking-tight">
             Administrative Modules
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             <Link
               href="/admin/users"
-              className="group bg-white p-7 rounded-3xl border border-[#EBE4D8] shadow-2xs hover:border-purple-300 hover:shadow-md transition-all flex flex-col justify-between space-y-6"
+              className="group bg-white p-6 sm:p-7 rounded-3xl border border-[#EBE4D8] shadow-2xs hover:border-purple-300 hover:shadow-md transition-all flex flex-col justify-between h-full min-h-0 overflow-hidden break-words"
             >
               <div className="space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center transition-transform group-hover:scale-105">
+                <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
                   <Users className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-black text-[#190F0E] group-hover:text-purple-700 transition-colors">
+                <h3 className="text-lg font-black text-[#190F0E] group-hover:text-purple-700 transition-colors break-words">
                   User &amp; Role Management
                 </h3>
-                <p className="text-xs text-[#6E5F5B] leading-relaxed">
+                <p className="text-xs text-[#6E5F5B] leading-relaxed break-words">
                   Search registered users, promote customers to vendors, grant administrative privileges, or suspend accounts violating terms.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-bold text-purple-700 pt-2 border-t border-[#EBE4D8]">
+              <div className="flex items-center justify-between text-xs font-bold text-purple-700 pt-3 border-t border-[#EBE4D8] mt-4 shrink-0">
                 <span>Manage Accounts</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </div>
@@ -211,21 +211,21 @@ export default function AdminDashboardPage() {
 
             <Link
               href="/admin/menu"
-              className="group bg-white p-7 rounded-3xl border border-[#EBE4D8] shadow-2xs hover:border-[#8E1616]/40 hover:shadow-md transition-all flex flex-col justify-between space-y-6"
+              className="group bg-white p-6 sm:p-7 rounded-3xl border border-[#EBE4D8] shadow-2xs hover:border-[#8E1616]/40 hover:shadow-md transition-all flex flex-col justify-between h-full min-h-0 overflow-hidden break-words"
             >
               <div className="space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center transition-transform group-hover:scale-105">
+                <div className="w-12 h-12 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
                   <UtensilsCrossed className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-black text-[#190F0E] group-hover:text-[#8E1616] transition-colors">
+                <h3 className="text-lg font-black text-[#190F0E] group-hover:text-[#8E1616] transition-colors break-words">
                   Menu &amp; Recipe Moderation
                 </h3>
-                <p className="text-xs text-[#6E5F5B] leading-relaxed">
+                <p className="text-xs text-[#6E5F5B] leading-relaxed break-words">
                   Review artisan recipes created by partner kitchens, verify ingredients and imagery, flag policy violations, or remove listings.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-bold text-[#8E1616] pt-2 border-t border-[#EBE4D8]">
+              <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] pt-3 border-t border-[#EBE4D8] mt-4 shrink-0">
                 <span>Moderate Recipes</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </div>
@@ -233,21 +233,21 @@ export default function AdminDashboardPage() {
 
             <Link
               href="/admin/transactions"
-              className="group bg-white p-7 rounded-3xl border border-[#EBE4D8] shadow-2xs hover:border-emerald-300 hover:shadow-md transition-all flex flex-col justify-between space-y-6"
+              className="group bg-white p-6 sm:p-7 rounded-3xl border border-[#EBE4D8] shadow-2xs hover:border-emerald-300 hover:shadow-md transition-all flex flex-col justify-between h-full min-h-0 overflow-hidden break-words sm:col-span-2 xl:col-span-1"
             >
               <div className="space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center transition-transform group-hover:scale-105">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
                   <CreditCard className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-black text-[#190F0E] group-hover:text-emerald-800 transition-colors">
+                <h3 className="text-lg font-black text-[#190F0E] group-hover:text-emerald-800 transition-colors break-words">
                   Stripe Payment Ledger
                 </h3>
-                <p className="text-xs text-[#6E5F5B] leading-relaxed">
+                <p className="text-xs text-[#6E5F5B] leading-relaxed break-words">
                   Audit all Stripe checkout transactions, $29/mo vendor membership upgrades, customer order payments, and timestamped transaction IDs.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 pt-2 border-t border-[#EBE4D8]">
+              <div className="flex items-center justify-between text-xs font-bold text-emerald-800 pt-3 border-t border-[#EBE4D8] mt-4 shrink-0">
                 <span>View Transaction Ledger</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </div>

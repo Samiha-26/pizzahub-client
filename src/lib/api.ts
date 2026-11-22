@@ -1,6 +1,14 @@
 import { PizzaItem } from "@/components/shared/PizzaCard";
+import { ALL_PIZZAS_CATALOG } from "@/data/catalogPizzas";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+export const resolveApiBaseUrl = () => {
+  if (typeof window !== "undefined" && window.location.hostname === "localhost") {
+    return "http://localhost:5000";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+};
+
+export const API_BASE_URL = resolveApiBaseUrl();
 
 function formatArtisanLocation(addr?: string): string {
   if (!addr) return "Little Italy, Manhattan, NY";
@@ -43,9 +51,9 @@ export async function getChefSpecials(): Promise<PizzaItem[]> {
     if (Array.isArray(data) && data.length > 0) {
       return data.map(mapMongoPizzaToItem);
     }
-    return [];
+    return ALL_PIZZAS_CATALOG.slice(0, 6);
   } catch {
-    return [];
+    return ALL_PIZZAS_CATALOG.slice(0, 6);
   }
 }
 
@@ -91,9 +99,42 @@ export async function getMenu(params: MenuQueryParams = {}): Promise<MenuRespons
       totalPages: data.totalPages || 1,
     };
   } catch {
+    let filtered = [...ALL_PIZZAS_CATALOG];
+    if (params.search && params.search.trim()) {
+      const lower = params.search.trim().toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.itemName.toLowerCase().includes(lower) ||
+          p.description.toLowerCase().includes(lower) ||
+          p.vendorName.toLowerCase().includes(lower)
+      );
+    }
+    if (params.category && params.category !== "All") {
+      const lowerCat = params.category.toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.category.toLowerCase().includes(lowerCat) ||
+          lowerCat.includes(p.category.toLowerCase())
+      );
+    }
+    if (params.crust && params.crust !== "All") {
+      const lowerCrust = params.crust.toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.crust.toLowerCase().includes(lowerCrust) ||
+          lowerCrust.includes(p.crust.toLowerCase())
+      );
+    }
+    if (params.sort === "price-asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (params.sort === "price-desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (params.sort === "rating-desc") {
+      filtered.sort((a, b) => b.rating - a.rating);
+    }
     return {
-      items: [],
-      total: 0,
+      items: filtered,
+      total: filtered.length,
       page: 1,
       totalPages: 1,
     };
@@ -155,6 +196,29 @@ export async function getPizzaById(id: string): Promise<PizzaDetail | null> {
       vendorAddress: formatArtisanLocation(doc.vendorAddress),
     };
   } catch {
+    const local = ALL_PIZZAS_CATALOG.find((p) => p.id === id) || ALL_PIZZAS_CATALOG[0];
+    if (local) {
+      return {
+        id: local.id,
+        name: local.itemName,
+        tagline: "Authentic Stone-Baked Creation",
+        description: local.description,
+        price: local.price,
+        crust: local.crust,
+        category: local.category,
+        image: local.image,
+        images: [local.image],
+        badges: [local.badge || "IN PREMIUM WOOD-FIRE"],
+        rating: local.rating,
+        reviewCount: 120,
+        ingredients: ["San Marzano Tomatoes", "Fior di Latte Mozzarella", "Fresh Basil", "Cold-Pressed EVOO"],
+        prepTimeMinutes: parseInt(local.timeEstimate || "15", 10) || 15,
+        calories: 850,
+        vendorName: local.vendorName,
+        vendorEmail: "orders@pizzahub.com",
+        vendorAddress: local.location,
+      };
+    }
     return null;
   }
 }

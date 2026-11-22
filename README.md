@@ -18,7 +18,7 @@ Server repository: https://github.com/Samiha-26/pizzahub-server
 - **Order Cancellation**: Customers can cancel pending orders directly from their dashboard. Orders already being fired or in transit are securely locked against cancellation.
 - **Itemized Invoice & Printable Receipts**: View itemized order receipts detailing pizza selections, crust type, quantities, unit prices, tax, delivery fees, and print or download receipts directly.
 - **Verified Buyer Reviews & Ratings**: Submit 1–5 star ratings and reviews on pizza detail pages, with dynamic average score updates and star rating distribution breakdown.
-- **Dedicated Role-Based Dashboard Layout**: Distinct sidebar navigation on desktop (`w-64`) with user profile cards, role badges, and active state highlights, transitioning to a responsive collapsible drawer on mobile.
+- **Dedicated Role-Based Dashboard Layout**: Distinct sidebar navigation on desktop (`w-64` / `w-72`) with user profile cards, role badges, and active state highlights, transitioning to a native-style commercial bottom navigation bar on mobile.
 - **Vendor Kitchen Portal**: Manage restaurant profile, track hearth revenue, view active recipe limits, upload photos via ImgBB CDN, edit pizza specifications, toggle availability, and process incoming tickets.
 - **Stripe Subscription Upgrades**: Free-tier vendors are capped at 3 recipes. Upgrading to Premium ($29/month) via Stripe Checkout activates unlimited slots and gold crown badge only after a verified webhook event.
 - **Platform Administration & User Governance**: Admin dashboard displaying gross platform volume, total orders, users, and recipes. Manage user roles, approve/reject recipes, and block or unblock accounts with server-side enforcement.
@@ -62,7 +62,7 @@ Server repository: https://github.com/Samiha-26/pizzahub-server
 
 ### 3. Professional UI/UX & Responsive Layout
 - **Visual styling**: Warm wood-fired palette (`#8E1616` crimson, `#FAF7F2` dough cream, `#190F0E` charred crust) paired with *Plus Jakarta Sans* geometric typography.
-- **Responsive dashboard**: Left sidebar on desktop screens and a mobile-friendly slide-down drawer on mobile viewports.
+- **Responsive dashboard**: Left sidebar on desktop and tablet screens and a commercial bottom navigation bar on mobile viewports.
 - **Zero code comments**: All source files maintain clean code without unnecessary technical comments or parenthetical notes.
 
 ---
@@ -146,6 +146,8 @@ BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=your_better_auth_secret_here
 MONGODB_URL=your_mongodb_connection_string
 DB_NAME=pizzahub
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key

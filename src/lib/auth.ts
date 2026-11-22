@@ -8,7 +8,8 @@ const db = client.db(process.env.DB_NAME || "pizzahub");
 
 const resolveBaseURL = () => {
   const envUrl = process.env.BETTER_AUTH_URL || "";
-  if (envUrl) {
+  const isVercel = process.env.VERCEL === "1" || !!process.env.VERCEL_URL;
+  if (envUrl && (!isVercel || envUrl.startsWith("https://"))) {
     return envUrl;
   }
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
@@ -16,6 +17,9 @@ const resolveBaseURL = () => {
   }
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
+  }
+  if (envUrl) {
+    return envUrl;
   }
   return "http://localhost:3000";
 };
@@ -29,7 +33,15 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:3000",
     "http://localhost:5000",
-  ],
+    "https://*.vercel.app",
+    "https://pizzahub-client.vercel.app",
+    "https://pizzahub-client-l0w1qnh4y-samiha1.vercel.app",
+    process.env.BETTER_AUTH_URL || "",
+    process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "",
+    process.env.NEXT_PUBLIC_API_URL || "",
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "",
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "",
+  ].filter(Boolean),
   user: {
     additionalFields: {
       role: {
@@ -54,6 +66,7 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    minPasswordLength: 6,
   },
   account: {
     accountLinking: {

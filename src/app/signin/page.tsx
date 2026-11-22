@@ -40,7 +40,6 @@ export default function SignInPage() {
       const res = await authClient.signIn.email({
         email: email.trim().toLowerCase(),
         password,
-        callbackURL: "/",
       });
 
       if (res.error) {
@@ -56,18 +55,8 @@ export default function SignInPage() {
       const searchParams = new URLSearchParams(window.location.search);
       const redirectParam = searchParams.get("redirect");
 
-      const sessionRes = await authClient.getSession();
-      const userRole = (sessionRes?.data?.user as any)?.role;
-
-      let destination = redirectParam;
-      if (!destination) {
-        if (userRole === "admin") destination = "/admin/dashboard";
-        else if (userRole === "vendor") destination = "/vendor/dashboard";
-        else destination = "/dashboard";
-      }
-
-      router.push(destination || "/");
-      router.refresh();
+      const destination = redirectParam || "/";
+      window.location.href = destination;
     } catch (err: any) {
       setErrorMessage(err.message || "An unexpected error occurred during sign-in.");
       setIsLoading(false);
