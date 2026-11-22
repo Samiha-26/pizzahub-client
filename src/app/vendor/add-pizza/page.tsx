@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -141,8 +140,7 @@ export default function AddPizzaPage() {
           setIsUploadingImage(false);
           return;
         }
-      } catch {
-      }
+      } catch {}
     }
 
     const reader = new FileReader();
@@ -241,10 +239,10 @@ export default function AddPizzaPage() {
 
   if (isSessionPending || (isLoadingStats && user?.email)) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
         <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-3 py-16">
           <Loader2 className="w-9 h-9 animate-spin text-[#8E1616]" />
-          <p className="text-sm font-semibold text-[#6E5F5B]">
+          <p className="text-sm font-semibold text-[#6E5F5B] dark:text-zinc-400">
             Verifying hearth quota and subscription slots...
           </p>
         </div>
@@ -254,18 +252,18 @@ export default function AddPizzaPage() {
 
   if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
-        <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
+        <div className="max-w-md mx-auto bg-white dark:bg-[#1A1110] rounded-3xl p-8 border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-sm text-center space-y-4">
           <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-2xl font-black">
             <ChefHat className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-black text-[#190F0E]">Vendor Sign In Required</h1>
-          <p className="text-xs text-[#6E5F5B] leading-relaxed">
+          <h1 className="text-xl font-black text-[#190F0E] dark:text-white">Vendor Sign In Required</h1>
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 leading-relaxed">
             Please log in with your vendor account to add recipes to your pizzeria catalog.
           </p>
           <button
             onClick={() => router.push("/signin?redirect=/vendor/add-pizza")}
-            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm"
+            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm cursor-pointer"
           >
             Sign In to Kitchen Portal
           </button>
@@ -278,12 +276,12 @@ export default function AddPizzaPage() {
   const isLimitReached = !isPremium && (stats?.itemCount || 0) >= 3;
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] py-10 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="flex items-center justify-between gap-4">
           <Link
             href="/vendor/dashboard"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6E5F5B] hover:text-[#8E1616] transition"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6E5F5B] dark:text-zinc-400 hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Kitchen HQ
@@ -292,22 +290,22 @@ export default function AddPizzaPage() {
           {isPremium ? (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500 text-white text-[11px] font-black shadow-2xs">
               <Crown className="w-3.5 h-3.5 fill-current" />
-              PREMIUM VENDOR (UNLIMITED)
+              PREMIUM VENDOR • UNLIMITED SLOTS
             </span>
           ) : (
-            <span className="text-xs font-bold text-[#6E5F5B]">
-              Free Tier: <strong className="text-[#190F0E]">{stats?.itemCount || 0} / 3 slots</strong> used
+            <span className="text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">
+              Free Tier: <strong className="text-[#190F0E] dark:text-white">{stats?.itemCount || 0} / 3 slots</strong> used
             </span>
           )}
         </div>
 
         {isLimitReached && (
-          <div className="p-6 rounded-3xl bg-red-50 border border-red-200 text-red-950 space-y-3 shadow-2xs">
-            <div className="flex items-center gap-2 text-sm font-black text-red-900">
-              <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
-              <span>Hearth Limit Reached (3 / 3 Items)</span>
+          <div className="p-6 rounded-3xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/40 text-red-950 dark:text-red-200 space-y-3 shadow-2xs">
+            <div className="flex items-center gap-2 text-sm font-black text-red-900 dark:text-red-300">
+              <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
+              <span>Hearth Limit Reached • 3 of 3 Items Used</span>
             </div>
-            <p className="text-xs text-red-800 leading-relaxed">
+            <p className="text-xs text-red-800 dark:text-red-300 leading-relaxed">
               Your free artisan pizzeria tier allows a maximum of 3 live menu listings. You have already filled all 3 slots. To publish additional stone-baked recipes, upgrade to the Premium Unlimited Tier.
             </p>
             <Link
@@ -315,39 +313,39 @@ export default function AddPizzaPage() {
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white text-xs font-extrabold shadow-sm transition"
             >
               <Crown className="w-4 h-4 fill-current" />
-              Upgrade to Premium for Unlimited Slots ($29/mo)
+              Upgrade to Premium for Unlimited Slots at $29/mo
             </Link>
           </div>
         )}
 
-        <div className="bg-white rounded-3xl border border-[#EBE4D8] p-6 sm:p-8 shadow-2xs space-y-6">
+        <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] p-6 sm:p-8 shadow-2xs space-y-6">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold text-[#8E1616] uppercase tracking-wider mb-1">
               <Flame className="w-3.5 h-3.5" />
               <span>Artisan Pizza Creation</span>
             </div>
-            <h1 className="text-2xl font-black text-[#190F0E] tracking-tight">
+            <h1 className="text-2xl font-black text-[#190F0E] dark:text-white tracking-tight">
               Create New Menu Item
             </h1>
-            <p className="text-xs text-[#6E5F5B] mt-1">
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-1">
               List your cold-fermented dough style, artisan toppings, and high-res ImgBB photography.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-3">
-              <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+              <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                 Pizza Photo *
               </label>
 
-              <div className="flex items-center gap-2 border-b border-[#EBE4D8] pb-2">
+              <div className="flex items-center gap-2 border-b border-[#EBE4D8] dark:border-[#2D1E1B] pb-2">
                 <button
                   type="button"
                   onClick={() => setImageMode("file")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                     imageMode === "file"
                       ? "bg-[#8E1616] text-white"
-                      : "text-[#6E5F5B] hover:text-[#190F0E]"
+                      : "text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
                   }`}
                 >
                   <Upload className="w-3.5 h-3.5" />
@@ -356,10 +354,10 @@ export default function AddPizzaPage() {
                 <button
                   type="button"
                   onClick={() => setImageMode("url")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                     imageMode === "url"
                       ? "bg-[#8E1616] text-white"
-                      : "text-[#6E5F5B] hover:text-[#190F0E]"
+                      : "text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
                   }`}
                 >
                   <LinkIcon className="w-3.5 h-3.5" />
@@ -368,7 +366,7 @@ export default function AddPizzaPage() {
               </div>
 
               {imageMode === "file" ? (
-                <div key="pizza-file-container" className="border-2 border-dashed border-[#EBE4D8] hover:border-[#8E1616]/40 rounded-2xl p-6 text-center transition bg-[#FAF7F2]/50">
+                <div key="pizza-file-container" className="border-2 border-dashed border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/40 dark:hover:border-[#E25C5C]/40 rounded-2xl p-6 text-center transition bg-[#FAF7F2]/50 dark:bg-[#1E1413]/50">
                   <input
                     key="pizza-file-input"
                     type="file"
@@ -394,10 +392,10 @@ export default function AddPizzaPage() {
                         <div className="w-12 h-12 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center">
                           <Upload className="w-6 h-6" />
                         </div>
-                        <span className="text-xs font-bold text-[#190F0E]">
+                        <span className="text-xs font-bold text-[#190F0E] dark:text-white">
                           Click to select pizza image from your device
                         </span>
-                        <span className="text-[11px] text-[#6E5F5B]">
+                        <span className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">
                           PNG, JPG, or WEBP up to 5MB
                         </span>
                       </>
@@ -415,16 +413,16 @@ export default function AddPizzaPage() {
                       setImagePreview(e.target.value);
                     }}
                     placeholder="https://images.unsplash.com/photo-..."
-                    className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                    className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                   />
-                  <p className="text-[11px] text-[#6E5F5B]">
+                  <p className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">
                     Paste a direct image link.
                   </p>
                 </div>
               )}
 
               <div className="pt-2">
-                <span className="text-[11px] font-bold text-[#6E5F5B] block mb-1.5">
+                <span className="text-[11px] font-bold text-[#6E5F5B] dark:text-zinc-400 block mb-1.5">
                   Or pick a verified sample artisan photo:
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -438,7 +436,7 @@ export default function AddPizzaPage() {
                         setImagePreview(sample.url);
                         toast.success(`Selected "${sample.name}" photo!`, { icon: "🍕" });
                       }}
-                      className="px-2.5 py-1 rounded-xl bg-white border border-[#EBE4D8] hover:border-[#8E1616] text-[11px] font-bold text-[#190F0E] transition hover:bg-[#8E1616]/5 shadow-2xs"
+                      className="px-2.5 py-1 rounded-xl bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616] dark:hover:border-[#E25C5C] text-[11px] font-bold text-[#190F0E] dark:text-zinc-200 transition hover:bg-[#8E1616]/5 shadow-2xs cursor-pointer"
                     >
                       🍕 {sample.name}
                     </button>
@@ -447,8 +445,8 @@ export default function AddPizzaPage() {
               </div>
 
               {imagePreview && (
-                <div className="flex items-center gap-4 p-3 rounded-2xl bg-[#FAF7F2] border border-[#EBE4D8]">
-                  <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-[#EBE4D8]">
+                <div className="flex items-center gap-4 p-3 rounded-2xl bg-[#FAF7F2] dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B]">
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-[#EBE4D8] dark:border-[#2D1E1B]">
                     <img
                       src={imagePreview}
                       alt="Pizza Preview"
@@ -456,11 +454,11 @@ export default function AddPizzaPage() {
                     />
                   </div>
                   <div className="space-y-1 text-xs">
-                    <div className="flex items-center gap-1.5 font-bold text-emerald-700">
+                    <div className="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-400">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Image Ready for Hearth</span>
                     </div>
-                    <p className="text-[11px] text-[#6E5F5B] truncate max-w-sm">
+                    <p className="text-[11px] text-[#6E5F5B] dark:text-zinc-400 truncate max-w-sm">
                       {imageUrl || "Local image staged for upload"}
                     </p>
                   </div>
@@ -470,7 +468,7 @@ export default function AddPizzaPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                   Pizza Name *
                 </label>
                 <input
@@ -479,13 +477,13 @@ export default function AddPizzaPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Diavola al Miele Piccante"
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
-                  Price ($) *
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
+                  Price in USD *
                 </label>
                 <input
                   type="number"
@@ -495,13 +493,13 @@ export default function AddPizzaPage() {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   placeholder="e.g. 21.50"
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+              <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                 Artisan Tagline
               </label>
               <input
@@ -509,19 +507,19 @@ export default function AddPizzaPage() {
                 value={tagline}
                 onChange={(e) => setTagline(e.target.value)}
                 placeholder="e.g. Calabrian Soppressata & Wild Mountain Hot Honey"
-                className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                   Crust Fermentation *
                 </label>
                 <select
                   value={crust}
                   onChange={(e) => setCrust(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 >
                   {CRUST_OPTIONS.map((c) => (
                     <option key={c} value={c}>
@@ -532,13 +530,13 @@ export default function AddPizzaPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                   Menu Category *
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 >
                   {CATEGORY_OPTIONS.map((cat) => (
                     <option key={cat} value={cat}>
@@ -550,7 +548,7 @@ export default function AddPizzaPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+              <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                 Ingredients *
               </label>
               <textarea
@@ -558,12 +556,12 @@ export default function AddPizzaPage() {
                 value={ingredientsText}
                 onChange={(e) => setIngredientsText(e.target.value)}
                 placeholder="San Marzano Tomatoes, Fior di Latte Mozzarella, Calabrian Salami, Hot Honey, Fresh Basil"
-                className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+              <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                 Artisan Story / Description
               </label>
               <textarea
@@ -571,13 +569,13 @@ export default function AddPizzaPage() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Baked at 900°F in our volcanic stone hearth. Dough is cold-fermented for 48 hours for an airy, charred cornicione."
-                className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                   Bake Prep Time
                 </label>
                 <input
@@ -586,12 +584,12 @@ export default function AddPizzaPage() {
                   max="60"
                   value={prepTimeMinutes}
                   onChange={(e) => setPrepTimeMinutes(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                   Calories
                 </label>
                 <input
@@ -600,12 +598,12 @@ export default function AddPizzaPage() {
                   max="2500"
                   value={calories}
                   onChange={(e) => setCalories(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#190F0E] uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                   Menu Badges
                 </label>
                 <input
@@ -613,15 +611,15 @@ export default function AddPizzaPage() {
                   value={badgeText}
                   onChange={(e) => setBadgeText(e.target.value)}
                   placeholder="e.g. ARTISAN SPECIAL, CHEF PICK"
-                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] bg-[#FAF7F2]/30"
+                  className="w-full px-4 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] focus:border-[#8E1616] focus:outline-hidden text-xs text-[#190F0E] dark:text-white bg-[#FAF7F2]/30 dark:bg-[#160D0C]"
                 />
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#EBE4D8] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="pt-4 border-t border-[#EBE4D8] dark:border-[#2D1E1B] flex flex-col sm:flex-row items-center justify-between gap-4">
               <Link
                 href="/vendor/dashboard"
-                className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-[#EBE4D8] hover:border-[#8E1616]/30 text-xs font-bold text-[#6E5F5B] text-center transition"
+                className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/30 dark:hover:border-[#E25C5C]/50 text-xs font-bold text-[#6E5F5B] dark:text-zinc-400 text-center transition"
               >
                 Cancel
               </Link>
@@ -629,7 +627,7 @@ export default function AddPizzaPage() {
               <button
                 type="submit"
                 disabled={isSubmitting || isUploadingImage || isLimitReached}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#8E1616] hover:bg-[#721111] disabled:opacity-50 text-white text-xs font-extrabold flex items-center justify-center gap-2 transition shadow-sm"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#8E1616] hover:bg-[#721111] disabled:opacity-50 text-white text-xs font-extrabold flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"
               >
                 {isSubmitting ? (
                   <>

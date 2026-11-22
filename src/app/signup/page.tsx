@@ -68,7 +68,9 @@ export default function SignUpPage() {
     }
 
     if (!isPasswordValid) {
-      setErrorMessage("Password must satisfy all security requirements below.");
+      const errorMsg = "Password must satisfy all security requirements below.";
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
       return;
     }
 
@@ -84,7 +86,9 @@ export default function SignUpPage() {
       });
 
       if (res.error) {
-        setErrorMessage(res.error.message || "Failed to create account. Please try again.");
+        const errorMsg = res.error.message || "Failed to create account. Please try again.";
+        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
         setIsLoading(false);
         return;
       }
@@ -95,34 +99,36 @@ export default function SignUpPage() {
 
       window.location.href = "/";
     } catch (err: any) {
-      setErrorMessage(err.message || "An unexpected error occurred during registration.");
+      const errorMsg = err.message || "An unexpected error occurred during registration.";
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
       setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center py-10 px-4 sm:px-6">
-      <div className="w-full max-w-md bg-white rounded-3xl border border-[#EFE7DE] shadow-xs p-6 sm:p-8 space-y-6">
+      <div className="w-full max-w-md bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-xs p-6 sm:p-8 space-y-6">
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2 justify-center">
             <div className="w-10 h-10 rounded-2xl bg-[#8E1616] flex items-center justify-center text-white shadow-md shadow-[#8E1616]/20">
               <span className="text-xl leading-none">🍕</span>
             </div>
-            <span className="text-2xl font-black tracking-tight text-[#190F0E]">
-              Pizza<span className="text-[#8E1616]">Hub</span>
+            <span className="text-2xl font-black tracking-tight text-[#190F0E] dark:text-white">
+              Pizza<span className="text-[#8E1616] dark:text-[#FF8080]">Hub</span>
             </span>
           </Link>
-          <h1 className="text-xl sm:text-2xl font-black text-[#190F0E] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-[#190F0E] dark:text-white tracking-tight">
             Create Your Account
           </h1>
-          <p className="text-xs text-[#6E5F5B]">
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
             Join our community of wood-fired connoisseurs &amp; master pizzaiolos
           </p>
         </div>
 
         {errorMessage && (
-          <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs text-[#8E1616] flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#8E1616]" />
+          <div className="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-xs text-[#8E1616] dark:text-red-300 flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#8E1616] dark:text-red-300" />
             <span className="leading-snug font-medium">{errorMessage}</span>
           </div>
         )}
@@ -132,10 +138,10 @@ export default function SignUpPage() {
             type="button"
             disabled={isGoogleLoading || isLoading}
             onClick={handleGoogleSignUp}
-            className="w-full py-3 px-4 rounded-2xl bg-white border border-[#EFE7DE] hover:bg-[#FAF7F2] text-[#190F0E] font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-3 shadow-2xs hover:border-gray-300 disabled:opacity-50"
+            className="w-full py-3 px-4 rounded-2xl bg-white dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#3D2825] hover:bg-[#FAF7F2] dark:hover:bg-[#32201D] text-[#190F0E] dark:text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-3 shadow-2xs hover:border-gray-300 dark:hover:border-zinc-700 disabled:opacity-50 cursor-pointer"
           >
             {isGoogleLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin text-[#8E1616]" />
+              <Loader2 className="w-4 h-4 animate-spin text-[#8E1616] dark:text-[#FF8080]" />
             ) : (
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -160,8 +166,8 @@ export default function SignUpPage() {
           </button>
 
           <div className="relative flex items-center justify-center">
-            <div className="border-t border-[#EFE7DE] w-full" />
-            <span className="bg-white px-3 text-[11px] font-semibold text-[#6E5F5B] uppercase tracking-wider absolute">
+            <div className="border-t border-[#EFE7DE] dark:border-[#2D1E1B] w-full" />
+            <span className="bg-white dark:bg-[#1A1110] px-3 text-[11px] font-semibold text-[#6E5F5B] dark:text-zinc-400 uppercase tracking-wider absolute">
               or with email &amp; role
             </span>
           </div>
@@ -169,32 +175,32 @@ export default function SignUpPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#190F0E] block">
+            <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
               I want to join as:
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole("customer")}
-                className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+                className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                   role === "customer"
-                    ? "border-[#8E1616] bg-[#8E1616]/5 ring-1 ring-[#8E1616]"
-                    : "border-[#EFE7DE] bg-white hover:border-gray-300"
+                    ? "border-[#8E1616] dark:border-[#FF8080] bg-[#8E1616]/5 dark:bg-[#8E1616]/20 ring-1 ring-[#8E1616] dark:ring-[#FF8080]"
+                    : "border-[#EFE7DE] dark:border-[#2D1E1B] bg-white dark:bg-[#251715] hover:border-gray-300 dark:hover:border-zinc-700"
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <ShoppingBag
                     className={`w-4 h-4 ${
-                      role === "customer" ? "text-[#8E1616]" : "text-gray-400"
+                      role === "customer" ? "text-[#8E1616] dark:text-[#FF8080]" : "text-gray-400 dark:text-zinc-500"
                     }`}
                   />
                   {role === "customer" && (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8E1616]" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8E1616] dark:text-[#FF8080]" />
                   )}
                 </div>
                 <div className="pt-2">
-                  <div className="text-xs font-black text-[#190F0E]">Customer</div>
-                  <div className="text-[10px] text-[#6E5F5B] leading-tight mt-0.5">
+                  <div className="text-xs font-black text-[#190F0E] dark:text-white">Customer</div>
+                  <div className="text-[10px] text-[#6E5F5B] dark:text-zinc-400 leading-tight mt-0.5">
                     Order artisan pizzas
                   </div>
                 </div>
@@ -203,25 +209,25 @@ export default function SignUpPage() {
               <button
                 type="button"
                 onClick={() => setRole("vendor")}
-                className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+                className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                   role === "vendor"
-                    ? "border-[#8E1616] bg-[#8E1616]/5 ring-1 ring-[#8E1616]"
-                    : "border-[#EFE7DE] bg-white hover:border-gray-300"
+                    ? "border-[#8E1616] dark:border-[#FF8080] bg-[#8E1616]/5 dark:bg-[#8E1616]/20 ring-1 ring-[#8E1616] dark:ring-[#FF8080]"
+                    : "border-[#EFE7DE] dark:border-[#2D1E1B] bg-white dark:bg-[#251715] hover:border-gray-300 dark:hover:border-zinc-700"
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <ChefHat
                     className={`w-4 h-4 ${
-                      role === "vendor" ? "text-[#8E1616]" : "text-gray-400"
+                      role === "vendor" ? "text-[#8E1616] dark:text-[#FF8080]" : "text-gray-400 dark:text-zinc-500"
                     }`}
                   />
                   {role === "vendor" && (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8E1616]" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8E1616] dark:text-[#FF8080]" />
                   )}
                 </div>
                 <div className="pt-2">
-                  <div className="text-xs font-black text-[#190F0E]">Vendor</div>
-                  <div className="text-[10px] text-[#6E5F5B] leading-tight mt-0.5">
+                  <div className="text-xs font-black text-[#190F0E] dark:text-white">Vendor</div>
+                  <div className="text-[10px] text-[#6E5F5B] dark:text-zinc-400 leading-tight mt-0.5">
                     Manage kitchen catalog
                   </div>
                 </div>
@@ -230,107 +236,107 @@ export default function SignUpPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#190F0E] block">
+            <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
               Full Name
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <User className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Marco Rossi"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] dark:border-[#3D2825] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] dark:focus:border-amber-500 transition bg-white dark:bg-[#251715]"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#190F0E] block">
+            <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] dark:border-[#3D2825] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] dark:focus:border-amber-500 transition bg-white dark:bg-[#251715]"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#190F0E] block">
-              Profile Photo URL <span className="text-[10px] text-[#6E5F5B] font-normal">(optional)</span>
+            <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
+              Profile Photo URL <span className="text-[10px] text-[#6E5F5B] dark:text-zinc-400 font-normal">• Optional</span>
             </label>
             <div className="relative">
-              <ImageIcon className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <ImageIcon className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="url"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
                 placeholder="https://images.unsplash.com/photo-..."
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] dark:border-[#3D2825] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] dark:focus:border-amber-500 transition bg-white dark:bg-[#251715]"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#190F0E] block">
+            <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Lock className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#EFE7DE] dark:border-[#3D2825] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] dark:focus:border-amber-500 transition bg-white dark:bg-[#251715]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
 
-            <div className="pt-2 space-y-1 bg-[#FAF7F2] p-2.5 rounded-xl border border-[#EFE7DE]/70">
+            <div className="pt-2 space-y-1 bg-[#FAF7F2] dark:bg-[#251715] p-2.5 rounded-xl border border-[#EFE7DE]/70 dark:border-[#3D2825]">
               <div className="flex items-center gap-1.5 text-[11px]">
                 <CheckCircle2
                   className={`w-3.5 h-3.5 shrink-0 ${
-                    hasMinLength ? "text-emerald-600" : "text-gray-300"
+                    hasMinLength ? "text-emerald-600 dark:text-emerald-400" : "text-gray-300 dark:text-zinc-600"
                   }`}
                 />
-                <span className={hasMinLength ? "text-[#190F0E] font-medium" : "text-[#6E5F5B]"}>
+                <span className={hasMinLength ? "text-[#190F0E] dark:text-white font-medium" : "text-[#6E5F5B] dark:text-zinc-400"}>
                   At least 6 characters
                 </span>
               </div>
               <div className="flex items-center gap-1.5 text-[11px]">
                 <CheckCircle2
                   className={`w-3.5 h-3.5 shrink-0 ${
-                    hasUpperCase ? "text-emerald-600" : "text-gray-300"
+                    hasUpperCase ? "text-emerald-600 dark:text-emerald-400" : "text-gray-300 dark:text-zinc-600"
                   }`}
                 />
-                <span className={hasUpperCase ? "text-[#190F0E] font-medium" : "text-[#6E5F5B]"}>
-                  At least one uppercase letter (A-Z)
+                <span className={hasUpperCase ? "text-[#190F0E] dark:text-white font-medium" : "text-[#6E5F5B] dark:text-zinc-400"}>
+                  At least one uppercase letter A-Z
                 </span>
               </div>
               <div className="flex items-center gap-1.5 text-[11px]">
                 <CheckCircle2
                   className={`w-3.5 h-3.5 shrink-0 ${
-                    hasLowerCase ? "text-emerald-600" : "text-gray-300"
+                    hasLowerCase ? "text-emerald-600 dark:text-emerald-400" : "text-gray-300 dark:text-zinc-600"
                   }`}
                 />
-                <span className={hasLowerCase ? "text-[#190F0E] font-medium" : "text-[#6E5F5B]"}>
-                  At least one lowercase letter (a-z)
+                <span className={hasLowerCase ? "text-[#190F0E] dark:text-white font-medium" : "text-[#6E5F5B] dark:text-zinc-400"}>
+                  At least one lowercase letter a-z
                 </span>
               </div>
             </div>
@@ -339,7 +345,7 @@ export default function SignUpPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/20 flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/20 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? (
               <>
@@ -355,10 +361,10 @@ export default function SignUpPage() {
           </button>
         </form>
 
-        <div className="text-center pt-2 border-t border-[#EFE7DE]">
-          <p className="text-xs text-[#6E5F5B]">
+        <div className="text-center pt-2 border-t border-[#EFE7DE] dark:border-[#2D1E1B]">
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
             Already have an account?{" "}
-            <Link href="/signin" className="font-bold text-[#8E1616] hover:underline">
+            <Link href="/signin" className="font-bold text-[#8E1616] dark:text-[#FF8080] hover:underline">
               Sign In
             </Link>
           </p>

@@ -129,17 +129,17 @@ export default function ArtisanChefSpecials() {
     <section className="space-y-4 pt-2">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-[#190F0E] tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-black text-[#190F0E] dark:text-white tracking-tight">
             Artisan Chef Specials
           </h2>
-          <p className="text-xs text-[#6E5F5B] mt-0.5">
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-0.5">
             Oven-blistered sourdough, D.O.P. cheeses &amp; freshly plucked herbs
           </p>
         </div>
 
         <Link
           href="/menu"
-          className="text-xs font-bold text-[#8E1616] hover:text-[#751111] flex items-center gap-1 group self-start sm:self-auto transition"
+          className="text-xs font-bold text-[#8E1616] dark:text-[#E25C5C] hover:text-[#751111] dark:hover:text-[#F87171] flex items-center gap-1 group self-start sm:self-auto transition"
         >
           <span>View Full Catalog</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

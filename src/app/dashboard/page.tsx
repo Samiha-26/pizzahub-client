@@ -55,10 +55,10 @@ export default function CustomerDashboardPage() {
 
   if (isSessionPending || loading) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
         <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-3 py-16">
-          <Loader2 className="w-9 h-9 animate-spin text-[#8E1616]" />
-          <p className="text-sm font-semibold text-[#6E5F5B]">
+          <Loader2 className="w-9 h-9 animate-spin text-[#8E1616] dark:text-[#E25C5C]" />
+          <p className="text-sm font-semibold text-[#6E5F5B] dark:text-zinc-400">
             Loading your customer dashboard...
           </p>
         </div>
@@ -72,20 +72,20 @@ export default function CustomerDashboardPage() {
   const cancelledOrders = orders.filter((o) => o.status === "cancelled").length;
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] py-10 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] dark:border-[#2D1E1B] pb-6">
           <div>
-            <div className="flex items-center gap-2 text-[11px] font-bold text-[#8E1616] uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-[11px] font-bold text-[#8E1616] dark:text-[#FF8080] uppercase tracking-wider mb-1">
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>Customer Portal</span>
               <span>•</span>
-              <span className="text-[#6E5F5B]">Artisan Dining</span>
+              <span className="text-[#6E5F5B] dark:text-zinc-400">Artisan Dining</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] dark:text-white tracking-tight">
               Welcome back, {user?.name || "Pizza Connoisseur"}!
             </h1>
-            <p className="text-xs text-[#6E5F5B] mt-1">
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-1">
               Track live wood-fired orders, inspect itemized receipts, and manage your delivery preferences.
             </p>
           </div>
@@ -102,68 +102,68 @@ export default function CustomerDashboardPage() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-3xl border border-[#EBE4D8] shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B]">
+          <div className="bg-white dark:bg-[#1A1110] p-5 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-2xs space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">
               <span>Total Orders</span>
-              <div className="w-8 h-8 rounded-xl bg-[#190F0E]/10 text-[#190F0E] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-[#190F0E]/10 dark:bg-white/10 text-[#190F0E] dark:text-white flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-[#190F0E]">{totalOrders}</div>
-            <div className="text-[11px] text-[#6E5F5B]">All-time placed pies</div>
+            <div className="text-2xl font-black text-[#190F0E] dark:text-white">{totalOrders}</div>
+            <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">All-time placed pies</div>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-[#EBE4D8] shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B]">
+          <div className="bg-white dark:bg-[#1A1110] p-5 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-2xs space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">
               <span>Pending</span>
-              <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-amber-600">{pendingOrders}</div>
-            <div className="text-[11px] text-[#6E5F5B]">Awaiting hearth accept</div>
+            <div className="text-2xl font-black text-amber-600 dark:text-amber-400">{pendingOrders}</div>
+            <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">Awaiting hearth accept</div>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-[#EBE4D8] shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B]">
+          <div className="bg-white dark:bg-[#1A1110] p-5 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-2xs space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">
               <span>Accepted / Baking</span>
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <Flame className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-emerald-700">{acceptedOrders}</div>
-            <div className="text-[11px] text-[#6E5F5B]">Active in wood-fire hearth</div>
+            <div className="text-2xl font-black text-emerald-700 dark:text-emerald-400">{acceptedOrders}</div>
+            <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">Active in wood-fire hearth</div>
           </div>
 
-          <div className="bg-white p-5 rounded-3xl border border-[#EBE4D8] shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B]">
+          <div className="bg-white dark:bg-[#1A1110] p-5 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-2xs space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">
               <span>Cancelled</span>
-              <div className="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
                 <XCircle className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-red-600">{cancelledOrders}</div>
-            <div className="text-[11px] text-[#6E5F5B]">Cancelled tickets</div>
+            <div className="text-2xl font-black text-red-600 dark:text-red-400">{cancelledOrders}</div>
+            <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">Cancelled tickets</div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           <Link
             href="/orders"
-            className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
+            className="bg-white dark:bg-[#1A1110] p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/40 dark:hover:border-[#E25C5C]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
           >
             <div>
-              <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mb-3 group-hover:bg-[#8E1616] group-hover:text-white transition shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 dark:bg-[#8E1616]/25 text-[#8E1616] dark:text-[#FF8080] flex items-center justify-center mb-3 group-hover:bg-[#8E1616] group-hover:text-white transition shrink-0">
                 <Truck className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
+              <h3 className="text-base font-black text-[#190F0E] dark:text-white group-hover:text-[#8E1616] dark:group-hover:text-[#FF8080] transition break-words">
                 My Orders &amp; Live Timeline
               </h3>
-              <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-2 leading-relaxed break-words">
                 Track status across hearth wood-firing, delivery courier, and print invoices.
               </p>
             </div>
-            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
+            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] dark:text-[#FF8080] mt-5 pt-3.5 border-t border-[#F5EFE6] dark:border-[#2D1E1B] shrink-0">
               <span>Open Orders</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -171,20 +171,20 @@ export default function CustomerDashboardPage() {
 
           <Link
             href="/profile"
-            className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
+            className="bg-white dark:bg-[#1A1110] p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/40 dark:hover:border-[#E25C5C]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer"
           >
             <div>
-              <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition shrink-0">
                 <User className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
+              <h3 className="text-base font-black text-[#190F0E] dark:text-white group-hover:text-[#8E1616] dark:group-hover:text-[#FF8080] transition break-words">
                 Profile &amp; Delivery Settings
               </h3>
-              <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-2 leading-relaxed break-words">
                 Manage your saved delivery address, telephone contact, and delivery notes.
               </p>
             </div>
-            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
+            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] dark:text-[#FF8080] mt-5 pt-3.5 border-t border-[#F5EFE6] dark:border-[#2D1E1B] shrink-0">
               <span>Edit Profile</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
@@ -192,32 +192,32 @@ export default function CustomerDashboardPage() {
 
           <Link
             href="/menu"
-            className="bg-white p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] hover:border-[#8E1616]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer sm:col-span-2 xl:col-span-1"
+            className="bg-white dark:bg-[#1A1110] p-5 sm:p-6 rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/40 dark:hover:border-[#E25C5C]/40 transition shadow-2xs group flex flex-col justify-between h-full min-h-0 overflow-hidden break-words cursor-pointer sm:col-span-2 xl:col-span-1"
           >
             <div>
-              <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition shrink-0">
                 <Flame className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-black text-[#190F0E] group-hover:text-[#8E1616] transition break-words">
+              <h3 className="text-base font-black text-[#190F0E] dark:text-white group-hover:text-[#8E1616] dark:group-hover:text-[#FF8080] transition break-words">
                 Order Another Artisan Pie
               </h3>
-              <p className="text-xs text-[#6E5F5B] mt-2 leading-relaxed break-words">
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-2 leading-relaxed break-words">
                 Browse 72h cold fermented sourdough recipes and wood-fired chef specials.
               </p>
             </div>
-            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] mt-5 pt-3.5 border-t border-[#F5EFE6] shrink-0">
+            <div className="flex items-center justify-between text-xs font-bold text-[#8E1616] dark:text-[#FF8080] mt-5 pt-3.5 border-t border-[#F5EFE6] dark:border-[#2D1E1B] shrink-0">
               <span>Browse Catalog</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </div>
           </Link>
         </div>
 
-        <div className="bg-white rounded-3xl border border-[#EBE4D8] p-6 sm:p-8 space-y-4">
+        <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] p-6 sm:p-8 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-black text-[#190F0E]">Recent Order Dispatches</h2>
+            <h2 className="text-lg font-black text-[#190F0E] dark:text-white">Recent Order Dispatches</h2>
             <Link
               href="/orders"
-              className="text-xs font-bold text-[#8E1616] hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs font-bold text-[#8E1616] dark:text-[#E25C5C] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>View all orders</span>
               <ArrowRight className="w-3 h-3" />
@@ -225,14 +225,14 @@ export default function CustomerDashboardPage() {
           </div>
 
           {orders.length === 0 ? (
-            <div className="text-center py-8 text-xs text-[#6E5F5B]">
+            <div className="text-center py-8 text-xs text-[#6E5F5B] dark:text-zinc-400">
               You haven&apos;t placed any orders yet. Discover our artisanal menu!
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs min-w-[600px]">
                 <thead>
-                  <tr className="border-b border-[#EBE4D8] text-[10px] uppercase font-bold text-[#6E5F5B]">
+                  <tr className="border-b border-[#EBE4D8] dark:border-[#2D1E1B] text-[10px] uppercase font-bold text-[#6E5F5B] dark:text-zinc-400">
                     <th className="pb-3">Pizza</th>
                     <th className="pb-3">Vendor</th>
                     <th className="pb-3">Delivery Window</th>
@@ -240,20 +240,20 @@ export default function CustomerDashboardPage() {
                     <th className="pb-3">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EBE4D8]/60">
+                <tbody className="divide-y divide-[#EBE4D8]/60 dark:divide-[#2D1E1B]">
                   {orders.slice(0, 5).map((order) => (
-                    <tr key={order._id} className="hover:bg-[#FAF7F2]/50">
-                      <td className="py-3 font-bold text-[#190F0E]">{order.pizzaName}</td>
-                      <td className="py-3 text-[#6E5F5B]">{order.vendorName}</td>
-                      <td className="py-3 text-[#6E5F5B]">{order.deliverySchedule}</td>
-                      <td className="py-3 font-black text-[#8E1616]">${order.totalPrice.toFixed(2)}</td>
+                    <tr key={order._id} className="hover:bg-[#FAF7F2]/50 dark:hover:bg-[#251715]/50 transition-colors">
+                      <td className="py-3 font-bold text-[#190F0E] dark:text-white">{order.pizzaName}</td>
+                      <td className="py-3 text-[#6E5F5B] dark:text-zinc-400">{order.vendorName}</td>
+                      <td className="py-3 text-[#6E5F5B] dark:text-zinc-400">{order.deliverySchedule}</td>
+                      <td className="py-3 font-black text-[#8E1616] dark:text-[#FF8080]">${order.totalPrice.toFixed(2)}</td>
                       <td className="py-3">
                         <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase ${
                           order.status === "delivered"
-                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            ? "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40"
                             : order.status === "cancelled"
-                            ? "bg-red-50 text-red-700 border border-red-200"
-                            : "bg-amber-50 text-amber-700 border border-amber-200"
+                            ? "bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/40"
+                            : "bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40"
                         }`}>
                           {order.status}
                         </span>

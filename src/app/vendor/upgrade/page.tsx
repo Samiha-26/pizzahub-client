@@ -173,8 +173,8 @@ function UpgradeContent() {
   if (isSessionPending || (isLoading && user?.email)) {
     return (
       <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-3 py-24">
-        <Loader2 className="w-9 h-9 animate-spin text-[#8E1616]" />
-        <p className="text-sm font-semibold text-[#6E5F5B]">
+        <Loader2 className="w-9 h-9 animate-spin text-[#8E1616] dark:text-[#E25C5C]" />
+        <p className="text-sm font-semibold text-[#6E5F5B] dark:text-zinc-400">
           Loading subscription tier and quota...
         </p>
       </div>
@@ -183,12 +183,12 @@ function UpgradeContent() {
 
   if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
-      <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4 my-16">
-        <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-2xl font-black">
+      <div className="max-w-md mx-auto bg-white dark:bg-[#1A1110] rounded-3xl p-8 border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-sm text-center space-y-4 my-16">
+        <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 dark:bg-[#8E1616]/25 text-[#8E1616] dark:text-[#FF8080] flex items-center justify-center mx-auto text-2xl font-black">
           PH
         </div>
-        <h2 className="text-2xl font-black text-[#190F0E]">Vendor Sign In Required</h2>
-        <p className="text-sm text-[#6E5F5B]">
+        <h2 className="text-2xl font-black text-[#190F0E] dark:text-white">Vendor Sign In Required</h2>
+        <p className="text-sm text-[#6E5F5B] dark:text-zinc-400">
           Please sign in with your vendor account to view your kitchen tier and upgrade plans.
         </p>
         <Link
@@ -203,79 +203,79 @@ function UpgradeContent() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] dark:border-[#2D1E1B] pb-6">
         <div className="space-y-1">
           <Link
             href="/vendor/dashboard"
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#8E1616] hover:underline uppercase tracking-wider mb-2"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#8E1616] dark:text-[#E25C5C] hover:underline uppercase tracking-wider mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Kitchen Dashboard
           </Link>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8E1616]/10 text-[#8E1616] text-xs font-bold w-fit">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8E1616]/10 dark:bg-[#8E1616]/25 text-[#8E1616] dark:text-[#FF8080] text-xs font-bold w-fit">
             <Sparkles className="w-3.5 h-3.5" />
             Kitchen Tier Management
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-[#190F0E] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black text-[#190F0E] dark:text-white tracking-tight">
             Scale Your Artisan Pizzeria
           </h1>
-          <p className="text-sm sm:text-base text-[#6E5F5B] max-w-2xl">
+          <p className="text-sm sm:text-base text-[#6E5F5B] dark:text-zinc-400 max-w-2xl">
             Choose the membership that matches your kitchen volume. Upgrade to unlock unlimited
             artisan recipes, gold storefront badges, and express dispatch.
           </p>
         </div>
 
         {isPremium ? (
-          <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 font-bold text-sm shadow-sm">
-            <Crown className="w-5 h-5 text-amber-600 fill-amber-500" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 dark:border-amber-500/40 text-amber-900 dark:text-amber-200 font-bold text-sm shadow-sm">
+            <Crown className="w-5 h-5 text-amber-600 dark:text-amber-400 fill-amber-500" />
             <span>Active Master Baker</span>
           </div>
         ) : (
-          <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-stone-100 border border-stone-200 text-[#6E5F5B] font-semibold text-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-stone-100 dark:bg-[#1A1110] border border-stone-200 dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 font-semibold text-sm">
             <span>Free Artisan Tier</span>
           </div>
         )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-        <div className="bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm flex flex-col justify-between relative">
+        <div className="bg-white dark:bg-[#1A1110] rounded-3xl p-8 border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-sm flex flex-col justify-between relative">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-black uppercase tracking-wider text-[#6E5F5B]">
+              <span className="text-xs font-black uppercase tracking-wider text-[#6E5F5B] dark:text-zinc-400">
                 Starter Plan
               </span>
-              <h2 className="text-2xl font-black text-[#190F0E]">Free Artisan</h2>
-              <p className="text-xs text-[#6E5F5B]">
+              <h2 className="text-2xl font-black text-[#190F0E] dark:text-white">Free Artisan</h2>
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
                 Ideal for neighborhood pop-ups and test kitchens starting out on PizzaHub.
               </p>
             </div>
 
-            <div className="flex items-baseline gap-1 text-[#190F0E]">
+            <div className="flex items-baseline gap-1 text-[#190F0E] dark:text-white">
               <span className="text-4xl font-black">$0</span>
-              <span className="text-xs font-bold text-[#6E5F5B]">/ month</span>
+              <span className="text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">/ month</span>
             </div>
 
-            <ul className="space-y-3.5 text-sm text-[#190F0E] border-t border-[#EBE4D8] pt-6">
+            <ul className="space-y-3.5 text-sm text-[#190F0E] dark:text-zinc-200 border-t border-[#EBE4D8] dark:border-[#2D1E1B] pt-6">
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Up to 3 active pizza items in catalog</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Live hearth order queue and dispatch controls</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Standard customer storefront discovery</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Direct customer delivery address mapping</span>
@@ -289,7 +289,7 @@ function UpgradeContent() {
                 type="button"
                 onClick={handleUnsubscribe}
                 disabled={isUnsubscribing}
-                className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] hover:border-red-300 hover:bg-red-50 text-stone-700 hover:text-red-700 font-bold text-sm transition cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-red-300 dark:hover:border-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 text-stone-700 dark:text-zinc-300 hover:text-red-700 dark:hover:text-red-300 font-bold text-sm transition cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {isUnsubscribing ? (
                   <Loader2 className="w-4 h-4 animate-spin text-red-600" />
@@ -300,7 +300,7 @@ function UpgradeContent() {
             ) : (
               <button
                 disabled
-                className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] text-[#6E5F5B] font-bold text-sm bg-stone-50 cursor-default"
+                className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-500 font-bold text-sm bg-stone-50 dark:bg-[#160D0C] cursor-default"
               >
                 Current Active Tier
               </button>
@@ -308,7 +308,7 @@ function UpgradeContent() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-8 border-2 border-amber-500 shadow-xl flex flex-col justify-between relative overflow-hidden">
+        <div className="bg-white dark:bg-[#1A1110] rounded-3xl p-8 border-2 border-amber-500 shadow-xl flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-600 text-white text-[11px] font-black uppercase tracking-wider px-5 py-1.5 rounded-bl-2xl flex items-center gap-1.5 shadow-sm">
             <Sparkles className="w-3.5 h-3.5" />
             Recommended for Pizzerias
@@ -316,48 +316,48 @@ function UpgradeContent() {
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-700">
-                <Crown className="w-4 h-4 fill-amber-500 text-amber-600" />
+              <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                <Crown className="w-4 h-4 fill-amber-500 text-amber-600 dark:text-amber-400" />
                 Master Baker Status
               </div>
-              <h2 className="text-2xl font-black text-[#190F0E]">Premium Master Baker</h2>
-              <p className="text-xs text-[#6E5F5B]">
+              <h2 className="text-2xl font-black text-[#190F0E] dark:text-white">Premium Master Baker</h2>
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
                 Engineered for serious artisanal pizzerias looking to maximize daily volume.
               </p>
             </div>
 
-            <div className="flex items-baseline gap-1 text-[#190F0E]">
-              <span className="text-4xl font-black text-[#8E1616]">$29</span>
-              <span className="text-xs font-bold text-[#6E5F5B]">/ month</span>
+            <div className="flex items-baseline gap-1 text-[#190F0E] dark:text-white">
+              <span className="text-4xl font-black text-[#8E1616] dark:text-[#FF8080]">$29</span>
+              <span className="text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">/ month</span>
             </div>
 
-            <ul className="space-y-3.5 text-sm text-[#190F0E] border-t border-[#EBE4D8] pt-6">
+            <ul className="space-y-3.5 text-sm text-[#190F0E] dark:text-zinc-200 border-t border-[#EBE4D8] dark:border-[#2D1E1B] pt-6">
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
-                <span className="font-bold text-[#190F0E]">Unlimited active pizza items</span>
+                <span className="font-bold text-[#190F0E] dark:text-white">Unlimited active pizza items</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Gold Crown badge across all menu cards and storefront</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Priority order dispatch and express chef banner</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Comprehensive customer sales and volume reports</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="w-3.5 h-3.5" />
                 </div>
                 <span>Priority wood-fired technical and kitchen support</span>
@@ -368,15 +368,15 @@ function UpgradeContent() {
           <div className="pt-8">
             {isPremium ? (
               <div className="space-y-3">
-                <div className="w-full py-3.5 px-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 font-bold text-sm text-center flex items-center justify-center gap-2">
-                  <Crown className="w-4 h-4 fill-amber-500 text-amber-600" />
+                <div className="w-full py-3.5 px-6 rounded-2xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 dark:border-amber-500/40 text-amber-900 dark:text-amber-200 font-bold text-sm text-center flex items-center justify-center gap-2">
+                  <Crown className="w-4 h-4 fill-amber-500 text-amber-600 dark:text-amber-400" />
                   Active Premium Plan
                 </div>
                 <button
                   type="button"
                   onClick={handleUnsubscribe}
                   disabled={isUnsubscribing}
-                  className="w-full py-2.5 px-4 rounded-xl border border-red-200 hover:bg-red-50 text-red-700 font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="w-full py-2.5 px-4 rounded-xl border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-700 dark:text-red-400 font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   {isUnsubscribing ? (
                     <>

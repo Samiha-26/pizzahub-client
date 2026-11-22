@@ -42,7 +42,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative overflow-hidden py-6 sm:py-10 lg:py-14">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#8E1616]/5 via-[#D97706]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[650px] h-[550px] sm:h-[650px] bg-gradient-to-tr from-[#8E1616]/10 via-amber-500/10 to-transparent dark:from-[#8E1616]/20 dark:via-amber-500/15 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         <motion.div
@@ -51,20 +51,23 @@ export default function HeroSection() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FEE2E2] text-[#8E1616] text-[11px] font-black uppercase tracking-wider border border-[#FECACA] shadow-xs">
-            <Flame className="w-3.5 h-3.5 text-[#8E1616] animate-pulse" />
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#FEE2E2] via-[#FFF4E5] to-[#FEE2E2] dark:from-[#8E1616]/25 dark:via-amber-500/20 dark:to-[#8E1616]/25 text-[#8E1616] dark:text-amber-300 text-[11px] font-black uppercase tracking-wider border border-[#FECACA] dark:border-amber-500/30 shadow-xs">
+            <Flame className="w-3.5 h-3.5 text-[#8E1616] dark:text-[#FF8080] animate-pulse" />
             <span>A Fire-Infused Taste Sensation</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-300 animate-spin" style={{ animationDuration: "5s" }} />
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
-            className="text-3xl sm:text-5xl xl:text-6xl font-black text-[#190F0E] leading-[1.1] tracking-tight"
+            className="text-3xl sm:text-5xl xl:text-6xl font-black text-[#190F0E] dark:text-white leading-[1.1] tracking-tight"
           >
-            Hot &amp; Fresh Pizza <br />
-            <span className="text-[#8E1616] relative inline-block">
+            Hot &amp; Fresh Pizza
+            <Sparkles className="inline-block w-6 h-6 sm:w-8 sm:h-8 text-amber-500 dark:text-amber-400 animate-pulse ml-2 -mt-2 align-middle" />
+            <br />
+            <span className="text-[#8E1616] dark:text-[#FF6B6B] relative inline-block">
               Delivered to Your Door
               <motion.span
-                className="absolute -bottom-1 left-0 w-full h-1 bg-[#8E1616]/20 rounded-full"
+                className="absolute -bottom-1 left-0 w-full h-1 bg-[#8E1616]/20 dark:bg-[#FF6B6B]/30 rounded-full"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
@@ -74,7 +77,7 @@ export default function HeroSection() {
 
           <motion.p
             variants={itemVariants}
-            className="text-xs sm:text-sm text-[#6E5F5B] max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
+            className="text-xs sm:text-sm text-[#6E5F5B] dark:text-zinc-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
           >
             Incredible blistered crusts, cold-fermented doughs, and organic farm-fresh produce from authenticated local wood-fired pizzerias across America.
           </motion.p>
@@ -82,9 +85,9 @@ export default function HeroSection() {
           <motion.form
             variants={itemVariants}
             onSubmit={handleSearch}
-            className="max-w-lg mx-auto lg:mx-0 p-1.5 bg-white rounded-2xl border border-[#EFE7DE] shadow-md flex items-center gap-2 transition focus-within:border-[#8E1616] focus-within:ring-2 focus-within:ring-[#8E1616]/10"
+            className="max-w-lg mx-auto lg:mx-0 p-1.5 bg-white dark:bg-[#1A1110] rounded-2xl border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-md flex items-center gap-2 transition focus-within:border-[#8E1616] dark:focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-[#8E1616]/10 dark:focus-within:ring-amber-500/20"
           >
-            <span className="pl-3.5 text-gray-400">
+            <span className="pl-3.5 text-gray-400 dark:text-zinc-500">
               <Search className="w-4 h-4" />
             </span>
             <input
@@ -92,7 +95,7 @@ export default function HeroSection() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for neapolitan, hot honey burrata, vegan..."
-              className="w-full text-xs sm:text-sm bg-transparent outline-none py-2 text-[#190F0E] placeholder:text-gray-400"
+              className="w-full text-xs sm:text-sm bg-transparent outline-none py-2 text-[#190F0E] dark:text-white placeholder:text-gray-400 dark:placeholder:text-zinc-500"
             />
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
@@ -112,36 +115,36 @@ export default function HeroSection() {
             className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-6 sm:gap-8 text-xs text-[#6E5F5B]"
           >
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center font-black">
+              <div className="w-7 h-7 rounded-lg bg-[#8E1616]/10 dark:bg-[#8E1616]/25 text-[#8E1616] dark:text-[#FF8080] flex items-center justify-center font-black">
                 <Flame className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-black text-[#190F0E] block text-sm">150+</span>
-                <span className="text-[10px] uppercase font-bold text-gray-400">Stone Ovens</span>
+                <span className="font-black text-[#190F0E] dark:text-white block text-sm">150+</span>
+                <span className="text-[10px] uppercase font-bold text-gray-400 dark:text-zinc-500">Stone Ovens</span>
               </div>
             </div>
 
-            <div className="h-6 w-px bg-[#EFE7DE] hidden sm:block" />
+            <div className="h-6 w-px bg-[#EFE7DE] dark:bg-[#2D1E1B] hidden sm:block" />
 
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-700 flex items-center justify-center font-black">
+              <div className="w-7 h-7 rounded-lg bg-amber-500/10 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center font-black">
                 <Clock className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-black text-[#190F0E] block text-sm">28 min</span>
-                <span className="text-[10px] uppercase font-bold text-gray-400">Avg. Dispatch</span>
+                <span className="font-black text-[#190F0E] dark:text-white block text-sm">28 min</span>
+                <span className="text-[10px] uppercase font-bold text-gray-400 dark:text-zinc-500">Avg. Dispatch</span>
               </div>
             </div>
 
-            <div className="h-6 w-px bg-[#EFE7DE] hidden sm:block" />
+            <div className="h-6 w-px bg-[#EFE7DE] dark:bg-[#2D1E1B] hidden sm:block" />
 
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-black">
-                <Star className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-black">
+                <Star className="w-3.5 h-3.5 fill-emerald-600 dark:fill-emerald-400 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div>
-                <span className="font-black text-[#190F0E] block text-sm">4.9 / 5.0</span>
-                <span className="text-[10px] uppercase font-bold text-gray-400">Tasting Score</span>
+                <span className="font-black text-[#190F0E] dark:text-white block text-sm">4.9 / 5.0</span>
+                <span className="text-[10px] uppercase font-bold text-gray-400 dark:text-zinc-500">Tasting Score</span>
               </div>
             </div>
           </motion.div>
@@ -154,10 +157,10 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
         >
           <div className="relative w-72 sm:w-88 md:w-96 aspect-square">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#8E1616]/15 via-amber-500/10 to-transparent blur-2xl animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#8E1616]/20 via-amber-500/15 to-transparent dark:from-[#8E1616]/35 dark:via-amber-500/25 blur-2xl animate-pulse" />
 
             <motion.div
-              className="relative w-full h-full rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-stone-100"
+              className="relative w-full h-full rounded-3xl overflow-hidden border-4 border-white dark:border-[#2D1E1B] shadow-2xl bg-stone-100 dark:bg-[#1A1110]"
               animate={{ y: [0, -10, 0] }}
               transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
             >
@@ -166,7 +169,7 @@ export default function HeroSection() {
                 alt="Wood-Fired Margherita Pizza"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               <div className="absolute bottom-3 left-3 right-3 p-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-between">
                 <div>
                   <div className="text-xs font-black">Margherita D.O.P.</div>
@@ -177,7 +180,7 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.div
-              className="absolute -top-3 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md border border-[#EBE4D8] p-3 rounded-2xl shadow-lg flex items-center gap-2.5 z-10"
+              className="absolute -top-3 -left-3 sm:-left-6 bg-white/95 dark:bg-[#1A1110]/95 backdrop-blur-md border border-[#EBE4D8] dark:border-[#2D1E1B] p-3 rounded-2xl shadow-lg flex items-center gap-2.5 z-10"
               animate={{ y: [0, -6, 0] }}
               transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut", delay: 0.3 }}
             >
@@ -185,13 +188,30 @@ export default function HeroSection() {
                 <Flame className="w-4 h-4" />
               </div>
               <div>
-                <div className="text-[11px] font-black text-[#190F0E]">900°F Stone Baked</div>
-                <div className="text-[9px] text-[#6E5F5B] font-semibold">Fast 90s Flash Bake</div>
+                <div className="text-[11px] font-black text-[#190F0E] dark:text-white">900°F Stone Baked</div>
+                <div className="text-[9px] text-[#6E5F5B] dark:text-zinc-400 font-semibold">Fast 90s Flash Bake</div>
               </div>
             </motion.div>
 
             <motion.div
-              className="absolute -bottom-3 -right-3 sm:-right-6 bg-white/95 backdrop-blur-md border border-[#EBE4D8] p-3 rounded-2xl shadow-lg flex items-center gap-2.5 z-10"
+              className="absolute -top-3 -right-3 sm:-right-6 bg-white/95 dark:bg-[#1A1110]/95 backdrop-blur-md border border-[#EBE4D8] dark:border-[#2D1E1B] p-2.5 sm:p-3 rounded-2xl shadow-lg flex items-center gap-2.5 z-10"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.9 }}
+            >
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center font-black shadow-xs">
+                <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: "8s" }} />
+              </div>
+              <div>
+                <div className="text-[11px] font-black text-[#190F0E] dark:text-white flex items-center gap-1">
+                  <span>100% Artisan</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
+                <div className="text-[9px] text-[#6E5F5B] dark:text-zinc-400 font-semibold">D.O.P. Certified</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="absolute -bottom-3 -right-3 sm:-right-6 bg-white/95 dark:bg-[#1A1110]/95 backdrop-blur-md border border-[#EBE4D8] dark:border-[#2D1E1B] p-3 rounded-2xl shadow-lg flex items-center gap-2.5 z-10"
               animate={{ y: [0, -7, 0] }}
               transition={{ repeat: Infinity, duration: 4.2, ease: "easeInOut", delay: 0.6 }}
             >
@@ -199,8 +219,8 @@ export default function HeroSection() {
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <div className="text-[11px] font-black text-[#190F0E]">48h Sourdough</div>
-                <div className="text-[9px] text-[#6E5F5B] font-semibold">Cold Fermentation</div>
+                <div className="text-[11px] font-black text-[#190F0E] dark:text-white">48h Sourdough</div>
+                <div className="text-[9px] text-[#6E5F5B] dark:text-zinc-400 font-semibold">Cold Fermentation</div>
               </div>
             </motion.div>
           </div>

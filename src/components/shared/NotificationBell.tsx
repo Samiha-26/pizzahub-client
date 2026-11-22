@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Bell, CheckCheck, Flame } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import { resolveApiBaseUrl } from "@/lib/api";
+import toast from "react-hot-toast";
 
 interface NotificationItem {
   _id: string;
@@ -101,11 +102,12 @@ export default function NotificationBell() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleMarkAsRead = async (id: string) => {
+  const handleMarkAsRead = async (id: string, title?: string) => {
     setNotifications((prev) =>
       prev.map((n) => (n._id === id ? { ...n, read: true } : n))
     );
     setUnreadCount((c) => Math.max(0, c - 1));
+    toast.success(title || "Alert marked as read", { icon: "🔔" });
     try {
       const baseUrl = resolveApiBaseUrl();
       await fetch(`${baseUrl}/api/notifications/${id}/read`, { method: "PATCH" });
@@ -118,6 +120,7 @@ export default function NotificationBell() {
     if (!user?.email) return;
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     setUnreadCount(0);
+    toast.success("All alerts marked as read", { icon: "✅" });
     try {
       const baseUrl = resolveApiBaseUrl();
       await fetch(`${baseUrl}/api/notifications/read-all/${encodeURIComponent(user.email)}`, {
@@ -135,7 +138,7 @@ export default function NotificationBell() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition cursor-pointer"
+        className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] dark:bg-[#1E1413] border border-[#EFE7DE] dark:border-[#2D1E1B] flex items-center justify-center text-[#190F0E] dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-[#251715] transition cursor-pointer"
         title="Notifications"
       >
         <Bell className="w-4 h-4" />
@@ -147,11 +150,11 @@ export default function NotificationBell() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl border border-[#EFE7DE] shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 space-y-3">
-          <div className="flex items-center justify-between pb-3 border-b border-[#EFE7DE]">
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 space-y-3">
+          <div className="flex items-center justify-between pb-3 border-b border-[#EFE7DE] dark:border-[#2D1E1B]">
             <div className="flex items-center gap-2">
-              <Flame className="w-4 h-4 text-[#8E1616]" />
-              <span className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+              <Flame className="w-4 h-4 text-[#8E1616] dark:text-[#E25C5C]" />
+              <span className="text-xs font-black uppercase tracking-wider text-[#190F0E] dark:text-white">
                 Dispatch &amp; Hearth Alerts
               </span>
             </div>
@@ -160,7 +163,7 @@ export default function NotificationBell() {
               <button
                 type="button"
                 onClick={handleMarkAllAsRead}
-                className="text-[10px] font-bold text-[#8E1616] hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-[10px] font-bold text-[#8E1616] dark:text-[#E25C5C] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <CheckCheck className="w-3 h-3" />
                 <span>Mark all read</span>
@@ -170,32 +173,32 @@ export default function NotificationBell() {
 
           <div className="max-h-72 overflow-y-auto space-y-2 pr-1">
             {notifications.length === 0 ? (
-              <div className="py-8 text-center text-xs text-[#6E5F5B]">
+              <div className="py-8 text-center text-xs text-[#6E5F5B] dark:text-zinc-400">
                 No alerts at this moment. Hearth is operating smoothly!
               </div>
             ) : (
               notifications.map((n) => (
                 <div
                   key={n._id}
-                  onClick={() => !n.read && handleMarkAsRead(n._id)}
+                  onClick={() => !n.read && handleMarkAsRead(n._id, n.title)}
                   className={`p-3 rounded-2xl border transition text-left cursor-pointer space-y-1 ${
                     n.read
-                      ? "bg-white border-[#EFE7DE]/70 opacity-75"
-                      : "bg-[#FAF7F2] border-[#8E1616]/30 shadow-2xs"
+                      ? "bg-white dark:bg-[#1E1413] border-[#EFE7DE]/70 dark:border-[#2D1E1B] opacity-75"
+                      : "bg-[#FAF7F2] dark:bg-[#251715] border-[#8E1616]/30 dark:border-[#E25C5C]/30 shadow-2xs"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-black text-[#190F0E] truncate pr-2">
+                    <span className="text-xs font-black text-[#190F0E] dark:text-white truncate pr-2">
                       {n.title}
                     </span>
                     {!n.read && (
-                      <span className="w-2 h-2 rounded-full bg-[#8E1616] shrink-0" />
+                      <span className="w-2 h-2 rounded-full bg-[#8E1616] dark:bg-[#E25C5C] shrink-0" />
                     )}
                   </div>
-                  <p className="text-[11px] text-[#423735] leading-relaxed">
+                  <p className="text-[11px] text-[#423735] dark:text-zinc-300 leading-relaxed font-medium">
                     {n.message}
                   </p>
-                  <div className="text-[9px] text-[#6E5F5B] pt-0.5">
+                  <div className="text-[9px] text-[#6E5F5B] dark:text-zinc-400 pt-0.5">
                     {new Date(n.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
                 </div>

@@ -34,13 +34,13 @@ export default function WhyChooseUs() {
   return (
     <section id="why-us" className="space-y-6 pt-4">
       <div>
-        <span className="text-[10px] font-black uppercase tracking-widest text-[#8E1616]">
-          TASTE & INTEGRITY GUARANTEE
+        <span className="text-[10px] font-black uppercase tracking-widest text-[#8E1616] dark:text-[#E25C5C]">
+          TASTE &amp; INTEGRITY GUARANTEE
         </span>
-        <h2 className="text-2xl sm:text-3xl font-black text-[#190F0E] mt-1 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-black text-[#190F0E] dark:text-white mt-1 tracking-tight">
           Why Choose PizzaHub?
         </h2>
-        <p className="text-xs sm:text-sm text-[#6E5F5B] mt-1">
+        <p className="text-xs sm:text-sm text-[#6E5F5B] dark:text-zinc-400 mt-1">
           Food crafted strictly to artisanal standards with zero compromised ingredients.
         </p>
       </div>
@@ -51,17 +51,17 @@ export default function WhyChooseUs() {
           return (
             <div
               key={prop.id}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-[#EFE7DE] shadow-xs space-y-3 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+              className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#1A1110] border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-xs space-y-3 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
             >
               <div
                 className={`w-11 h-11 rounded-2xl ${prop.bgClass} flex items-center justify-center shrink-0 shadow-2xs`}
               >
                 <IconComponent className={`w-5 h-5 ${prop.iconColor}`} />
               </div>
-              <h3 className="font-extrabold text-sm text-[#190F0E]">
+              <h3 className="font-extrabold text-sm text-[#190F0E] dark:text-white">
                 {prop.title}
               </h3>
-              <p className="text-xs text-[#6E5F5B] leading-relaxed">
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 leading-relaxed">
                 {prop.subtitle}
               </p>
             </div>

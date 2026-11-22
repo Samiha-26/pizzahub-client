@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -82,12 +81,7 @@ export default function VendorOrdersPage() {
     }
   };
 
-  const handleDeclineOrder = async (orderId: string, pizzaName: string) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to decline order for "${pizzaName}"? This will cancel the customer's ticket.`
-    );
-    if (!confirmed) return;
-
+  const executeDeclineOrder = async (orderId: string) => {
     setUpdatingId(orderId);
     try {
       const res = await updateOrderStatus(orderId, "cancelled");
@@ -103,6 +97,38 @@ export default function VendorOrdersPage() {
     }
   };
 
+  const handleDeclineOrder = (orderId: string, pizzaName: string) => {
+    toast((t) => (
+      <div className="flex flex-col gap-2 p-1 text-left">
+        <p className="text-xs font-bold text-[#190F0E] dark:text-zinc-100">
+          Decline ticket for {pizzaName}?
+        </p>
+        <p className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">
+          This ticket will be marked as cancelled in your kitchen.
+        </p>
+        <div className="flex gap-2 justify-end pt-1">
+          <button
+            type="button"
+            onClick={() => toast.dismiss(t.id)}
+            className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700 cursor-pointer"
+          >
+            Keep Ticket
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              toast.dismiss(t.id);
+              executeDeclineOrder(orderId);
+            }}
+            className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-[#8E1616] text-white hover:bg-[#6e1010] cursor-pointer"
+          >
+            Decline Order
+          </button>
+        </div>
+      </div>
+    ), { duration: 6000 });
+  };
+
   const getStepStatus = (order: OrderRecord, stepIndex: number): "completed" | "active" | "upcoming" => {
     if (order.status === "cancelled") return "upcoming";
     const statusOrder = ["pending", "preparing", "on_the_way", "delivered"];
@@ -114,10 +140,10 @@ export default function VendorOrdersPage() {
 
   if (isSessionPending || (isLoading && user?.email)) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
         <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-3 py-16">
           <Loader2 className="w-9 h-9 animate-spin text-[#8E1616]" />
-          <p className="text-sm font-semibold text-[#6E5F5B]">
+          <p className="text-sm font-semibold text-[#6E5F5B] dark:text-zinc-400">
             Connecting live ticket printer &amp; hearth dispatches...
           </p>
         </div>
@@ -127,18 +153,18 @@ export default function VendorOrdersPage() {
 
   if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
-        <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
+        <div className="max-w-md mx-auto bg-white dark:bg-[#1A1110] rounded-3xl p-8 border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-sm text-center space-y-4">
           <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-2xl font-black">
             <ChefHat className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-black text-[#190F0E]">Vendor Sign In Required</h1>
-          <p className="text-xs text-[#6E5F5B] leading-relaxed">
+          <h1 className="text-xl font-black text-[#190F0E] dark:text-white">Vendor Sign In Required</h1>
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 leading-relaxed">
             Please log in with your vendor credentials to access the live kitchen ticket queue and dispatch hearth orders.
           </p>
           <button
             onClick={() => router.push("/signin?redirect=/vendor/orders")}
-            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm"
+            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm cursor-pointer"
           >
             Sign In to Kitchen Portal
           </button>
@@ -162,22 +188,22 @@ export default function VendorOrdersPage() {
   });
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] py-10 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] dark:border-[#2D1E1B] pb-6">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold text-[#8E1616] uppercase tracking-wider mb-1">
               <Link href="/vendor/dashboard" className="hover:underline flex items-center gap-1">
                 <ChefHat className="w-3.5 h-3.5" />
                 <span>Kitchen HQ</span>
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E5F5B]" />
-              <span className="text-[#6E5F5B]">Live Hearth Queue</span>
+              <ChevronRight className="w-3.5 h-3.5 text-[#6E5F5B] dark:text-zinc-400" />
+              <span className="text-[#6E5F5B] dark:text-zinc-400">Live Hearth Queue</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] dark:text-white tracking-tight">
               Kitchen Order Queue
             </h1>
-            <p className="text-xs text-[#6E5F5B] mt-1">
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-1">
               Accept incoming orders, fire up stone hearths, and advance thermal dispatches.
             </p>
           </div>
@@ -185,14 +211,14 @@ export default function VendorOrdersPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => fetchOrders()}
-              className="px-3.5 py-2.5 rounded-2xl bg-white border border-[#EBE4D8] hover:border-[#8E1616]/30 text-xs font-bold text-[#190F0E] flex items-center gap-1.5 transition shadow-2xs"
+              className="px-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/30 text-xs font-bold text-[#190F0E] dark:text-zinc-200 flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5 text-[#8E1616]" />
               Refresh
             </button>
             <Link
               href="/vendor/menu"
-              className="px-4 py-2.5 rounded-2xl bg-white border border-[#EBE4D8] hover:border-[#8E1616]/40 text-xs font-bold text-[#190F0E] flex items-center gap-1.5 transition shadow-2xs"
+              className="px-4 py-2.5 rounded-2xl bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/40 text-xs font-bold text-[#190F0E] dark:text-zinc-200 flex items-center gap-1.5 transition shadow-2xs"
             >
               <Store className="w-3.5 h-3.5 text-[#8E1616]" />
               Menu Catalog
@@ -203,39 +229,39 @@ export default function VendorOrdersPage() {
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           <button
             onClick={() => setFilterTab("all")}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
               filterTab === "all"
                 ? "bg-[#8E1616] text-white shadow-sm"
-                : "bg-white border border-[#EBE4D8] text-[#6E5F5B] hover:text-[#190F0E]"
+                : "bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
             }`}
           >
             <span>All Tickets</span>
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10 dark:bg-white/10">
               {orders.length}
             </span>
           </button>
 
           <button
             onClick={() => setFilterTab("active")}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
               filterTab === "active"
                 ? "bg-amber-600 text-white shadow-sm"
-                : "bg-white border border-[#EBE4D8] text-[#6E5F5B] hover:text-[#190F0E]"
+                : "bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
             }`}
           >
             <Flame className="w-3.5 h-3.5" />
             <span>Pending &amp; In Oven</span>
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10 dark:bg-white/10">
               {pendingCount + preparingCount}
             </span>
           </button>
 
           <button
             onClick={() => setFilterTab("transit")}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
               filterTab === "transit"
-                ? "bg-[#190F0E] text-white shadow-sm"
-                : "bg-white border border-[#EBE4D8] text-[#6E5F5B] hover:text-[#190F0E]"
+                ? "bg-[#190F0E] dark:bg-zinc-800 text-white shadow-sm"
+                : "bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
             }`}
           >
             <Truck className="w-3.5 h-3.5 text-amber-500" />
@@ -247,47 +273,47 @@ export default function VendorOrdersPage() {
 
           <button
             onClick={() => setFilterTab("delivered")}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
               filterTab === "delivered"
                 ? "bg-emerald-600 text-white shadow-sm"
-                : "bg-white border border-[#EBE4D8] text-[#6E5F5B] hover:text-[#190F0E]"
+                : "bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
             <span>Delivered Hot</span>
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10 dark:bg-white/10">
               {deliveredCount}
             </span>
           </button>
 
           <button
             onClick={() => setFilterTab("cancelled")}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+            className={`px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
               filterTab === "cancelled"
                 ? "bg-red-600 text-white shadow-sm"
-                : "bg-white border border-[#EBE4D8] text-[#6E5F5B] hover:text-[#190F0E]"
+                : "bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
             }`}
           >
             <XCircle className="w-3.5 h-3.5" />
             <span>Cancelled</span>
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-black/10 dark:bg-white/10">
               {cancelledCount}
             </span>
           </button>
         </div>
 
         {filteredOrders.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-[#EBE4D8] p-12 text-center space-y-4 shadow-2xs">
+          <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] p-12 text-center space-y-4 shadow-2xs">
             <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-3xl">
               🪵
             </div>
-            <h2 className="text-lg font-black text-[#190F0E]">No Orders in This Queue</h2>
-            <p className="text-xs text-[#6E5F5B] max-w-sm mx-auto">
+            <h2 className="text-lg font-black text-[#190F0E] dark:text-white">No Orders in This Queue</h2>
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 max-w-sm mx-auto">
               No tickets match your selected tab filter. New customer orders will show up here in real time.
             </p>
             <button
               onClick={() => setFilterTab("all")}
-              className="px-5 py-2.5 rounded-2xl bg-white border border-[#EBE4D8] hover:border-[#8E1616] text-xs font-bold text-[#190F0E] transition"
+              className="px-5 py-2.5 rounded-2xl bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616] text-xs font-bold text-[#190F0E] dark:text-zinc-200 transition cursor-pointer"
             >
               View All Orders
             </button>
@@ -305,35 +331,35 @@ export default function VendorOrdersPage() {
               return (
                 <div
                   key={order._id}
-                  className="bg-white rounded-3xl border border-[#EBE4D8] shadow-2xs overflow-hidden transition hover:border-[#8E1616]/20"
+                  className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-2xs overflow-hidden transition hover:border-[#8E1616]/20"
                 >
-                  <div className="p-4 sm:p-5 border-b border-[#EBE4D8] flex flex-wrap items-center justify-between gap-3 bg-[#FAF7F2]/60">
+                  <div className="p-4 sm:p-5 border-b border-[#EBE4D8] dark:border-[#2D1E1B] flex flex-wrap items-center justify-between gap-3 bg-[#FAF7F2]/60 dark:bg-[#160D0C]/60">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center font-black text-sm">
                         #
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono font-bold text-[#190F0E]">
+                          <span className="text-xs font-mono font-bold text-[#190F0E] dark:text-white">
                             Order {order._id.slice(-6).toUpperCase()}
                           </span>
                           <span
                             className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full ${
                               isDelivered
-                                ? "bg-emerald-100 text-emerald-800"
+                                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                                 : isTransit
-                                ? "bg-[#190F0E]/10 text-[#190F0E] border border-[#190F0E]/20"
+                                ? "bg-[#190F0E]/10 text-[#190F0E] dark:bg-zinc-800 dark:text-zinc-200 border border-[#190F0E]/20 dark:border-zinc-700"
                                 : isPreparing
-                                ? "bg-amber-100 text-amber-800"
+                                ? "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
                                 : isCancelled
-                                ? "bg-red-100 text-red-800"
-                                : "bg-purple-100 text-purple-800"
+                                ? "bg-red-100 text-red-800 dark:bg-red-950/60 dark:text-red-300"
+                                : "bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300"
                             }`}
                           >
                             {order.status.replace("_", " ")}
                           </span>
                         </div>
-                        <div className="text-[11px] text-[#6E5F5B] flex items-center gap-2 mt-0.5">
+                        <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400 flex items-center gap-2 mt-0.5">
                           <span>
                             {new Date(order.createdAt).toLocaleDateString("en-US", {
                               month: "short",
@@ -343,7 +369,7 @@ export default function VendorOrdersPage() {
                             })}
                           </span>
                           <span>•</span>
-                          <span className="font-semibold text-[#190F0E]">
+                          <span className="font-semibold text-[#190F0E] dark:text-zinc-200">
                             Customer: {order.customerName}
                           </span>
                         </div>
@@ -351,7 +377,7 @@ export default function VendorOrdersPage() {
                     </div>
 
                     <div className="text-right">
-                      <span className="text-xs text-[#6E5F5B]">Ticket Total</span>
+                      <span className="text-xs text-[#6E5F5B] dark:text-zinc-400">Ticket Total</span>
                       <div className="text-lg font-black text-[#8E1616]">
                         ${order.totalPrice.toFixed(2)}
                       </div>
@@ -360,7 +386,7 @@ export default function VendorOrdersPage() {
 
                   <div className="p-4 sm:p-6 space-y-5">
                     <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
-                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-[#EBE4D8] bg-[#FAF7F2]">
+                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-[#EBE4D8] dark:border-[#2D1E1B] bg-[#FAF7F2] dark:bg-[#1E1413]">
                         <img
                           src={
                             order.pizzaImage ||
@@ -373,38 +399,38 @@ export default function VendorOrdersPage() {
 
                       <div className="flex-1 space-y-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="text-base font-black text-[#190F0E]">
+                          <h3 className="text-base font-black text-[#190F0E] dark:text-white">
                             {order.pizzaName}
                           </h3>
                           <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#8E1616]/10 text-[#8E1616]">
                             {order.crust}
                           </span>
-                          <span className="text-[10px] font-bold text-[#6E5F5B]">
+                          <span className="text-[10px] font-bold text-[#6E5F5B] dark:text-zinc-400">
                             • {order.category}
                           </span>
                         </div>
-                        <div className="text-xs font-bold text-[#190F0E]">
+                        <div className="text-xs font-bold text-[#190F0E] dark:text-zinc-200">
                           Item Quantity: {order.quantity} × ${order.price.toFixed(2)}
                         </div>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EBE4D8]/80 flex items-start gap-2.5">
+                      <div className="bg-[#FAF7F2] dark:bg-[#1E1413] p-3.5 rounded-2xl border border-[#EBE4D8]/80 dark:border-[#2D1E1B] flex items-start gap-2.5">
                         <MapPin className="w-4 h-4 text-[#8E1616] shrink-0 mt-0.5" />
                         <div>
-                          <div className="font-bold text-[#190F0E]">Delivery Address</div>
-                          <div className="text-[#6E5F5B] leading-relaxed mt-0.5">
+                          <div className="font-bold text-[#190F0E] dark:text-white">Delivery Address</div>
+                          <div className="text-[#6E5F5B] dark:text-zinc-200 font-medium leading-relaxed mt-0.5">
                             {order.deliveryAddress}
                           </div>
                         </div>
                       </div>
 
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EBE4D8]/80 flex items-start gap-2.5">
+                      <div className="bg-[#FAF7F2] dark:bg-[#1E1413] p-3.5 rounded-2xl border border-[#EBE4D8]/80 dark:border-[#2D1E1B] flex items-start gap-2.5">
                         <Calendar className="w-4 h-4 text-[#8E1616] shrink-0 mt-0.5" />
                         <div>
-                          <div className="font-bold text-[#190F0E]">Requested Dispatch Window</div>
-                          <div className="text-[#6E5F5B] leading-relaxed mt-0.5">
+                          <div className="font-bold text-[#190F0E] dark:text-white">Requested Dispatch Window</div>
+                          <div className="text-[#6E5F5B] dark:text-zinc-200 font-medium leading-relaxed mt-0.5">
                             {order.deliverySchedule}
                           </div>
                         </div>
@@ -412,13 +438,17 @@ export default function VendorOrdersPage() {
                     </div>
 
                     {order.bakerNote && (
-                      <div className="bg-amber-50/70 border border-amber-200/80 p-3 rounded-2xl text-xs flex items-start gap-2 text-amber-950">
-                        <span className="font-bold shrink-0">Baker Note from Customer:</span>
-                        <span className="italic">{order.bakerNote}</span>
+                      <div className="bg-amber-500/10 dark:bg-amber-500/15 border border-amber-400/50 dark:border-amber-500/40 p-3.5 rounded-2xl text-xs flex items-start gap-2.5 shadow-2xs">
+                        <span className="font-black shrink-0 px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30 text-[10px] uppercase tracking-wider">
+                          Customer Baker Note
+                        </span>
+                        <span className="leading-relaxed font-semibold text-[#190F0E] dark:text-amber-100 mt-0.5">
+                          {order.bakerNote}
+                        </span>
                       </div>
                     )}
 
-                    <div className="pt-4 border-t border-[#EBE4D8] space-y-3">
+                    <div className="pt-4 border-t border-[#EBE4D8] dark:border-[#2D1E1B] space-y-3">
                       <div className="text-[11px] font-bold text-[#8E1616] uppercase tracking-wider">
                         Kitchen Dispatch Progress
                       </div>
@@ -435,12 +465,12 @@ export default function VendorOrdersPage() {
                               key={step.key}
                               className={`p-2.5 rounded-2xl border text-center relative ${
                                 isCancelled
-                                  ? "bg-stone-50 border-stone-200 opacity-50"
+                                  ? "bg-stone-50 dark:bg-stone-900/40 border-stone-200 dark:border-stone-800 opacity-50"
                                   : isDone
-                                  ? "bg-emerald-50/70 border-emerald-200 text-emerald-950"
+                                  ? "bg-emerald-50/70 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/40 text-emerald-950 dark:text-emerald-300"
                                   : isCur
-                                  ? "bg-[#8E1616]/10 border-[#8E1616] text-[#8E1616] ring-1 ring-[#8E1616]/30 font-bold"
-                                  : "bg-[#FAF7F2] border-[#EBE4D8] text-[#6E5F5B] opacity-60"
+                                  ? "bg-[#8E1616]/10 dark:bg-[#8E1616]/30 border-[#8E1616] text-[#8E1616] dark:text-red-400 ring-1 ring-[#8E1616]/30 font-bold"
+                                  : "bg-[#FAF7F2] dark:bg-[#1E1413] border-[#EBE4D8] dark:border-[#2D1E1B] text-[#6E5F5B] dark:text-zinc-400 opacity-60"
                               }`}
                             >
                               <div className="flex items-center justify-center gap-1.5">
@@ -455,10 +485,10 @@ export default function VendorOrdersPage() {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-[#EBE4D8] flex flex-wrap items-center justify-between gap-3">
-                      <div className="text-xs text-[#6E5F5B]">
+                    <div className="pt-4 border-t border-[#EBE4D8] dark:border-[#2D1E1B] flex flex-wrap items-center justify-between gap-3">
+                      <div className="text-xs text-[#6E5F5B] dark:text-zinc-400">
                         Current Kitchen Stage:{" "}
-                        <strong className="text-[#190F0E] uppercase">
+                        <strong className="text-[#190F0E] dark:text-white uppercase">
                           {order.status.replace("_", " ")}
                         </strong>
                       </div>
@@ -469,7 +499,7 @@ export default function VendorOrdersPage() {
                             <button
                               disabled={isBusy}
                               onClick={() => handleDeclineOrder(order._id, order.pizzaName)}
-                              className="px-3.5 py-2 rounded-xl border border-red-200 hover:bg-red-50 text-red-600 text-xs font-bold transition disabled:opacity-50"
+                              className="px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/60 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 text-xs font-bold transition disabled:opacity-50 cursor-pointer"
                             >
                               Decline Ticket
                             </button>
@@ -482,7 +512,7 @@ export default function VendorOrdersPage() {
                                   `Ticket #${order._id.slice(-6)} fired into stone hearth!`
                                 )
                               }
-                              className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition disabled:opacity-50"
+                              className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition disabled:opacity-50 cursor-pointer"
                             >
                               {isBusy ? (
                                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -504,7 +534,7 @@ export default function VendorOrdersPage() {
                                 `Ticket #${order._id.slice(-6)} dispatched in thermal box!`
                               )
                             }
-                            className="px-5 py-2 rounded-xl bg-[#190F0E] hover:bg-[#2C1A18] text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition disabled:opacity-50"
+                            className="px-5 py-2 rounded-xl bg-[#190F0E] hover:bg-[#2C1A18] dark:bg-[#8E1616] dark:hover:bg-[#721111] text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition disabled:opacity-50 cursor-pointer"
                           >
                             {isBusy ? (
                               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -525,7 +555,7 @@ export default function VendorOrdersPage() {
                                 `Ticket #${order._id.slice(-6)} confirmed delivered hot!`
                               )
                             }
-                            className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition disabled:opacity-50"
+                            className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition disabled:opacity-50 cursor-pointer"
                           >
                             {isBusy ? (
                               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -537,14 +567,14 @@ export default function VendorOrdersPage() {
                         )}
 
                         {isDelivered && (
-                          <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-black">
+                          <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-black">
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             Delivered &amp; Settled
                           </span>
                         )}
 
                         {isCancelled && (
-                          <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-red-100 text-red-800 text-xs font-black">
+                          <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-800 dark:text-red-300 text-xs font-black">
                             <XCircle className="w-3.5 h-3.5" />
                             Cancelled Ticket
                           </span>

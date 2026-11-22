@@ -4,39 +4,39 @@ import { MapPin, Phone, Mail, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-[#EFE7DE] mt-16 pt-10 sm:pt-14 pb-8">
+    <footer className="bg-white dark:bg-[#120B0A] border-t border-[#EFE7DE] dark:border-[#2D1E1B] mt-16 pt-10 sm:pt-14 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 pb-10 border-b border-[#EFE7DE]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 pb-10 border-b border-[#EFE7DE] dark:border-[#2D1E1B]">
           <div className="lg:col-span-5 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-2xl bg-[#8E1616] flex items-center justify-center text-white shadow-md shadow-[#8E1616]/20 shrink-0">
                 <span className="text-xl leading-none">🍕</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tight text-[#190F0E]">
-                  Pizza<span className="text-[#8E1616]">Hub</span>
+                <span className="text-xl font-black tracking-tight text-[#190F0E] dark:text-white">
+                  Pizza<span className="text-[#8E1616] dark:text-[#E25C5C]">Hub</span>
                 </span>
-                <span className="text-[10px] font-semibold tracking-wider text-[#6E5F5B] uppercase">
+                <span className="text-[10px] font-semibold tracking-wider text-[#6E5F5B] dark:text-[#A89893] uppercase">
                   Artisan Wood-Fired Pies
                 </span>
               </div>
             </Link>
 
-            <p className="text-xs sm:text-sm text-[#6E5F5B] max-w-md leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#6E5F5B] dark:text-[#A89893] max-w-md leading-relaxed">
               Every pie is hand-stretched and baked in authentic 450°C refractory stone hearths. Delivered piping hot in micro-vented thermal boxes straight to your door.
             </p>
 
-            <div className="space-y-2 text-xs text-[#6E5F5B] pt-1">
+            <div className="space-y-2 text-xs text-[#6E5F5B] dark:text-[#B5A5A0] pt-1">
               <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-[#8E1616] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#8E1616] dark:text-[#E25C5C] shrink-0 mt-0.5" />
                 <span>Little Italy, NY • Williamsburg, NY • North Beach, CA</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#8E1616] shrink-0" />
+                <Phone className="w-4 h-4 text-[#8E1616] dark:text-[#E25C5C] shrink-0" />
                 <span>+1 (800) PIZZA-HUB (9 AM - 2 AM EST)</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#8E1616] shrink-0" />
+                <Mail className="w-4 h-4 text-[#8E1616] dark:text-[#E25C5C] shrink-0" />
                 <span>orders@pizzahub.com</span>
               </div>
             </div>
@@ -44,32 +44,32 @@ export default function Footer() {
 
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
             <div className="space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E] dark:text-white">
                 Artisan Catalog
               </h4>
-              <ul className="space-y-1.5 text-xs text-[#6E5F5B]">
+              <ul className="space-y-1.5 text-xs text-[#6E5F5B] dark:text-[#A89893]">
                 <li>
-                  <Link href="/menu?category=Wood-Fired" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?category=Wood-Fired" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Wood-Fired
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?category=Classic+Italian" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?category=Classic+Italian" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Neapolitan D.O.P.
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?category=White+Base" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?category=White+Base" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     White Truffle
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?category=Spicy+%26+Fiery" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
-                    Calabrian 'Nduja
+                  <Link href="/menu?category=Spicy+%26+Fiery" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
+                    Calabrian &apos;Nduja
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?category=Vegetarian+%26+Plant" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?category=Vegetarian+%26+Plant" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Plant &amp; Vegan
                   </Link>
                 </li>
@@ -77,32 +77,32 @@ export default function Footer() {
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E] dark:text-white">
                 Crust &amp; Dough
               </h4>
-              <ul className="space-y-1.5 text-xs text-[#6E5F5B]">
+              <ul className="space-y-1.5 text-xs text-[#6E5F5B] dark:text-[#A89893]">
                 <li>
-                  <Link href="/menu?crust=Neapolitan+48h" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?crust=Neapolitan+48h" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     48h Cold Ferment
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?crust=Roman+Thin+Crust" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?crust=Roman+Thin+Crust" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Roman Thin Base
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?crust=Detroit+Pan" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?crust=Detroit+Pan" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Detroit Pan Frico
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?crust=Gluten-Free+Cauliflower" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?crust=Gluten-Free+Cauliflower" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Gluten-Free Base
                   </Link>
                 </li>
                 <li>
-                  <Link href="/menu?crust=Sourdough+Stuffed" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/menu?crust=Sourdough+Stuffed" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Stuffed Sourdough
                   </Link>
                 </li>
@@ -110,32 +110,32 @@ export default function Footer() {
             </div>
 
             <div className="col-span-2 sm:col-span-1 space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E]">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#190F0E] dark:text-white">
                 Portals &amp; Orders
               </h4>
-              <ul className="space-y-1.5 text-xs text-[#6E5F5B]">
+              <ul className="space-y-1.5 text-xs text-[#6E5F5B] dark:text-[#A89893]">
                 <li>
-                  <Link href="/vendor/dashboard" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/vendor/dashboard" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Vendor Kitchen
                   </Link>
                 </li>
                 <li>
-                  <Link href="/vendor/upgrade" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/vendor/upgrade" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Vendor Premium
                   </Link>
                 </li>
                 <li>
-                  <Link href="/orders" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/orders" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Track Orders
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admin/dashboard" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/admin/dashboard" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Admin Portal
                   </Link>
                 </li>
                 <li>
-                  <Link href="/signup" className="py-1 inline-block hover:text-[#8E1616] transition-colors">
+                  <Link href="/signup" className="py-1 inline-block hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition-colors">
                     Join as Vendor
                   </Link>
                 </li>
@@ -144,10 +144,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#6E5F5B]">
-          <div className="inline-flex items-center gap-2 bg-[#FAF7F2] border border-[#EFE7DE] px-3 py-1.5 rounded-full">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-semibold text-[#190F0E]">100% Stone-Fired Authenticity Guarantee</span>
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#6E5F5B] dark:text-[#A89893]">
+          <div className="inline-flex items-center gap-2 bg-[#FAF7F2] dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#382320] px-3 py-1.5 rounded-full">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="font-semibold text-[#190F0E] dark:text-[#FAF7F2]">100% Stone-Fired Authenticity Guarantee</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -155,7 +155,7 @@ export default function Footer() {
               href="https://x.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
+              className="w-9 h-9 rounded-full bg-[#FAF7F2] dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#382320] flex items-center justify-center hover:bg-[#8E1616] dark:hover:bg-[#8E1616] hover:text-white dark:hover:text-white transition-all text-[#190F0E] dark:text-[#FAF7F2]"
               aria-label="X (formerly Twitter)"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@ export default function Footer() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
+              className="w-9 h-9 rounded-full bg-[#FAF7F2] dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#382320] flex items-center justify-center hover:bg-[#8E1616] dark:hover:bg-[#8E1616] hover:text-white dark:hover:text-white transition-all text-[#190F0E] dark:text-[#FAF7F2]"
               aria-label="Instagram"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -177,7 +177,7 @@ export default function Footer() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center hover:bg-[#8E1616] hover:text-white transition-all text-[#190F0E]"
+              className="w-9 h-9 rounded-full bg-[#FAF7F2] dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#382320] flex items-center justify-center hover:bg-[#8E1616] dark:hover:bg-[#8E1616] hover:text-white dark:hover:text-white transition-all text-[#190F0E] dark:text-[#FAF7F2]"
               aria-label="GitHub"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">

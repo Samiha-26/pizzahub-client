@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -172,14 +171,8 @@ export default function VendorMenuPage() {
     }
   };
 
-  const handleDelete = async (pizza: PizzaDetail) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to permanently delete "${pizza.name}" from your hearth catalog?`
-    );
-    if (!confirmed) return;
-
+  const executeDelete = async (pizza: PizzaDetail) => {
     setDeletingId(pizza.id);
-
     try {
       await deleteVendorPizza(pizza.id);
       toast.success(`"${pizza.name}" deleted from your menu`, { icon: "🗑️" });
@@ -203,12 +196,47 @@ export default function VendorMenuPage() {
     }
   };
 
+  const handleDelete = (pizza: PizzaDetail) => {
+    toast((t) => (
+      <div className="flex flex-col gap-2 p-1 text-left">
+        <p className="text-xs font-bold text-[#190F0E] dark:text-zinc-100">
+          Delete {pizza.name}?
+        </p>
+        <p className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">
+          This pizza will be removed from your hearth menu.
+        </p>
+        <div className="flex gap-2 justify-end pt-1">
+          <button
+            type="button"
+            onClick={() => toast.dismiss(t.id)}
+            className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700 cursor-pointer"
+          >
+            Keep
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              toast.dismiss(t.id);
+              executeDelete(pizza);
+            }}
+            className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-[#8E1616] text-white hover:bg-[#6e1010] cursor-pointer"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), { duration: 6000 });
+  };
+      setDeletingId(null);
+    }
+  };
+
   if (isSessionPending || (isLoading && user?.email)) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
         <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-3 py-16">
           <Loader2 className="w-9 h-9 animate-spin text-[#8E1616]" />
-          <p className="text-sm font-semibold text-[#6E5F5B]">
+          <p className="text-sm font-semibold text-[#6E5F5B] dark:text-zinc-400">
             Fetching your kitchen menu catalog...
           </p>
         </div>
@@ -218,18 +246,18 @@ export default function VendorMenuPage() {
 
   if (!user || ((user as any).role !== "vendor" && (user as any).role !== "admin")) {
     return (
-      <main className="min-h-screen bg-[#FAF7F2] py-20 px-4">
-        <div className="max-w-md mx-auto bg-white rounded-3xl p-8 border border-[#EBE4D8] shadow-sm text-center space-y-4">
+      <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-20 px-4">
+        <div className="max-w-md mx-auto bg-white dark:bg-[#1A1110] rounded-3xl p-8 border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-sm text-center space-y-4">
           <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-2xl font-black">
             <ChefHat className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-black text-[#190F0E]">Vendor Sign In Required</h1>
-          <p className="text-xs text-[#6E5F5B] leading-relaxed">
+          <h1 className="text-xl font-black text-[#190F0E] dark:text-white">Vendor Sign In Required</h1>
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 leading-relaxed">
             Please log in with your vendor account to view and manage your restaurant menu catalog.
           </p>
           <button
             onClick={() => router.push("/signin?redirect=/vendor/menu")}
-            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm"
+            className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-bold transition shadow-sm cursor-pointer"
           >
             Sign In to Kitchen Portal
           </button>
@@ -254,22 +282,22 @@ export default function VendorMenuPage() {
   });
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] py-10 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#FAF7F2] dark:bg-[#120B0A] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE4D8] dark:border-[#2D1E1B] pb-6">
           <div>
-            <div className="flex items-center gap-2 text-[11px] font-bold text-[#8E1616] uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-[11px] font-bold text-[#8E1616] dark:text-[#E25C5C] uppercase tracking-wider mb-1">
               <Link href="/vendor/dashboard" className="hover:underline flex items-center gap-1">
                 <ChefHat className="w-3.5 h-3.5" />
                 <span>Kitchen HQ</span>
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E5F5B]" />
-              <span className="text-[#6E5F5B]">Menu Management</span>
+              <ChevronRight className="w-3.5 h-3.5 text-[#6E5F5B] dark:text-zinc-400" />
+              <span className="text-[#6E5F5B] dark:text-zinc-400">Menu Management</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] dark:text-white tracking-tight">
               Artisan Menu Catalog
             </h1>
-            <p className="text-xs text-[#6E5F5B] mt-1">
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-1">
               Live stone-hearth creations authored by {user.name || "your pizzeria"}.
             </p>
           </div>
@@ -277,7 +305,7 @@ export default function VendorMenuPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => fetchMenu()}
-              className="px-3.5 py-2.5 rounded-2xl bg-white border border-[#EBE4D8] hover:border-[#8E1616]/30 text-xs font-bold text-[#190F0E] flex items-center gap-1.5 transition shadow-2xs"
+              className="px-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B] hover:border-[#8E1616]/30 text-xs font-bold text-[#190F0E] dark:text-zinc-200 flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5 text-[#8E1616]" />
               Refresh
@@ -299,10 +327,10 @@ export default function VendorMenuPage() {
         <div
           className={`p-4 sm:p-5 rounded-3xl border transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs ${
             isPremium
-              ? "bg-amber-500/10 border-amber-200"
+              ? "bg-amber-500/10 dark:bg-amber-500/20 border-amber-200 dark:border-amber-700/60"
               : isLimitReached
-              ? "bg-red-50 border-red-200"
-              : "bg-white border-[#EBE4D8]"
+              ? "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900/60"
+              : "bg-white dark:bg-[#1A1110] border-[#EBE4D8] dark:border-[#2D1E1B]"
           }`}
         >
           <div className="flex items-center gap-3">
@@ -312,21 +340,21 @@ export default function VendorMenuPage() {
                   ? "bg-amber-500 text-white"
                   : isLimitReached
                   ? "bg-red-500 text-white"
-                  : "bg-[#8E1616]/10 text-[#8E1616]"
+                  : "bg-[#8E1616]/10 text-[#8E1616] dark:text-[#E25C5C]"
               }`}
             >
               {isPremium ? <Crown className="w-5 h-5 fill-current" /> : <Flame className="w-5 h-5" />}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-extrabold uppercase tracking-wide text-[#190F0E]">
+                <span className="text-xs font-extrabold uppercase tracking-wide text-[#190F0E] dark:text-white">
                   {isPremium ? "Premium Unlimited Hearth" : "Free Artisan Tier"}
                 </span>
-                <span className="text-[11px] font-bold text-[#6E5F5B]">
+                <span className="text-[11px] font-bold text-[#6E5F5B] dark:text-zinc-400">
                   • {itemCount} {isPremium ? "menu items active" : "of 3 slots used"}
                 </span>
               </div>
-              <p className="text-xs text-[#6E5F5B] mt-0.5">
+              <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 mt-0.5">
                 {isPremium
                   ? "Unlimited pizza slots, verified crown badge, and priority dispatch."
                   : isLimitReached
@@ -347,15 +375,15 @@ export default function VendorMenuPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-3xl border border-[#EBE4D8] p-4 flex flex-col sm:flex-row gap-3 shadow-2xs">
+        <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] p-4 flex flex-col sm:flex-row gap-3 shadow-2xs">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by pizza name or ingredients..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#EBE4D8] text-xs text-[#190F0E] focus:outline-hidden focus:border-[#8E1616] transition bg-[#FAF7F2]/50 placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] text-xs text-[#190F0E] dark:text-white focus:outline-hidden focus:border-[#8E1616] transition bg-[#FAF7F2]/50 dark:bg-[#1E1413] placeholder:text-gray-400 dark:placeholder:text-zinc-500"
             />
           </div>
 
@@ -363,7 +391,7 @@ export default function VendorMenuPage() {
             <select
               value={selectedCrust}
               onChange={(e) => setSelectedCrust(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-2xl border border-[#EBE4D8] text-xs font-bold text-[#190F0E] bg-white focus:outline-hidden focus:border-[#8E1616] transition cursor-pointer"
+              className="w-full px-3.5 py-2.5 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] text-xs font-bold text-[#190F0E] dark:text-zinc-200 bg-white dark:bg-[#1E1413] focus:outline-hidden focus:border-[#8E1616] transition cursor-pointer"
             >
               <option value="All">All Crust Styles</option>
               {CRUST_OPTIONS.map((c) => (
@@ -376,12 +404,12 @@ export default function VendorMenuPage() {
         </div>
 
         {items.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-[#EBE4D8] p-12 text-center space-y-4 shadow-2xs">
+          <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] p-12 text-center space-y-4 shadow-2xs">
             <div className="w-16 h-16 rounded-2xl bg-[#8E1616]/10 text-[#8E1616] flex items-center justify-center mx-auto text-3xl">
               🍕
             </div>
-            <h2 className="text-lg font-black text-[#190F0E]">No Pizzas Listed Yet</h2>
-            <p className="text-xs text-[#6E5F5B] max-w-sm mx-auto">
+            <h2 className="text-lg font-black text-[#190F0E] dark:text-white">No Pizzas Listed Yet</h2>
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 max-w-sm mx-auto">
               Your kitchen catalog is currently empty. Fire up your first stone-baked creation and make it available to hungry pizza lovers!
             </p>
             <Link
@@ -393,9 +421,9 @@ export default function VendorMenuPage() {
             </Link>
           </div>
         ) : filteredItems.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-[#EBE4D8] p-8 text-center space-y-2 shadow-2xs">
-            <h3 className="text-base font-bold text-[#190F0E]">No Matching Pizzas</h3>
-            <p className="text-xs text-[#6E5F5B]">
+          <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] p-8 text-center space-y-2 shadow-2xs">
+            <h3 className="text-base font-bold text-[#190F0E] dark:text-white">No Matching Pizzas</h3>
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
               No menu items match &quot;{searchTerm}&quot; under the selected crust style.
             </p>
             <button
@@ -403,17 +431,17 @@ export default function VendorMenuPage() {
                 setSearchTerm("");
                 setSelectedCrust("All");
               }}
-              className="text-xs font-bold text-[#8E1616] hover:underline pt-2"
+              className="text-xs font-bold text-[#8E1616] dark:text-[#E25C5C] hover:underline pt-2 cursor-pointer"
             >
               Clear filters
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl border border-[#EBE4D8] overflow-hidden shadow-2xs">
+          <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] overflow-hidden shadow-2xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse min-w-[700px]">
                 <thead>
-                  <tr className="border-b border-[#EBE4D8] bg-[#FAF7F2]/80 text-[#6E5F5B] uppercase tracking-wider font-extrabold text-[10px]">
+                  <tr className="border-b border-[#EBE4D8] dark:border-[#2D1E1B] bg-[#FAF7F2]/80 dark:bg-[#1E1413] text-[#6E5F5B] dark:text-zinc-400 uppercase tracking-wider font-extrabold text-[10px]">
                     <th className="py-4 px-4 sm:px-6">Artisan Creation</th>
                     <th className="py-4 px-4">Crust &amp; Category</th>
                     <th className="py-4 px-4">Price</th>
@@ -422,15 +450,15 @@ export default function VendorMenuPage() {
                     <th className="py-4 px-4 sm:px-6 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EBE4D8]/60">
+                <tbody className="divide-y divide-[#EBE4D8]/60 dark:divide-[#2D1E1B]">
                   {filteredItems.map((pizza) => (
                     <tr
                       key={pizza.id}
-                      className="hover:bg-[#FAF7F2]/40 transition"
+                      className="hover:bg-[#FAF7F2]/40 dark:hover:bg-[#251715]/40 transition"
                     >
                       <td className="py-4 px-4 sm:px-6">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#EBE4D8] bg-[#FAF7F2]">
+                          <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#EBE4D8] dark:border-[#2D1E1B] bg-[#FAF7F2] dark:bg-[#1E1413]">
                             <img
                               src={
                                 pizza.image ||
@@ -441,10 +469,10 @@ export default function VendorMenuPage() {
                             />
                           </div>
                           <div className="space-y-0.5 max-w-xs">
-                            <div className="font-extrabold text-sm text-[#190F0E] truncate">
+                            <div className="font-extrabold text-sm text-[#190F0E] dark:text-white truncate">
                               {pizza.name}
                             </div>
-                            <div className="text-[11px] text-[#6E5F5B] italic truncate">
+                            <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400 italic truncate">
                               {pizza.tagline || "Wood-Fired Creation"}
                             </div>
                           </div>
@@ -453,22 +481,22 @@ export default function VendorMenuPage() {
 
                       <td className="py-4 px-4">
                         <div className="space-y-1">
-                          <span className="inline-block px-2 py-0.5 rounded-md bg-[#FAF7F2] border border-[#EBE4D8] text-[10px] font-bold text-[#190F0E]">
+                          <span className="inline-block px-2 py-0.5 rounded-md bg-[#FAF7F2] dark:bg-[#251715] border border-[#EBE4D8] dark:border-[#3D2824] text-[10px] font-bold text-[#190F0E] dark:text-zinc-200">
                             {pizza.crust}
                           </span>
-                          <div className="text-[11px] text-[#8E1616] font-semibold">
+                          <div className="text-[11px] text-[#8E1616] dark:text-[#E25C5C] font-semibold">
                             {pizza.category}
                           </div>
                         </div>
                       </td>
 
                       <td className="py-4 px-4">
-                        <div className="text-sm font-black text-[#8E1616]">
+                        <div className="text-sm font-black text-[#8E1616] dark:text-[#E25C5C]">
                           ${pizza.price.toFixed(2)}
                         </div>
                       </td>
 
-                      <td className="py-4 px-4 hidden md:table-cell text-[#6E5F5B]">
+                      <td className="py-4 px-4 hidden md:table-cell text-[#6E5F5B] dark:text-zinc-400">
                         <div className="space-y-0.5 text-[11px]">
                           <div>⏱️ {pizza.prepTimeMinutes || 15} min prep</div>
                           <div>🔥 {pizza.calories || 850} kcal</div>
@@ -476,7 +504,7 @@ export default function VendorMenuPage() {
                       </td>
 
                       <td className="py-4 px-4 hidden lg:table-cell max-w-xs">
-                        <div className="text-[11px] text-[#6E5F5B] line-clamp-2">
+                        <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400 line-clamp-2">
                           {(pizza.ingredients || []).join(", ") || "Artisan toppings"}
                         </div>
                       </td>
@@ -487,7 +515,7 @@ export default function VendorMenuPage() {
                             href={`/menu/${pizza.id}`}
                             target="_blank"
                             title="View Public Listing"
-                            className="p-2 rounded-xl text-[#6E5F5B] hover:text-[#8E1616] hover:bg-[#8E1616]/10 transition"
+                            className="p-2 rounded-xl text-[#6E5F5B] dark:text-zinc-400 hover:text-[#8E1616] dark:hover:text-[#E25C5C] hover:bg-[#8E1616]/10 transition cursor-pointer"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </Link>
@@ -496,7 +524,7 @@ export default function VendorMenuPage() {
                             type="button"
                             onClick={() => handleOpenEdit(pizza)}
                             title="Edit Menu Item"
-                            className="p-2 rounded-xl text-[#6E5F5B] hover:text-[#190F0E] hover:bg-stone-100 transition"
+                            className="p-2 rounded-xl text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white hover:bg-stone-100 dark:hover:bg-[#251715] transition cursor-pointer"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
@@ -506,7 +534,7 @@ export default function VendorMenuPage() {
                             disabled={deletingId === pizza.id}
                             onClick={() => handleDelete(pizza)}
                             title="Delete Pizza"
-                            className="p-2 rounded-xl text-red-500 hover:text-red-700 hover:bg-red-50 transition disabled:opacity-50"
+                            className="p-2 rounded-xl text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 transition disabled:opacity-50 cursor-pointer"
                           >
                             {deletingId === pizza.id ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
@@ -526,17 +554,17 @@ export default function VendorMenuPage() {
 
         {editingPizza && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="w-full max-w-xl bg-white rounded-3xl border border-[#EBE4D8] shadow-2xl p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 max-h-[92vh] overflow-y-auto">
-              <div className="flex items-center justify-between pb-3 border-b border-[#EBE4D8]">
+            <div className="w-full max-w-xl bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EBE4D8] dark:border-[#2D1E1B] shadow-2xl p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 max-h-[92vh] overflow-y-auto">
+              <div className="flex items-center justify-between pb-3 border-b border-[#EBE4D8] dark:border-[#2D1E1B]">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-xl bg-[#8E1616] text-white flex items-center justify-center text-sm font-black">
                     <Edit3 className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-base font-black text-[#190F0E]">
+                    <h3 className="text-base font-black text-[#190F0E] dark:text-white">
                       Edit Menu Item: {editingPizza.name}
                     </h3>
-                    <p className="text-[11px] text-[#6E5F5B]">
+                    <p className="text-[11px] text-[#6E5F5B] dark:text-zinc-400">
                       Update pricing, ingredients, and menu item details.
                     </p>
                   </div>
@@ -545,7 +573,7 @@ export default function VendorMenuPage() {
                 <button
                   type="button"
                   onClick={handleCloseEdit}
-                  className="w-8 h-8 rounded-full border border-[#EBE4D8] flex items-center justify-center text-[#6E5F5B] hover:text-[#190F0E] transition"
+                  className="w-8 h-8 rounded-full border border-[#EBE4D8] dark:border-[#2D1E1B] flex items-center justify-center text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white transition cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -554,7 +582,7 @@ export default function VendorMenuPage() {
               <form onSubmit={handleSaveEdit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                    <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                       Pizza Name *
                     </label>
                     <input
@@ -562,12 +590,12 @@ export default function VendorMenuPage() {
                       required
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                    <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                       Price ($) *
                     </label>
                     <input
@@ -577,32 +605,32 @@ export default function VendorMenuPage() {
                       required
                       value={editPrice}
                       onChange={(e) => setEditPrice(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                  <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                     Tagline
                   </label>
                   <input
                     type="text"
                     value={editTagline}
                     onChange={(e) => setEditTagline(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                    <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                       Crust Style
                     </label>
                     <select
                       value={editCrust}
                       onChange={(e) => setEditCrust(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden bg-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white"
                     >
                       {CRUST_OPTIONS.map((c) => (
                         <option key={c} value={c}>
@@ -613,13 +641,13 @@ export default function VendorMenuPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                    <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                       Menu Category
                     </label>
                     <select
                       value={editCategory}
                       onChange={(e) => setEditCategory(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden bg-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white"
                     >
                       {CATEGORY_OPTIONS.map((cat) => (
                         <option key={cat} value={cat}>
@@ -631,32 +659,32 @@ export default function VendorMenuPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                  <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                     Ingredients
                   </label>
                   <textarea
                     rows={2}
                     value={editIngredients}
                     onChange={(e) => setEditIngredients(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                  <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                     Story / Description
                   </label>
                   <textarea
                     rows={2}
                     value={editDescription}
                     onChange={(e) => setEditDescription(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                    <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                       Prep Time
                     </label>
                     <input
@@ -665,12 +693,12 @@ export default function VendorMenuPage() {
                       max="60"
                       value={editPrepTime}
                       onChange={(e) => setEditPrepTime(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-[#190F0E] uppercase tracking-wider">
+                    <label className="text-[11px] font-bold text-[#190F0E] dark:text-white uppercase tracking-wider">
                       Calories
                     </label>
                     <input
@@ -679,16 +707,16 @@ export default function VendorMenuPage() {
                       max="2500"
                       value={editCalories}
                       onChange={(e) => setEditCalories(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] bg-white dark:bg-[#1E1413] text-[#190F0E] dark:text-white text-xs font-semibold focus:border-[#8E1616] focus:outline-hidden"
                     />
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-[#EBE4D8] flex items-center justify-end gap-3">
+                <div className="pt-4 border-t border-[#EBE4D8] dark:border-[#2D1E1B] flex items-center justify-end gap-3">
                   <button
                     type="button"
                     onClick={handleCloseEdit}
-                    className="px-4 py-2.5 rounded-xl border border-[#EBE4D8] text-xs font-bold text-[#6E5F5B] hover:bg-stone-50 transition"
+                    className="px-4 py-2.5 rounded-xl border border-[#EBE4D8] dark:border-[#2D1E1B] text-xs font-bold text-[#6E5F5B] dark:text-zinc-300 hover:bg-stone-50 dark:hover:bg-[#251715] transition cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -696,7 +724,7 @@ export default function VendorMenuPage() {
                   <button
                     type="submit"
                     disabled={isSavingEdit}
-                    className="px-6 py-2.5 rounded-xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-extrabold flex items-center gap-2 transition disabled:opacity-50 shadow-sm"
+                    className="px-6 py-2.5 rounded-xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-extrabold flex items-center gap-2 transition disabled:opacity-50 shadow-sm cursor-pointer"
                   >
                     {isSavingEdit ? (
                       <>

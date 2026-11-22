@@ -172,31 +172,31 @@ function MenuContent() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-8">
       <div className="space-y-2">
-        <div className="flex items-center gap-1.5 text-xs text-[#6E5F5B]">
-          <Link href="/" className="hover:text-[#8E1616] transition">
+        <div className="flex items-center gap-1.5 text-xs text-[#6E5F5B] dark:text-zinc-400">
+          <Link href="/" className="hover:text-[#8E1616] dark:hover:text-[#E25C5C] transition">
             Home
           </Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-[#190F0E] font-bold">Artisan Menu</span>
+          <span className="text-[#190F0E] dark:text-white font-bold">Artisan Menu</span>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-1">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#190F0E] dark:text-white tracking-tight">
               Artisan Wood-Fired Menu
             </h1>
-            <p className="text-xs sm:text-sm text-[#6E5F5B] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#6E5F5B] dark:text-zinc-400 mt-0.5">
               Refractory stone hearth pies, 48-hour dough fermentations, and imported Italian toppings
             </p>
           </div>
 
-          <div className="text-xs font-bold text-[#8E1616] bg-[#8E1616]/10 px-3 py-1.5 rounded-full self-start sm:self-auto shrink-0">
+          <div className="text-xs font-bold text-[#8E1616] dark:text-[#E25C5C] bg-[#8E1616]/10 dark:bg-[#8E1616]/20 px-3 py-1.5 rounded-full self-start sm:self-auto shrink-0">
             {total} {total === 1 ? "Pizza Available" : "Pizzas Available"}
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-[#EFE7DE] p-4 sm:p-5 shadow-xs space-y-4">
+      <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EFE7DE] dark:border-[#2D1E1B] p-4 sm:p-5 shadow-xs space-y-4">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -205,7 +205,7 @@ function MenuContent() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by pizza name, sauce, or ingredients (e.g. 'Nduja, Truffle, Burrata)..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-[#FAF7F2]/50 placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#EFE7DE] dark:border-[#2D1E1B] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] transition bg-[#FAF7F2]/50 dark:bg-[#1E1413] placeholder:text-gray-400 dark:placeholder:text-zinc-500"
             />
           </div>
 
@@ -214,7 +214,7 @@ function MenuContent() {
               <select
                 value={selectedCrust}
                 onChange={(e) => setSelectedCrust(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-2xl border border-[#EFE7DE] text-xs font-semibold text-[#190F0E] bg-white focus:outline-none focus:border-[#8E1616] transition appearance-none cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-2xl border border-[#EFE7DE] dark:border-[#2D1E1B] text-xs font-semibold text-[#190F0E] dark:text-zinc-200 bg-white dark:bg-[#1E1413] focus:outline-none focus:border-[#8E1616] transition appearance-none cursor-pointer"
               >
                 <option value="All">All Crust Fermentations</option>
                 {CRUST_TYPES.filter((c) => c !== "All").map((c) => (
@@ -229,7 +229,7 @@ function MenuContent() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-2xl border border-[#EFE7DE] text-xs font-semibold text-[#190F0E] bg-white focus:outline-none focus:border-[#8E1616] transition appearance-none cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-2xl border border-[#EFE7DE] dark:border-[#2D1E1B] text-xs font-semibold text-[#190F0E] dark:text-zinc-200 bg-white dark:bg-[#1E1413] focus:outline-none focus:border-[#8E1616] transition appearance-none cursor-pointer"
               >
                 <option value="newest">Newest Creations</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -242,7 +242,7 @@ function MenuContent() {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="p-2.5 rounded-2xl border border-[#EFE7DE] hover:bg-[#FAF7F2] text-xs text-[#8E1616] font-bold transition flex items-center gap-1 shrink-0"
+                className="p-2.5 rounded-2xl border border-[#EFE7DE] dark:border-[#2D1E1B] hover:bg-[#FAF7F2] dark:hover:bg-[#251715] text-xs text-[#8E1616] dark:text-[#E25C5C] font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
                 title="Reset filters"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -256,9 +256,9 @@ function MenuContent() {
           <button
             type="button"
             onClick={() => setIsCrustGuideOpen(true)}
-            className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 flex items-center gap-1.5 shadow-2xs cursor-pointer"
+            className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all border border-amber-300 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/50 flex items-center gap-1.5 shadow-2xs cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>Crust &amp; Hydration Guide</span>
           </button>
           {CATEGORIES.map((cat) => (
@@ -266,10 +266,10 @@ function MenuContent() {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? "bg-[#8E1616] text-white shadow-xs"
-                  : "bg-[#FAF7F2] text-[#6E5F5B] hover:text-[#190F0E] hover:bg-[#EFE7DE]"
+                  : "bg-[#FAF7F2] dark:bg-[#1E1413] text-[#6E5F5B] dark:text-zinc-300 hover:text-[#190F0E] dark:hover:text-white hover:bg-[#EFE7DE] dark:hover:bg-[#251715]"
               }`}
             >
               {cat}
@@ -281,20 +281,20 @@ function MenuContent() {
       {isLoading ? (
         <div className="py-20 flex flex-col items-center justify-center gap-3 text-[#8E1616]">
           <Loader2 className="w-8 h-8 animate-spin" />
-          <p className="text-xs font-bold text-[#6E5F5B]">
+          <p className="text-xs font-bold text-[#6E5F5B] dark:text-zinc-400">
             Firing stone ovens &amp; fetching artisan menu...
           </p>
         </div>
       ) : items.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-[#EFE7DE] p-12 text-center max-w-lg mx-auto space-y-4">
-          <div className="w-16 h-16 rounded-full bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center mx-auto text-2xl">
+        <div className="bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EFE7DE] dark:border-[#2D1E1B] p-12 text-center max-w-lg mx-auto space-y-4">
+          <div className="w-16 h-16 rounded-full bg-[#FAF7F2] dark:bg-[#1E1413] border border-[#EFE7DE] dark:border-[#2D1E1B] flex items-center justify-center mx-auto text-2xl">
             🍕
           </div>
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-[#190F0E]">
+            <h3 className="text-lg font-black text-[#190F0E] dark:text-white">
               No Artisan Pizzas Found
             </h3>
-            <p className="text-xs text-[#6E5F5B] max-w-xs mx-auto">
+            <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 max-w-xs mx-auto">
               We couldn't find any wood-fired creations matching your current filters. Try relaxing your search criteria.
             </p>
           </div>
@@ -302,7 +302,7 @@ function MenuContent() {
             <button
               type="button"
               onClick={handleResetFilters}
-              className="px-5 py-2.5 rounded-2xl bg-[#8E1616] text-white text-xs font-bold hover:bg-[#731212] transition shadow-sm"
+              className="px-5 py-2.5 rounded-2xl bg-[#8E1616] text-white text-xs font-bold hover:bg-[#731212] transition shadow-sm cursor-pointer"
             >
               Reset All Filters
             </button>

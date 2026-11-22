@@ -122,10 +122,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-[#FAF7F2]">
-      <aside className="hidden md:flex flex-col justify-between w-64 lg:w-72 bg-white border-r border-[#EBE4D8] shrink-0 sticky top-16 h-[calc(100vh-4rem)] p-5 z-30 shadow-2xs">
+    <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-[#FAF7F2] dark:bg-[#120B0A]">
+      <aside className="hidden md:flex flex-col justify-between w-64 lg:w-72 bg-white dark:bg-[#160D0C] border-r border-[#EBE4D8] dark:border-[#2D1E1B] shrink-0 sticky top-16 h-[calc(100vh-4rem)] p-5 z-30 shadow-2xs">
         <div className="space-y-6">
-          <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#EBE4D8]">
+          <div className="p-3.5 rounded-2xl bg-[#FAF7F2] dark:bg-[#1E1413] border border-[#EBE4D8] dark:border-[#2D1E1B]">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-11 h-11 rounded-xl bg-[#8E1616] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs">
                 {mounted && user?.image ? (
@@ -139,41 +139,41 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-black text-[#190F0E] truncate">
+                <div className="text-xs font-black text-[#190F0E] dark:text-white truncate">
                   {mounted && user?.name ? user.name : role === "admin" ? "Admin Console" : role === "vendor" ? "Vendor Kitchen" : "Artisan Member"}
                 </div>
-                <div className="text-[11px] text-[#6E5F5B] truncate">
+                <div className="text-[11px] text-[#6E5F5B] dark:text-zinc-400 truncate">
                   {mounted && user?.email ? user.email : "Portal Account"}
                 </div>
               </div>
             </div>
 
-            <div className="mt-3 pt-2.5 border-t border-[#EBE4D8]/70 flex items-center justify-between text-[10px] font-bold">
-              <span className="inline-flex items-center gap-1.5 text-emerald-700">
-                <CircleDot className="w-2.5 h-2.5 text-emerald-600 animate-pulse" />
+            <div className="mt-3 pt-2.5 border-t border-[#EBE4D8]/70 dark:border-[#2D1E1B] flex items-center justify-between text-[10px] font-bold">
+              <span className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400">
+                <CircleDot className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400 animate-pulse" />
                 Hearth Live &amp; Ready
               </span>
-              <span className="uppercase text-[#8E1616] font-black tracking-wide">
+              <span className="uppercase text-[#8E1616] dark:text-[#E25C5C] font-black tracking-wide">
                 {role}
               </span>
             </div>
           </div>
 
           <div>
-            <div className="px-3 pb-2 text-[10px] font-black uppercase tracking-wider text-[#6E5F5B] flex items-center gap-1.5">
+            <div className="px-3 pb-2 text-[10px] font-black uppercase tracking-wider text-[#6E5F5B] dark:text-zinc-400 flex items-center gap-1.5">
               {role === "admin" ? (
                 <>
-                  <ShieldCheck className="w-3.5 h-3.5 text-purple-700" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-purple-700 dark:text-purple-400" />
                   <span>Admin Console</span>
                 </>
               ) : role === "vendor" ? (
                 <>
-                  <ChefHat className="w-3.5 h-3.5 text-amber-600" />
+                  <ChefHat className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                   <span>Kitchen Management</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-3.5 h-3.5 text-[#8E1616]" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#8E1616] dark:text-[#E25C5C]" />
                   <span>Customer Hub</span>
                 </>
               )}
@@ -191,11 +191,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all group cursor-pointer ${
                       isActive
                         ? "bg-[#8E1616] text-white shadow-xs"
-                        : "text-[#6E5F5B] hover:text-[#190F0E] hover:bg-[#FAF7F2]"
+                        : "text-[#6E5F5B] dark:text-zinc-300 hover:text-[#190F0E] dark:hover:text-white hover:bg-[#FAF7F2] dark:hover:bg-[#1E1413]"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-[#8E1616]"}`} />
+                      <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-[#8E1616] dark:text-[#E25C5C]"}`} />
                       <span>{link.label}</span>
                     </div>
                     {isActive && <ChevronRight className="w-3.5 h-3.5 text-white/80" />}
@@ -206,18 +206,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-[#EBE4D8] space-y-1.5">
+        <div className="pt-4 border-t border-[#EBE4D8] dark:border-[#2D1E1B] space-y-1.5">
           <Link
             href="/menu"
-            className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-[#190F0E] hover:bg-[#FAF7F2] transition cursor-pointer"
+            className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-[#190F0E] dark:text-zinc-200 hover:bg-[#FAF7F2] dark:hover:bg-[#1E1413] transition cursor-pointer"
           >
-            <Sparkles className="w-4 h-4 text-amber-600" />
+            <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             <span>Explore Pizza Menu</span>
           </Link>
           <button
             type="button"
             onClick={handleSignOut}
-            className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition cursor-pointer text-left"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition cursor-pointer text-left"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>
@@ -229,7 +229,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {children}
       </div>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#EBE4D8] px-3 py-2 flex items-center justify-around shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#160D0C]/95 backdrop-blur-md border-t border-[#EBE4D8] dark:border-[#2D1E1B] px-3 py-2 flex items-center justify-around shadow-lg">
         {mobileNavLinks.map((link) => {
           const Icon = link.icon;
           const isActive = pathname === link.href;
@@ -240,13 +240,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               href={link.href}
               className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition text-[10px] font-bold ${
                 isActive
-                  ? "text-[#8E1616]"
-                  : "text-[#6E5F5B] hover:text-[#190F0E]"
+                  ? "text-[#8E1616] dark:text-[#E25C5C]"
+                  : "text-[#6E5F5B] dark:text-zinc-400 hover:text-[#190F0E] dark:hover:text-white"
               }`}
             >
               <div
                 className={`p-1.5 rounded-lg ${
-                  isActive ? "bg-[#8E1616]/10 text-[#8E1616]" : "text-[#6E5F5B]"
+                  isActive ? "bg-[#8E1616]/10 dark:bg-[#8E1616]/20 text-[#8E1616] dark:text-[#E25C5C]" : "text-[#6E5F5B] dark:text-zinc-400"
                 }`}
               >
                 <Icon className="w-4 h-4" />

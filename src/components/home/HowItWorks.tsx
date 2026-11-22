@@ -28,34 +28,34 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="bg-[#FDFBF7] rounded-3xl p-6 sm:p-10 border border-[#EFE7DE] shadow-xs relative overflow-hidden">
+    <section className="bg-[#FDFBF7] dark:bg-[#160D0C] rounded-3xl p-6 sm:p-10 border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-xs relative overflow-hidden">
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         <div className="lg:col-span-5 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8E1616]/10 border border-[#8E1616]/15 text-xs font-semibold text-[#8E1616]">
-            <Sparkles className="w-3.5 h-3.5 text-[#8E1616]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8E1616]/10 border border-[#8E1616]/15 text-xs font-semibold text-[#8E1616] dark:text-[#E25C5C]">
+            <Sparkles className="w-3.5 h-3.5 text-[#8E1616] dark:text-[#E25C5C]" />
             <span>AFTER OVEN CLICKS</span>
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#190F0E] tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#190F0E] dark:text-white tracking-tight leading-tight">
               How PizzaHub Works
             </h2>
-            <p className="text-xs sm:text-sm text-[#6E5F5B] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#6E5F5B] dark:text-zinc-300 leading-relaxed font-medium">
               Three seamless steps from stone hearth craving to doorstep bubbling delivery. Handcrafted to order with zero compromised ingredients.
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 border border-[#EFE7DE] shadow-2xs space-y-2.5">
-            <div className="flex items-center gap-2.5 text-xs text-[#190F0E] font-medium">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="bg-white dark:bg-[#1A1110] rounded-2xl p-4 border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-2xs space-y-2.5">
+            <div className="flex items-center gap-2.5 text-xs text-[#190F0E] dark:text-zinc-200 font-medium">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Hand-stretched per order by certified pizzaiolos</span>
             </div>
-            <div className="flex items-center gap-2.5 text-xs text-[#190F0E] font-medium">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div className="flex items-center gap-2.5 text-xs text-[#190F0E] dark:text-zinc-200 font-medium">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Real-time kitchen dispatch tracking updates</span>
             </div>
-            <div className="flex items-center gap-2.5 text-xs text-[#190F0E] font-medium">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div className="flex items-center gap-2.5 text-xs text-[#190F0E] dark:text-zinc-200 font-medium">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Dedicated thermal-insulated bike couriers</span>
             </div>
           </div>
@@ -72,30 +72,30 @@ export default function HowItWorks() {
         </div>
 
         <div className="lg:col-span-7 space-y-4 relative">
-          <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-[#EFE7DE] hidden sm:block" />
+          <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-[#EFE7DE] dark:bg-[#2D1E1B] hidden sm:block" />
 
           {steps.map((step) => {
             const Icon = step.icon;
             return (
               <div
                 key={step.num}
-                className="relative flex flex-col sm:flex-row items-start gap-4 p-5 sm:p-6 rounded-2xl bg-white border border-[#EFE7DE] shadow-xs hover:border-[#8E1616]/30 hover:shadow-sm transition-all duration-200"
+                className="relative flex flex-col sm:flex-row items-start gap-4 p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#1A1110] border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-xs hover:border-[#8E1616]/30 dark:hover:border-[#E25C5C]/40 hover:shadow-sm transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[#8E1616] text-white font-black text-base flex items-center justify-center shrink-0 shadow-xs ring-4 ring-[#FDFBF7] z-10">
+                <div className="w-12 h-12 rounded-2xl bg-[#8E1616] text-white font-black text-base flex items-center justify-center shrink-0 shadow-xs ring-4 ring-[#FDFBF7] dark:ring-[#160D0C] z-10">
                   <Icon className="w-5 h-5 text-white" />
                 </div>
 
                 <div className="space-y-2 flex-1">
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-extrabold text-base text-[#190F0E]">
+                    <h3 className="font-extrabold text-base text-[#190F0E] dark:text-white">
                       {step.title}
                     </h3>
-                    <span className="text-[11px] font-mono font-bold text-[#8E1616] bg-[#8E1616]/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-mono font-bold text-[#8E1616] dark:text-[#E25C5C] bg-[#8E1616]/10 dark:bg-[#8E1616]/20 px-2.5 py-0.5 rounded-full">
                       STEP {step.num}
                     </span>
                   </div>
 
-                  <p className="text-xs text-[#6E5F5B] leading-relaxed">
+                  <p className="text-xs text-[#6E5F5B] dark:text-zinc-400 leading-relaxed">
                     {step.desc}
                   </p>
 
@@ -103,7 +103,7 @@ export default function HowItWorks() {
                     {step.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[11px] font-medium text-[#6E5F5B] bg-[#FAF7F2] border border-[#EFE7DE] px-2.5 py-0.5 rounded-full"
+                        className="text-[11px] font-medium text-[#6E5F5B] dark:text-zinc-300 bg-[#FAF7F2] dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#3D2824] px-2.5 py-0.5 rounded-full"
                       >
                         {tag}
                       </span>

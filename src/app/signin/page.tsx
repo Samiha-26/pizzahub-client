@@ -43,7 +43,9 @@ export default function SignInPage() {
       });
 
       if (res.error) {
-        setErrorMessage(res.error.message || "Invalid credentials. Please verify your email and password.");
+        const errorMsg = res.error.message || "Invalid credentials. Please verify your email and password.";
+        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
         setIsLoading(false);
         return;
       }
@@ -58,7 +60,9 @@ export default function SignInPage() {
       const destination = redirectParam || "/";
       window.location.href = destination;
     } catch (err: any) {
-      setErrorMessage(err.message || "An unexpected error occurred during sign-in.");
+      const errorMsg = err.message || "An unexpected error occurred during sign-in.";
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
       setIsLoading(false);
     }
   };
@@ -73,34 +77,36 @@ export default function SignInPage() {
         callbackURL: "/",
       });
     } catch (err: any) {
-      setErrorMessage(err.message || "Failed to initiate Google authentication.");
+      const errorMsg = err.message || "Failed to initiate Google authentication.";
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
       setIsGoogleLoading(false);
     }
   };
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center py-10 px-4 sm:px-6">
-      <div className="w-full max-w-md bg-white rounded-3xl border border-[#EFE7DE] shadow-xs p-6 sm:p-8 space-y-6">
+      <div className="w-full max-w-md bg-white dark:bg-[#1A1110] rounded-3xl border border-[#EFE7DE] dark:border-[#2D1E1B] shadow-xs p-6 sm:p-8 space-y-6">
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2 justify-center">
             <div className="w-10 h-10 rounded-2xl bg-[#8E1616] flex items-center justify-center text-white shadow-md shadow-[#8E1616]/20">
               <span className="text-xl leading-none">🍕</span>
             </div>
-            <span className="text-2xl font-black tracking-tight text-[#190F0E]">
-              Pizza<span className="text-[#8E1616]">Hub</span>
+            <span className="text-2xl font-black tracking-tight text-[#190F0E] dark:text-white">
+              Pizza<span className="text-[#8E1616] dark:text-[#FF8080]">Hub</span>
             </span>
           </Link>
-          <h1 className="text-xl sm:text-2xl font-black text-[#190F0E] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-[#190F0E] dark:text-white tracking-tight">
             Welcome Back
           </h1>
-          <p className="text-xs text-[#6E5F5B]">
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
             Sign in to track orders, manage kitchen menus, or moderate the platform
           </p>
         </div>
 
         {errorMessage && (
-          <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs text-[#8E1616] flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#8E1616]" />
+          <div className="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-xs text-[#8E1616] dark:text-red-300 flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#8E1616] dark:text-red-300" />
             <span className="leading-snug font-medium">{errorMessage}</span>
           </div>
         )}
@@ -110,10 +116,10 @@ export default function SignInPage() {
             type="button"
             disabled={isGoogleLoading || isLoading}
             onClick={handleGoogleSignIn}
-            className="w-full py-3 px-4 rounded-2xl bg-white border border-[#EFE7DE] hover:bg-[#FAF7F2] text-[#190F0E] font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-3 shadow-2xs hover:border-gray-300 disabled:opacity-50"
+            className="w-full py-3 px-4 rounded-2xl bg-white dark:bg-[#251715] border border-[#EFE7DE] dark:border-[#3D2825] hover:bg-[#FAF7F2] dark:hover:bg-[#32201D] text-[#190F0E] dark:text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-3 shadow-2xs hover:border-gray-300 dark:hover:border-zinc-700 disabled:opacity-50 cursor-pointer"
           >
             {isGoogleLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin text-[#8E1616]" />
+              <Loader2 className="w-4 h-4 animate-spin text-[#8E1616] dark:text-[#FF8080]" />
             ) : (
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -138,50 +144,50 @@ export default function SignInPage() {
           </button>
 
           <div className="relative flex items-center justify-center">
-            <div className="border-t border-[#EFE7DE] w-full" />
-            <span className="bg-white px-3 text-[11px] font-semibold text-[#6E5F5B] uppercase tracking-wider absolute">
+            <div className="border-t border-[#EFE7DE] dark:border-[#2D1E1B] w-full" />
+            <span className="bg-white dark:bg-[#1A1110] px-3 text-[11px] font-semibold text-[#6E5F5B] dark:text-zinc-400 uppercase tracking-wider absolute">
               or with email
             </span>
           </div>
 
           <form onSubmit={handleEmailSignIn} className="space-y-4 pt-1">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#190F0E] block">
+              <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#EFE7DE] dark:border-[#3D2825] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] dark:focus:border-amber-500 transition bg-white dark:bg-[#251715]"
                 />
               </div>
             </div>
 
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-[#190F0E] block">
+                <label className="text-xs font-bold text-[#190F0E] dark:text-zinc-200 block">
                   Password
                 </label>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-gray-400 dark:text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#EFE7DE] text-xs text-[#190F0E] focus:outline-none focus:border-[#8E1616] transition bg-white"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#EFE7DE] dark:border-[#3D2825] text-xs text-[#190F0E] dark:text-white focus:outline-none focus:border-[#8E1616] dark:focus:border-amber-500 transition bg-white dark:bg-[#251715]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -191,7 +197,7 @@ export default function SignInPage() {
             <button
               type="submit"
               disabled={isLoading || isGoogleLoading}
-              className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/20 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/20 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {isLoading ? (
                 <>
@@ -208,10 +214,10 @@ export default function SignInPage() {
           </form>
         </div>
 
-        <div className="text-center pt-2 border-t border-[#EFE7DE]">
-          <p className="text-xs text-[#6E5F5B]">
+        <div className="text-center pt-2 border-t border-[#EFE7DE] dark:border-[#2D1E1B]">
+          <p className="text-xs text-[#6E5F5B] dark:text-zinc-400">
             Don't have an account yet?{" "}
-            <Link href="/signup" className="font-bold text-[#8E1616] hover:underline">
+            <Link href="/signup" className="font-bold text-[#8E1616] dark:text-[#FF8080] hover:underline">
               Create Account
             </Link>
           </p>
