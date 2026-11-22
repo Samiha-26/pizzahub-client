@@ -91,7 +91,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-[#EFE7DE] sticky top-0 z-50">
+    <header className="bg-white/95 dark:bg-[#140C0B]/95 backdrop-blur-md border-b border-[#EFE7DE] dark:border-[#2D1E1B] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#8E1616] to-[#D97706] p-0.5 shadow-sm group-hover:scale-105 transition-transform">
@@ -367,7 +367,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 rounded-lg text-gray-700 hover:bg-gray-100"
+            className="md:hidden p-1.5 rounded-lg text-gray-700 dark:text-[#FAF7F2] hover:bg-gray-100 dark:hover:bg-[#251715]"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -376,7 +376,7 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-[#EFE7DE] px-4 py-4 space-y-3 text-xs font-bold">
+        <div className="md:hidden bg-white dark:bg-[#160D0C] border-b border-[#EFE7DE] dark:border-[#2D1E1B] px-4 py-4 space-y-3 text-xs font-bold">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}

@@ -35,6 +35,7 @@ export const auth = betterAuth({
     "http://localhost:5000",
     "https://*.vercel.app",
     "https://pizzahub-client.vercel.app",
+    "https://pizzahub-client-eta.vercel.app",
     "https://pizzahub-client-l0w1qnh4y-samiha1.vercel.app",
     process.env.BETTER_AUTH_URL || "",
     process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "",

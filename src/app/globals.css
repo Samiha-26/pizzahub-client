@@ -39,10 +39,10 @@
     --background: #120A09;
     --foreground: #FAF7F2;
     
-    --card: #1C1210;
+    --card: #1A1110;
     --card-foreground: #FAF7F2;
     
-    --popover: #1C1210;
+    --popover: #1A1110;
     --popover-foreground: #FAF7F2;
     
     --primary: #B91C1C;
@@ -52,7 +52,7 @@
     --secondary-foreground: #FAF7F2;
     
     --muted: #2A1C19;
-    --muted-foreground: #A89B97;
+    --muted-foreground: #B5A6A2;
     
     --accent: #2D1E12;
     --accent-foreground: #F59E0B;
@@ -78,21 +78,33 @@ body {
   color: #FAF7F2;
 }
 
-.dark .bg-white {
+.dark header {
+  background-color: rgba(20, 12, 11, 0.95) !important;
+  border-color: #2D1E1B !important;
+}
+
+.dark .bg-white,
+.dark [class*="bg-white/"],
+.dark [class*="bg-white"] {
   background-color: #1A1110 !important;
 }
 
-.dark .bg-\[\#FAF7F2\] {
+.dark .bg-\[\#FAF7F2\],
+.dark [class*="bg-[#FAF7F2]"] {
   background-color: #120A09 !important;
 }
 
-.dark .bg-\[\#FDFBF7\] {
-  background-color: #160E0D !important;
+.dark .bg-\[\#FDFBF7\],
+.dark [class*="bg-[#FDFBF7]"] {
+  background-color: #170E0D !important;
 }
 
 .dark .bg-\[\#F5EFEB\],
 .dark .bg-\[\#F3EBE1\],
-.dark .bg-\[\#F8F4EE\] {
+.dark .bg-\[\#F8F4EE\],
+.dark [class*="bg-[#F5EFEB]"],
+.dark [class*="bg-[#F3EBE1]"],
+.dark [class*="bg-[#F8F4EE]"] {
   background-color: #241816 !important;
 }
 
@@ -100,13 +112,54 @@ body {
 .dark .bg-stone-100,
 .dark .bg-gray-50,
 .dark .bg-gray-100 {
-  background-color: #221614 !important;
+  background-color: #201311 !important;
+}
+
+.dark .bg-stone-200 {
+  background-color: #33211E !important;
+}
+
+.dark .bg-\[\#FFF4E5\],
+.dark [class*="bg-[#FFF4E5]"] {
+  background-color: #271708 !important;
+  border-color: #583311 !important;
+}
+
+.dark .bg-\[\#FEE2E2\],
+.dark [class*="bg-[#FEE2E2]"] {
+  background-color: #2A0E0E !important;
+  border-color: #5A1E1E !important;
+}
+
+.dark .bg-amber-50,
+.dark .bg-amber-100 {
+  background-color: #271708 !important;
+  border-color: #583311 !important;
+}
+
+.dark .bg-emerald-50,
+.dark .bg-emerald-100 {
+  background-color: #0E261C !important;
+  border-color: #1E4D38 !important;
+}
+
+.dark .bg-purple-50,
+.dark .bg-purple-100 {
+  background-color: #271334 !important;
+  border-color: #4C2665 !important;
+}
+
+.dark .bg-\[\#190F0E\],
+.dark [class*="bg-[#190F0E]"] {
+  background-color: #2C1B18 !important;
+  border-color: #4D322B !important;
 }
 
 .dark .text-\[\#190F0E\],
 .dark .text-\[\#2C1810\],
 .dark .text-stone-900,
-.dark .text-gray-900 {
+.dark .text-gray-900,
+.dark .text-gray-800 {
   color: #FAF7F2 !important;
 }
 
@@ -119,29 +172,77 @@ body {
   color: #B5A6A2 !important;
 }
 
+.dark .text-gray-400,
+.dark .text-stone-400 {
+  color: #9C8E8B !important;
+}
+
+.dark .text-gray-700 {
+  color: #FAF7F2 !important;
+}
+
+.dark .text-\[\#7A4100\],
+.dark .text-\[\#A15500\],
+.dark .text-amber-700,
+.dark .text-amber-800,
+.dark .text-amber-900 {
+  color: #FBBF24 !important;
+}
+
+.dark .text-emerald-700,
+.dark .text-emerald-800 {
+  color: #34D399 !important;
+}
+
+.dark .text-purple-700 {
+  color: #D8B4FE !important;
+}
+
 .dark .border-\[\#EFE7DE\],
 .dark .border-\[\#EBE4D8\],
 .dark .border-stone-200,
 .dark .border-stone-300,
-.dark .border-gray-200 {
+.dark .border-gray-200,
+.dark [class*="border-[#EFE7DE]"],
+.dark [class*="border-[#EBE4D8]"] {
   border-color: #2E1F1C !important;
+}
+
+.dark .border-\[\#FDE2C4\],
+.dark [class*="border-[#FDE2C4]"] {
+  border-color: #583311 !important;
+}
+
+.dark .border-\[\#FECACA\],
+.dark [class*="border-[#FECACA]"] {
+  border-color: #5A1E1E !important;
+}
+
+.dark .bg-gradient-to-br.from-white {
+  background-image: linear-gradient(to bottom right, #1E1210, #170E0D, #120A09) !important;
+}
+
+.dark .ring-\[\#FDFBF7\],
+.dark [class*="ring-[#FDFBF7]"] {
+  --tw-ring-color: #170E0D !important;
 }
 
 .dark input,
 .dark textarea,
 .dark select {
-  background-color: #201412 !important;
+  background-color: #1E1311 !important;
   color: #FAF7F2 !important;
   border-color: #382420 !important;
 }
 
-.dark input::placeholder,
-.dark textarea::placeholder {
-  color: #7A6A66 !important;
+.dark select option {
+  background-color: #1E1311 !important;
+  color: #FAF7F2 !important;
 }
 
-.dark .bg-stone-200 {
-  background-color: #33211E !important;
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #8C7B77 !important;
 }
 
 .dark .hover\:bg-gray-50:hover,
@@ -151,6 +252,11 @@ body {
 }
 
 .dark .hover\:bg-gray-100:hover,
-.dark .hover\:bg-stone-100:hover {
+.dark .hover\:bg-stone-100:hover,
+.dark .hover\:bg-gray-200:hover {
   background-color: #2D1C19 !important;
+}
+
+.dark .hover\:border-gray-400:hover {
+  border-color: #523832 !important;
 }
