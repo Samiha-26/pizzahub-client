@@ -141,16 +141,28 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <NotificationBell />
-          {mounted && user?.role !== "vendor" && user?.role !== "admin" && (
+          {mounted && (
             <button
               type="button"
-              onClick={() => setIsCartOpen(true)}
-              className="relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition cursor-pointer"
-              title="Artisan Cart"
+              onClick={() => {
+                if (user?.role === "vendor" || user?.role === "admin") {
+                  toast.error("Cart and ordering are reserved for customer accounts", { icon: "🛡️" });
+                  return;
+                }
+                setIsCartOpen(true);
+              }}
+              className={`relative w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#EFE7DE] flex items-center justify-center text-[#190F0E] hover:bg-gray-100 transition cursor-pointer ${
+                user?.role === "vendor" || user?.role === "admin" ? "opacity-60" : ""
+              }`}
+              title={
+                user?.role === "vendor" || user?.role === "admin"
+                  ? "Cart disabled for vendor and admin accounts"
+                  : "Artisan Cart"
+              }
               aria-label="Artisan Cart"
             >
               <ShoppingBag className="w-4 h-4" />
-              {totalCount > 0 && (
+              {totalCount > 0 && user?.role !== "vendor" && user?.role !== "admin" && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8E1616] text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
                   {totalCount}
                 </span>

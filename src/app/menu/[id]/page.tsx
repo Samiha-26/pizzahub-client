@@ -399,44 +399,60 @@ export default function PizzaDetailPage({
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           </div>
 
-          {isVendorOrAdmin ? (
-            <div className="pt-2 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 flex items-center gap-2.5 text-xs text-amber-950 font-bold">
+          <div className="pt-2 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              disabled={isVendorOrAdmin}
+              onClick={() => {
+                if (isVendorOrAdmin) {
+                  toast.error("Ordering is reserved for customer accounts", { icon: "🛡️" });
+                  return;
+                }
+                addItem({
+                  id: pizza.id,
+                  name: pizza.name,
+                  price: pizza.price,
+                  image: pizza.images?.[0] || "",
+                  category: pizza.category,
+                  vendorName: pizza.vendorName,
+                  crust: pizza.crust,
+                });
+                setIsCartOpen(true);
+              }}
+              className={`flex-1 py-4 rounded-2xl border-2 text-sm font-extrabold transition-all duration-200 flex items-center justify-center gap-2 shadow-xs ${
+                isVendorOrAdmin
+                  ? "bg-stone-100 border-stone-300 text-stone-400 cursor-not-allowed"
+                  : "bg-white border-[#8E1616] text-[#8E1616] hover:bg-[#FAF7F2] cursor-pointer"
+              }`}
+              title={isVendorOrAdmin ? "Ordering is disabled for vendor and admin accounts" : "Add to Cart"}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Add to Cart</span>
+            </button>
+            <button
+              type="button"
+              disabled={isVendorOrAdmin}
+              onClick={handleOpenOrderModal}
+              className={`flex-1 py-4 rounded-2xl text-sm font-extrabold transition-all duration-200 shadow-md flex items-center justify-center gap-2 ${
+                isVendorOrAdmin
+                  ? "bg-stone-200 text-stone-400 cursor-not-allowed shadow-none"
+                  : "bg-[#8E1616] hover:bg-[#731212] text-white shadow-[#8E1616]/25 hover:-translate-y-0.5 cursor-pointer"
+              }`}
+              title={isVendorOrAdmin ? "Ordering is disabled for vendor and admin accounts" : "Order Now"}
+            >
+              <Zap className="w-4 h-4" />
+              <span>Order Now (${pizza.price.toFixed(2)})</span>
+            </button>
+          </div>
+
+          {isVendorOrAdmin && (
+            <div className="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200/80 flex items-center gap-2.5 text-xs text-amber-950 font-bold">
               <Store className="w-4 h-4 text-amber-700 shrink-0" />
               <span>
                 {(user as any)?.role === "vendor"
-                  ? "Ordering and cart actions are reserved for customer accounts. Manage your recipes in the Kitchen Portal."
-                  : "Ordering and cart actions are reserved for customer accounts. Moderate recipes in the Admin Console."}
+                  ? "Ordering is reserved for customer accounts. Manage your recipes in the Kitchen Portal."
+                  : "Ordering is reserved for customer accounts. Moderate recipes in the Admin Console."}
               </span>
-            </div>
-          ) : (
-            <div className="pt-2 flex flex-col sm:flex-row gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  addItem({
-                    id: pizza.id,
-                    name: pizza.name,
-                    price: pizza.price,
-                    image: pizza.images?.[0] || "",
-                    category: pizza.category,
-                    vendorName: pizza.vendorName,
-                    crust: pizza.crust,
-                  });
-                  setIsCartOpen(true);
-                }}
-                className="flex-1 py-4 rounded-2xl bg-white border-2 border-[#8E1616] text-[#8E1616] hover:bg-[#FAF7F2] font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Add to Cart</span>
-              </button>
-              <button
-                type="button"
-                onClick={handleOpenOrderModal}
-                className="flex-1 py-4 rounded-2xl bg-[#8E1616] hover:bg-[#731212] text-white font-extrabold text-sm transition-all duration-200 shadow-md shadow-[#8E1616]/25 flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
-              >
-                <Zap className="w-4 h-4" />
-                <span>Order Now (${pizza.price.toFixed(2)})</span>
-              </button>
             </div>
           )}
         </div>

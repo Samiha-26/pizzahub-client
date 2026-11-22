@@ -117,18 +117,33 @@ export default function PizzaCard({ item, onAddToCart }: PizzaCardProps) {
             View Details
           </Link>
 
-          {!isVendorOrAdmin && (
-            <Button
-              type="button"
-              variant="crimson"
-              size="icon"
-              className="shrink-0 rounded-xl cursor-pointer"
-              title="Quick add to order"
-              onClick={handleAddToCart}
-            >
-              <ShoppingBag className="w-4 h-4" />
-            </Button>
-          )}
+          <Button
+            type="button"
+            variant="crimson"
+            size="icon"
+            disabled={isVendorOrAdmin}
+            className={`shrink-0 rounded-xl transition-all ${
+              isVendorOrAdmin
+                ? "opacity-40 cursor-not-allowed bg-stone-200 text-stone-500 hover:bg-stone-200 hover:text-stone-500 shadow-none border border-stone-300"
+                : "cursor-pointer"
+            }`}
+            title={
+              isVendorOrAdmin
+                ? "Customer cart ordering is disabled for vendor and admin accounts"
+                : "Quick add to order"
+            }
+            onClick={
+              isVendorOrAdmin
+                ? (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toast.error("Ordering is reserved for customer accounts", { icon: "🛡️" });
+                  }
+                : handleAddToCart
+            }
+          >
+            <ShoppingBag className="w-4 h-4" />
+          </Button>
         </div>
       </div>
     </div>
