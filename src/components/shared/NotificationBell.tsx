@@ -48,11 +48,17 @@ export default function NotificationBell() {
     async function loadNotifications() {
       if (!user?.email) return;
       try {
-        const baseUrl = resolveApiBaseUrl();
-        const res = await fetch(`${baseUrl}/api/notifications/${encodeURIComponent(user.email)}`, {
+        let res: Response | null = await fetch(`/api/notifications/${encodeURIComponent(user.email)}`, {
           cache: "no-store",
-        });
-        if (res.ok) {
+        }).catch(() => null);
+
+        if (!res || !res.ok) {
+          const baseUrl = resolveApiBaseUrl();
+          res = await fetch(`${baseUrl}/api/notifications/${encodeURIComponent(user.email)}`, {
+            cache: "no-store",
+          }).catch(() => null);
+        }
+        if (res && res.ok) {
           const data = await res.json();
           if (isMounted) {
             const list = Array.isArray(data.notifications) && data.notifications.length > 0

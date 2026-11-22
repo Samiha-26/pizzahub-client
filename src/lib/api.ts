@@ -2,8 +2,14 @@ import { PizzaItem } from "@/components/shared/PizzaCard";
 import { ALL_PIZZAS_CATALOG } from "@/data/catalogPizzas";
 
 export const resolveApiBaseUrl = () => {
-  if (typeof window !== "undefined" && window.location.hostname === "localhost") {
-    return "http://localhost:5000";
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost") {
+      return "http://localhost:5000";
+    }
+    if (process.env.NEXT_PUBLIC_API_URL && !process.env.NEXT_PUBLIC_API_URL.includes("localhost")) {
+      return process.env.NEXT_PUBLIC_API_URL;
+    }
+    return window.location.origin;
   }
   return process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 };
@@ -272,7 +278,21 @@ export interface OrderRecord {
 }
 
 export async function createOrder(payload: OrderItemPayload) {
-  const res = await fetch(`${API_BASE_URL}/api/orders`, {
+  try {
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch {}
+
+  const baseUrl = resolveApiBaseUrl();
+  const res = await fetch(`${baseUrl}/api/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -290,7 +310,18 @@ export async function createOrder(payload: OrderItemPayload) {
 
 export async function getMyOrders(email: string): Promise<OrderRecord[]> {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/orders/my-orders/${encodeURIComponent(email)}`, {
+    const res = await fetch(`/api/orders/my-orders/${encodeURIComponent(email)}`, {
+      cache: "no-store",
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) return data;
+    }
+  } catch {}
+
+  try {
+    const baseUrl = resolveApiBaseUrl();
+    const res = await fetch(`${baseUrl}/api/orders/my-orders/${encodeURIComponent(email)}`, {
       cache: "no-store",
     });
 
