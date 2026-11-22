@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --background: #FAF7F2;
@@ -69,4 +71,86 @@ body {
   color: var(--foreground);
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
+}
+
+.dark body {
+  background-color: #120A09;
+  color: #FAF7F2;
+}
+
+.dark .bg-white {
+  background-color: #1A1110 !important;
+}
+
+.dark .bg-\[\#FAF7F2\] {
+  background-color: #120A09 !important;
+}
+
+.dark .bg-\[\#FDFBF7\] {
+  background-color: #160E0D !important;
+}
+
+.dark .bg-\[\#F5EFEB\],
+.dark .bg-\[\#F3EBE1\],
+.dark .bg-\[\#F8F4EE\] {
+  background-color: #241816 !important;
+}
+
+.dark .bg-stone-50,
+.dark .bg-stone-100,
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: #221614 !important;
+}
+
+.dark .text-\[\#190F0E\],
+.dark .text-\[\#2C1810\],
+.dark .text-stone-900,
+.dark .text-gray-900 {
+  color: #FAF7F2 !important;
+}
+
+.dark .text-\[\#6E5F5B\],
+.dark .text-\[\#7A6E65\],
+.dark .text-stone-600,
+.dark .text-stone-500,
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: #B5A6A2 !important;
+}
+
+.dark .border-\[\#EFE7DE\],
+.dark .border-\[\#EBE4D8\],
+.dark .border-stone-200,
+.dark .border-stone-300,
+.dark .border-gray-200 {
+  border-color: #2E1F1C !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #201412 !important;
+  color: #FAF7F2 !important;
+  border-color: #382420 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #7A6A66 !important;
+}
+
+.dark .bg-stone-200 {
+  background-color: #33211E !important;
+}
+
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-stone-50:hover,
+.dark .hover\:bg-\[\#FAF7F2\]:hover {
+  background-color: #251715 !important;
+}
+
+.dark .hover\:bg-gray-100:hover,
+.dark .hover\:bg-stone-100:hover {
+  background-color: #2D1C19 !important;
 }

@@ -24,6 +24,7 @@ import {
 import { useSession, signOut } from "@/lib/auth-client";
 import { getVendorStats } from "@/lib/api";
 import NotificationBell from "@/components/shared/NotificationBell";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
@@ -140,6 +141,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <NotificationBell />
           {mounted && (
             <button
