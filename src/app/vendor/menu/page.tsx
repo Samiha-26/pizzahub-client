@@ -227,9 +227,6 @@ export default function VendorMenuPage() {
       </div>
     ), { duration: 6000 });
   };
-      setDeletingId(null);
-    }
-  };
 
   if (isSessionPending || (isLoading && user?.email)) {
     return (
