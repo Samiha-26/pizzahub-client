@@ -20,6 +20,7 @@ import {
   getVendorStats,
   createCheckoutSession,
   verifyVendorUpgradeSession,
+  unsubscribeVendorPremium,
   type VendorStats,
 } from "@/lib/api";
 
@@ -32,6 +33,7 @@ function UpgradeContent() {
   const [stats, setStats] = useState<VendorStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpgrading, setIsUpgrading] = useState(false);
+  const [isUnsubscribing, setIsUnsubscribing] = useState(false);
   const [hasVerifiedSession, setHasVerifiedSession] = useState(false);
 
   const fetchStats = useCallback(async () => {
@@ -111,6 +113,59 @@ function UpgradeContent() {
       toast.error(msg);
       setIsUpgrading(false);
     }
+  };
+
+  const handleUnsubscribe = async () => {
+    if (!user?.email) return;
+
+    toast((t) => (
+      <div className="flex flex-col gap-2 p-1 max-w-xs text-left">
+        <div className="text-xs font-black text-[#190F0E]">
+          Confirm Cancellation
+        </div>
+        <p className="text-[11px] text-[#6E5F5B] leading-relaxed">
+          Unsubscribe from Premium and return your kitchen to the Free Artisan Tier (3 active pizza catalog limit)?
+        </p>
+        <div className="flex items-center gap-2 pt-1 justify-end">
+          <button
+            type="button"
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1.5 rounded-xl border border-[#EFE7DE] text-xs font-bold text-[#6E5F5B] hover:bg-stone-100 transition cursor-pointer"
+          >
+            Keep Premium
+          </button>
+          <button
+            type="button"
+            onClick={async () => {
+              toast.dismiss(t.id);
+              setIsUnsubscribing(true);
+              const toastId = toast.loading("Cancelling Premium subscription...");
+              try {
+                await unsubscribeVendorPremium(user.email);
+                toast.success("Successfully unsubscribed from Premium. Returned to Free Artisan Tier.", {
+                  id: toastId,
+                  icon: "🍕",
+                  duration: 5000,
+                });
+                await fetchStats();
+                router.refresh();
+              } catch (err: unknown) {
+                const msg = err instanceof Error ? err.message : "Failed to cancel subscription";
+                toast.error(msg, { id: toastId });
+              } finally {
+                setIsUnsubscribing(false);
+              }
+            }}
+            className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition shadow-xs cursor-pointer"
+          >
+            Confirm Downgrade
+          </button>
+        </div>
+      </div>
+    ), {
+      duration: 10000,
+      position: "top-center",
+    });
   };
 
   const isPremium = stats?.subscriptionTier === "premium";
@@ -229,12 +284,27 @@ function UpgradeContent() {
           </div>
 
           <div className="pt-8">
-            <button
-              disabled
-              className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] text-[#6E5F5B] font-bold text-sm bg-stone-50 cursor-default"
-            >
-              {!isPremium ? "Current Active Tier" : "Basic Tier"}
-            </button>
+            {isPremium ? (
+              <button
+                type="button"
+                onClick={handleUnsubscribe}
+                disabled={isUnsubscribing}
+                className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] hover:border-red-300 hover:bg-red-50 text-stone-700 hover:text-red-700 font-bold text-sm transition cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2"
+              >
+                {isUnsubscribing ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-red-600" />
+                ) : (
+                  <span>Downgrade to Starter Plan</span>
+                )}
+              </button>
+            ) : (
+              <button
+                disabled
+                className="w-full py-3.5 px-6 rounded-2xl border-2 border-[#EBE4D8] text-[#6E5F5B] font-bold text-sm bg-stone-50 cursor-default"
+              >
+                Current Active Tier
+              </button>
+            )}
           </div>
         </div>
 
@@ -297,9 +367,26 @@ function UpgradeContent() {
 
           <div className="pt-8">
             {isPremium ? (
-              <div className="w-full py-3.5 px-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 font-bold text-sm text-center flex items-center justify-center gap-2">
-                <Crown className="w-4 h-4 fill-amber-500 text-amber-600" />
-                Active Premium Plan
+              <div className="space-y-3">
+                <div className="w-full py-3.5 px-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 font-bold text-sm text-center flex items-center justify-center gap-2">
+                  <Crown className="w-4 h-4 fill-amber-500 text-amber-600" />
+                  Active Premium Plan
+                </div>
+                <button
+                  type="button"
+                  onClick={handleUnsubscribe}
+                  disabled={isUnsubscribing}
+                  className="w-full py-2.5 px-4 rounded-xl border border-red-200 hover:bg-red-50 text-red-700 font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                >
+                  {isUnsubscribing ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Cancelling Premium Membership...</span>
+                    </>
+                  ) : (
+                    <span>Cancel Subscription / Downgrade to Free</span>
+                  )}
+                </button>
               </div>
             ) : (
               <button

@@ -490,6 +490,30 @@ export async function verifyVendorUpgradeSession(sessionId: string, vendorEmail:
   return data;
 }
 
+export async function unsubscribeVendorPremium(vendorEmail: string): Promise<{ success: boolean; message: string; subscriptionTier: string }> {
+  try {
+    const res = await fetch("/api/vendor/unsubscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ vendorEmail }),
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch {}
+
+  const resServer = await fetch(`${API_BASE_URL}/api/vendor/unsubscribe`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vendorEmail }),
+  });
+  const data = await resServer.json().catch(() => ({}));
+  if (!resServer.ok) {
+    throw new Error(data.error || "Failed to unsubscribe from premium");
+  }
+  return data;
+}
+
 export interface AdminStats {
   totalUsers: number;
   totalVendors: number;

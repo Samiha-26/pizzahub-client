@@ -2,7 +2,7 @@
 
 **PizzaHub** is an artisanal pizza ordering and delivery platform connecting food lovers with authentic wood-fired pizzerias across the United States. Built as a full-featured, multi-tenant marketplace, the platform allows customers to discover local pizza houses, customize cold-fermented sourdough pies, track dispatches through an interactive 4-stage hearth timeline, and place multi-item orders via a slide-over cart. Independent pizzerias manage culinary catalogs, monitor kitchen quotas, and progress ticket dispatches, while platform administrators govern accounts, moderate recipes, and monitor Stripe financial transactions.
 
-Live site: https://pizzahub-client.vercel.app
+Live site: https://pizzahub-client-eta.vercel.app
 
 Client repository: https://github.com/Samiha-26/pizzahub-client
 

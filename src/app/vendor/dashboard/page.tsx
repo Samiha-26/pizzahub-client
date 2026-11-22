@@ -180,13 +180,21 @@ export default function VendorDashboardPage() {
               </p>
             </div>
 
-            {!isPremium && (
+            {!isPremium ? (
               <Link
                 href="/vendor/upgrade"
                 className="shrink-0 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white text-xs font-extrabold flex items-center justify-center gap-2 shadow-sm transition"
               >
                 <Crown className="w-4 h-4 fill-current" />
                 Upgrade to Premium
+              </Link>
+            ) : (
+              <Link
+                href="/vendor/upgrade"
+                className="shrink-0 px-4 py-2.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 border border-amber-500/30 text-xs font-extrabold flex items-center justify-center gap-2 transition"
+              >
+                <Crown className="w-4 h-4 fill-amber-500 text-amber-600" />
+                Manage Membership
               </Link>
             )}
           </div>
