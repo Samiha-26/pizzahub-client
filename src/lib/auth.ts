@@ -8,9 +8,12 @@ const db = client.db(process.env.DB_NAME || "pizzahub");
 
 const resolveBaseURL = () => {
   const envUrl = process.env.BETTER_AUTH_URL || "";
-  const isVercel = process.env.VERCEL === "1" || !!process.env.VERCEL_URL;
-  if (envUrl && (!isVercel || envUrl.startsWith("https://"))) {
+  if (envUrl && envUrl.startsWith("https://")) {
     return envUrl;
+  }
+  const nextPublicUrl = process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "";
+  if (nextPublicUrl && nextPublicUrl.startsWith("https://")) {
+    return nextPublicUrl;
   }
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
@@ -18,15 +21,16 @@ const resolveBaseURL = () => {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  if (envUrl) {
-    return envUrl;
+  if (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") {
+    return "https://pizzahub-client-eta.vercel.app";
   }
-  return "http://localhost:3000";
+  return envUrl || "http://localhost:3000";
 };
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
+    transaction: false,
   }),
   secret: process.env.BETTER_AUTH_SECRET || "pizzahub_default_auth_secret_dev_key",
   baseURL: resolveBaseURL(),
@@ -77,17 +81,18 @@ export const auth = betterAuth({
     },
   },
   socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    },
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          },
+        }
+      : {}),
   },
   plugins: [jwt()],
   session: {
-    cookieCache: {
-      enabled: true,
-      strategy: "jwt",
-      maxAge: 60 * 60 * 24 * 7,
-    },
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
   },
 });
