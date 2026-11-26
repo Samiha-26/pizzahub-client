@@ -75,7 +75,7 @@ function UpgradeContent() {
       return;
     }
 
-    if (success === "true" && sessionId && user?.email && !hasVerifiedSession) {
+    if ((success === "true" || sessionId) && sessionId && user?.email && !hasVerifiedSession) {
       setHasVerifiedSession(true);
       const verify = async () => {
         try {

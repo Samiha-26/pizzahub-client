@@ -625,6 +625,17 @@ export async function createCheckoutSession(vendorEmail: string): Promise<{ url:
 }
 
 export async function verifyVendorUpgradeSession(sessionId: string, vendorEmail: string) {
+  try {
+    const res = await fetch("/api/vendor/verify-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, vendorEmail }),
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch {}
+
   const baseUrl = resolveApiBaseUrl();
   const res = await fetch(`${baseUrl}/api/vendor/verify-session`, {
     method: "POST",

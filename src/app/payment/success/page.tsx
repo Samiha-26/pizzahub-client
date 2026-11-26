@@ -10,37 +10,93 @@ import { verifyVendorUpgradeSession } from "@/lib/api";
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  const { data: session } = useSession();
+  const { data: session, isPending: isSessionPending } = useSession();
   const user = session?.user;
 
   const [verifying, setVerifying] = useState(true);
   const [verified, setVerified] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
+    if (isSessionPending) return;
+
+    let isSubscribed = true;
+
     async function runVerification() {
-      if (sessionId && user?.email) {
+      if (sessionId) {
         try {
-          await verifyVendorUpgradeSession(sessionId, user.email);
-          setVerified(true);
-        } catch {
-          setVerified(true);
+          await verifyVendorUpgradeSession(sessionId, user?.email || "");
+          if (isSubscribed) {
+            setVerified(true);
+          }
+        } catch (err: any) {
+          if (isSubscribed) {
+            setErrorMsg(err.message || "Failed to confirm upgrade with server");
+          }
         } finally {
-          setVerifying(false);
+          if (isSubscribed) {
+            setVerifying(false);
+          }
         }
       } else {
-        setVerifying(false);
-        setVerified(true);
+        if (isSubscribed) {
+          setVerifying(false);
+          setVerified(true);
+        }
       }
     }
 
     runVerification();
-  }, [sessionId, user?.email]);
 
-  if (verifying) {
+    return () => {
+      isSubscribed = false;
+    };
+  }, [sessionId, user?.email, isSessionPending]);
+
+  if (verifying || isSessionPending) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-3">
         <Loader2 className="w-10 h-10 animate-spin text-[#8E1616] dark:text-[#E25C5C]" />
         <p className="text-sm font-bold text-[#6E5F5B] dark:text-zinc-400">Verifying Stripe transaction &amp; elevating kitchen status...</p>
+      </div>
+    );
+  }
+
+  if (errorMsg) {
+    return (
+      <div className="max-w-xl mx-auto bg-white dark:bg-[#1A1110] rounded-3xl p-8 sm:p-12 border border-red-200 dark:border-red-900/40 shadow-xl text-center space-y-6 my-12">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-black text-red-600 dark:text-red-400">
+            Upgrade Verification Failed
+          </h1>
+          <p className="text-xs sm:text-sm text-[#6E5F5B] dark:text-zinc-400 leading-relaxed max-w-md mx-auto">
+            {errorMsg}
+          </p>
+        </div>
+        <div className="flex justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setVerifying(true);
+              setErrorMsg("");
+              if (sessionId) {
+                verifyVendorUpgradeSession(sessionId, user?.email || "")
+                  .then(() => setVerified(true))
+                  .catch((err: any) => setErrorMsg(err.message || "Failed to verify"))
+                  .finally(() => setVerifying(false));
+              }
+            }}
+            className="py-3 px-5 rounded-2xl bg-[#8E1616] hover:bg-[#721111] text-white text-xs font-black transition cursor-pointer"
+          >
+            Retry Verification
+          </button>
+          <Link
+            href="/vendor/upgrade"
+            className="py-3 px-5 rounded-2xl border border-[#EBE4D8] dark:border-[#2D1E1B] text-xs font-bold text-[#190F0E] dark:text-white transition cursor-pointer"
+          >
+            Return to Upgrade Plan
+          </Link>
+        </div>
       </div>
     );
   }
