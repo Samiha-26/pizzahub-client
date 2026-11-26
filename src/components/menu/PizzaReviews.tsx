@@ -68,12 +68,11 @@ export default function PizzaReviews({ pizzaId, vendorName, vendorEmail }: Pizza
           const data = await localRes.json();
           if (isMounted) {
             setReviewsData(data);
+            setLoading(false);
             return;
           }
         }
-      } catch {}
 
-      try {
         const baseUrl = resolveApiBaseUrl();
         const res = await fetch(`${baseUrl}/api/reviews/${pizzaId}`);
         if (res.ok) {
@@ -83,9 +82,10 @@ export default function PizzaReviews({ pizzaId, vendorName, vendorEmail }: Pizza
           }
         }
       } catch {
-        return;
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
 
